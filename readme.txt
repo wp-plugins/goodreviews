@@ -101,7 +101,14 @@ This is a mystery to me. The GoodReviews plugin uses what the Goodreads API retu
 
 No, nor should you. Turning off the Goodreads credits is a violation of their API Terms and Conditions. 
 
+= The shortcode doesn't seem to work. What should I do? =
+
+Ensure that you enter the shortcode in HTML mode, not VISUAL mode.
+
 == Upgrade Notice ==
+
+= 1.0.1 =
+Upgrade to fix a potential developer API key issue that will prevent GoodReviews from working.
 
 = 1.0 =
 This is the first version of the plugin
@@ -112,6 +119,10 @@ This is the first version of the plugin
 2. A look at the plugin in action
 
 == Changelog ==
+
+= 1.0.1 =
+* Fixed an API key issue that could prevent GoodReviews from display information from Goodreads.
+* Updated the readme.
 
 = 1.0 =
 * Initial release

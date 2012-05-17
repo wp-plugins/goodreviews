@@ -354,7 +354,7 @@ function goodreviews_scrape($cover,$isbn,$border,$width,$height,$bookinfo,$buyin
    
      $uri = "http://" . $host . $path . $req;
 
-     if ((strlen($goodreviews_api)==22))  {
+     if (strlen(trim($goodreviews_api))>0)  {
         if(preg_match('/unchecked/',$goodreviews_getmethod)) {
            $ch = curl_init();
            curl_setopt($ch, CURLOPT_URL, $uri);

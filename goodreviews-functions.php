@@ -320,7 +320,7 @@ function goodreviews_buyinfo($buyinfo,$Result) {
                  '<ul class="goodreviews-buylist">';
 
       foreach($Result->book->book_links->book_link as $buyme) {
-         $buybook .= '<li><a href="' . $buyme->link . '" class="grbuy">' . $buyme->name . '</a></li>';
+         $buybook .= '<li><a href="' . $buyme->link . '?book_id=' . $Result->book->id . '" class="grbuy">' . $buyme->name . '</a></li>';
       }
       
       $buybook .= '</ul>' .

@@ -107,6 +107,9 @@ Ensure that you enter the shortcode in HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 1.0.2 =
+Upgrade to fix an issue that preventing "Buy This Book" links from functioning properly.
+
 = 1.0.1 =
 Upgrade to fix a potential developer API key issue that will prevent GoodReviews from working.
 
@@ -119,6 +122,9 @@ This is the first version of the plugin
 2. A look at the plugin in action
 
 == Changelog ==
+
+= 1.0.2=
+* Fixed an issue that was preventing some "Buy This Book" links from functioning properly.
 
 = 1.0.1 =
 * Fixed an API key issue that could prevent GoodReviews from display information from Goodreads.

@@ -123,7 +123,7 @@ This is the first version of the plugin
 
 == Changelog ==
 
-= 1.0.2=
+= 1.0.2 =
 * Fixed an issue that was preventing some "Buy This Book" links from functioning properly.
 
 = 1.0.1 =

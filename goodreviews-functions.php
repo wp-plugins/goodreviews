@@ -395,7 +395,7 @@ function goodreviews_scrape($cover,$isbn,$border,$width,$height,$bookinfo,$buyin
               if(preg_match('/on/i',$border)) {
                  $goodreviews_message = str_replace('frameborder="0"','frameborder="1"',$goodreviews_message);
               }
-              echo '</div>';
+              $goodreviews_message .= '</div>';
         } else {
               if($Result->Error->Message) {
                  $goodreviews_message = "<div id=\"goodreviews-error\"><h2>A GoodReviews Error Occurred</h2> " . $Result->Error->Code . ": " . $Result->Error->Message . "</div>\n";

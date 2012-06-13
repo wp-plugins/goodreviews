@@ -107,6 +107,9 @@ Ensure that you enter the shortcode in HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 1.0.3 =
+Upgrade to fix a DIV issue that might cause conflicts with your theme or other plugins.
+
 = 1.0.2 =
 Upgrade to fix an issue that preventing "Buy This Book" links from functioning properly.
 
@@ -122,6 +125,9 @@ This is the first version of the plugin
 2. A look at the plugin in action
 
 == Changelog ==
+
+= 1.0.3 =
+* Fixed a DIV closing element that was creating problems with the reviews frame. Thanks, Conq and Baden!
 
 = 1.0.2 =
 * Fixed an issue that was preventing some "Buy This Book" links from functioning properly.

@@ -11,7 +11,7 @@ Requires at least: 3.3
 Tested up to:      3.4
 Stable tag:        trunk
 
-Display Goodreads.com reviews for ISBNs you specify on any page or post.
+Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
 
 == Description ==
 
@@ -19,7 +19,7 @@ The GoodReviews plugin displays information about a specific title from Goodread
 
 Features:
 
-* Allows use of a shortcode to display Goodreads reviews and book information for a specific ISBN in any page or post.
+* Allows use of a shortcode to display Goodreads reviews and book information for a specific ISBN or Goodreads.com ID in any page or post.
 * Returns book information in divs and reviews in an iframe that can be custom styled or use the default styles.
 
 == Installation ==
@@ -31,13 +31,17 @@ This section describes how to install the plugin and get it working.
 3. Upload the GoodReviews folder to the '/wp-content/plugins/' directory
 4. Activate GoodReviews by using the 'Plugins' menu
 5. Under the Wordpress 'Settings' menu, click GoodReviews and configure the appropriate settings
-6. Add the [goodreviews isbn="&lt;book ISBN&gt;"] shortcode, where &lt;book ISBN&gt; is the International Standard Book Number (ISBN) of the book associated with the reviews you want to display. You can use either an ISBN-10 or an ISBN-13. Do not include dashes in the ISBN.
+6. Add the [goodreviews isbn="&lt;book ISBN&gt;"] shortcode, where &lt;book ISBN&gt; is the International Standard Book Number (ISBN) of the book associated with the reviews you want to display. You can use either an ISBN-10 or an ISBN-13. Do not include dashes in the ISBN. If your title does not have an ISBN, you can use grid="&lt;Goodreads ID&gt;" in place of the ISBN parameter, where &lt;Goodreads ID&gt; is the ID number assigned to your title by Goodreads.
 
 == Frequently Asked Questions ==
 
 = Why would I want to use this plugin? =
 
 GoodReviews serves a very specific requirement. It was primarily developed to enable an author or a bookseller to display Goodreads title information and reader reviews on a Wordpress site. Goodreads is a social network for book lovers that enables members to rate and review books.
+
+= What if my title does not have an ISBN? =
+
+As of version 1.0.4 of Goodreviews, you can use the Goodreads ID instead of the ISBN to retrieve title information from Goodreads. Replace the <code>isbn</code> parameter in the shortcode with <code>grid</code> and use the Goodreads ID number instead of an ISBN.
 
 = How do I customize the height and width of the book information and reviews pane =
 
@@ -77,6 +81,16 @@ To turn off the cover completely, you would issue the following shortcode:
 
 Please be aware that, at this time, turning off the cover only works if you're using the default CSS supplied with GoodReviews.
 
+= Can I display my Goodreads.com author photo in the book information element? =
+
+Yes, as of version 1.0.4. By default, the author photo is not displayed. You can enable the display of either the large version or the scaled version of your Goodreads author photo by issuing the shortcode with the <code>author</code> parameter. For example, to show the large version of your author photo, you could use the following shortcode:
+
+[goodreviews isbn="0000000000000" author="large"]
+
+To use the small version of your author photo, you could use the following shortcode:
+
+[goodreviews isbn="0000000000000" author="small"]
+
 = What if I don't want to display the book information element? =
 
 You can turn off the book information element by issuing the shortcode with the <code>bookinfo</code> parameter set to <code>off</code>. For example:
@@ -107,6 +121,9 @@ Ensure that you enter the shortcode in HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 1.0.4 =
+Upgrade to be able to retrieve titles by their Goodreads ID and to display author images.
+
 = 1.0.3 =
 Upgrade to fix a DIV issue that might cause conflicts with your theme or other plugins.
 
@@ -125,6 +142,10 @@ This is the first version of the plugin
 2. A look at the plugin in action
 
 == Changelog ==
+
+= 1.0.4 =
+* Added the ability to retrieve a title by its Goodreads ID instead of ISBN.
+* Added the ability to display an author's Goodreads photo beside the author's name.
 
 = 1.0.3 =
 * Fixed a DIV closing element that was creating problems with the reviews frame. Thanks, Conq and Baden!

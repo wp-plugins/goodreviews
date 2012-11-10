@@ -39,6 +39,7 @@ function goodreviews_options() {
 
 <p>GoodReviews also supports the following shortcode parameters:</p>
 <p>* <b>cover:</b> toggles book cover image display. "Large" displays the large cover, "small" displays the small cover, and "off" removes the cover from display. "Large" is default.<br>
+* <b>author:</b> toggles the author image display. "Large" displays the large image, "small" displays the small image, and "off" removes the image from display. "Off" is default.<br>
 * <b>bookinfo:</b> toggles book information element. "On" displays the element. "Off" removes the element from display. "On" is default.<br>
 * <b>buyinfo:</b> toggles book buying links elements. "On" displays the element. "Off" removes the element from display. "On" is default.<br>
 * <b>grstyles:</b> toggles the default CSS for bookinfo and buyinfo elements. "On" uses default CSS. "Off" uses no CSS, thereby allowing you to create your own. "On" is default.<br>
@@ -54,6 +55,9 @@ function goodreviews_options() {
 
 <p>The following shortcode would display everything without the default CSS. However, the CSS delivered for the Goodreads reviews iframe remains intact:</p>
 <p><code>[goodreviews isbn="0000000000000" grstyles="off"]</code></p>
+
+<p>If your title does not have an ISBN but does have a Goodreads ID, you can replace the <strong>isbn</strong> parameter with <strong>grid</strong>:</p>
+<p><code>[goodreviews grid="0000000000" grstyles="off"]</code></p>
 
 </div>
 <?php
@@ -103,6 +107,7 @@ function goodreviews_validate_api($input) {
 
 function goodreviews_shortcode($goodrevAtts) {
    extract( shortcode_atts( array(
+      'grid' => '',
       'isbn' => '',
       'border' => 'off',
       'width' => '565',
@@ -110,12 +115,13 @@ function goodreviews_shortcode($goodrevAtts) {
       'bookinfo' => 'on',
       'buyinfo' => 'on',
       'grstyles' => 'on',
-      'cover' => 'large'
+      'cover' => 'large',
+      'author' => 'off'
 	  ), $goodrevAtts ) );
-   return goodreviews_scrape($cover,$isbn,$border,$width,$height,$bookinfo,$buyinfo,$grstyles);
+   return goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$bookinfo,$buyinfo,$grstyles);
 }
 
-function goodreviews_styles($cover,$width,$height,$bookinfo,$buyinfo,$grstyles) {
+function goodreviews_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grstyles) {
    if(((preg_match('/on/i',$bookinfo))||(preg_match('/on/i',$buyinfo)))&&(preg_match('/on/i',$grstyles))) {
       $grstylewidth = $width . 'px';
       if(preg_match('/off/i',$buyinfo)) {
@@ -139,7 +145,11 @@ function goodreviews_styles($cover,$width,$height,$bookinfo,$buyinfo,$grstyles) 
       } else {
          $coverdisplay = "block";
       }
-      
+      if(preg_match('/off/i',$author)) {
+         $authordisplay = "none";
+      } else {
+         $authordisplay = "block";
+      }
       $goodreviews_style = <<<EOS
 <style>
 #goodreviews-div {
@@ -203,6 +213,11 @@ function goodreviews_styles($cover,$width,$height,$bookinfo,$buyinfo,$grstyles) 
    margin: 0;
    padding: 0;
    float: left;
+}
+#grauthorimage {
+   display: $authordisplay;
+   margin: 0;
+   padding: 0;
 }
 .goodreviews-buylist {
   position: relative;
@@ -273,7 +288,7 @@ EOSTARS;
       return $stars;
 }
 
-function goodreviews_bookinfo($cover,$bookinfo,$Result) {
+function goodreviews_bookinfo($author,$cover,$bookinfo,$Result) {
    if(preg_match('/on/i',$bookinfo)) {
       $showbook = '<div id="goodreviews-bookinfo">' .
                   '<label for="goodreviews-bookinfo" class="goodreviews-label">' . $Result->book->title . '</label>' .
@@ -297,7 +312,12 @@ function goodreviews_bookinfo($cover,$bookinfo,$Result) {
                    '<b>Author(s):</b> ';
                    
       foreach ($Result->book->authors->author as $grauthor) {
-         $showbook .= '<a href="'. $grauthor->link . '">'. $grauthor->name . '</a><br>';
+         if(preg_match('/large/i',$author)) {
+            $showbook .= '<div id="grauthorimage"><a href="'. $grauthor->link . '"><img src="' . $grauthor->image_url . '" /></a></div>';
+         } else {
+            $showbook .= '<div id="grauthorimage"><a href="'. $grauthor->link . '"><img src="' . $grauthor->small_image_url .'" /></a></div>';
+         }
+         $showbook .= '<div id="grauthorname"><a href="'. $grauthor->link . '">'. $grauthor->name . '</a></div>';
       }
       
       $showbook .= '<b>Publisher:</b> ' . $Result->book->publisher . '<br>' .
@@ -333,7 +353,7 @@ function goodreviews_buyinfo($buyinfo,$Result) {
    return $buybook;
 }
 
-function goodreviews_scrape($cover,$isbn,$border,$width,$height,$bookinfo,$buyinfo,$grstyles) {
+function goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$bookinfo,$buyinfo,$grstyles) {
    $goodreviews_api = get_option('goodreviews-api-key');
    $goodreviews_getmethod = get_option('goodreviews-getmethod');
    $goodreviews_getagree = get_option('goodreviews-agree');
@@ -342,16 +362,23 @@ function goodreviews_scrape($cover,$isbn,$border,$width,$height,$bookinfo,$buyin
       echo "<!-- You MUST allow Goodreads.com links on your site in order to use this plugin -->";
    } else {
       
-   if((preg_match('/\w/',$isbn))&&(strlen($isbn)>=10)&&(strlen($isbn)<=13)) {
+   if(((preg_match('/\w/',$isbn))&&(strlen($isbn)>=10)&&(strlen($isbn)<=13))||(preg_match('/\w/',$grid))) {
    
      // construct the Goodreads URL to retrieve the data
      $host = "www.goodreads.com";
+     if(strlen($isbn)>0) {
      $path = "/book/isbn";
      $req = "?callback=myCallback" .
             "&format=xml" .
             "&isbn=" . $isbn .
             "&key=" . $goodreviews_api;
-   
+     } else {
+        $path = "/book/show";
+        $req = "?callback=myCallback" .
+               "&format=xml" .
+               "&id=" . $grid .
+               "&key=" . $goodreviews_api; 
+     }
      $uri = "http://" . $host . $path . $req;
 
      if (strlen(trim($goodreviews_api))>0)  {
@@ -374,11 +401,11 @@ function goodreviews_scrape($cover,$isbn,$border,$width,$height,$bookinfo,$buyin
         if(isset($Result->book->id)) {
 
               // Set styles
-              $goodreviews_display = goodreviews_styles($cover,$width,$height,$bookinfo,$buyinfo,$grstyles);
+              $goodreviews_display = goodreviews_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grstyles);
               $goodreviews_display .= '<div id="goodreviews-div">';
               
               // Book Info
-              $goodreviews_display .= goodreviews_bookinfo($cover,$bookinfo,$Result);
+              $goodreviews_display .= goodreviews_bookinfo($author,$cover,$bookinfo,$Result);
         
               // Buy Info
               $goodreviews_display .= goodreviews_buyinfo($buyinfo,$Result);
@@ -407,7 +434,7 @@ function goodreviews_scrape($cover,$isbn,$border,$width,$height,$bookinfo,$buyin
         $goodreviews_message = "\n<!-- GoodReviews is not properly configured. -->\n";
      }
    } else {
-      $goodreviews_message = "\n<!-- A valid ISBN was not provided or GoodReviews is not properly configured. -->\n";
+      $goodreviews_message = "\n<!-- A valid ISBN or Goodreads.com ID was not provided, or GoodReviews is not properly configured. -->\n";
    }
    return $goodreviews_message;
    }

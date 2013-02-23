@@ -1,4 +1,32 @@
 <?php
+function gr_check_for_curl() {
+   if(in_array('curl',get_loaded_extensions())) {
+      return true;
+   } else {
+      return false;
+   }
+}
+function gr_check_for_fopen() {
+   if(ini_get('allow_url_fopen')) {
+      return true;
+   } else {
+      return false;
+   }
+}
+function gr_curl_exec_enabled() {
+  $disabled = explode(', ', ini_get('disable_functions'));
+  return !in_array('curl_exec', $disabled);
+}
+/* 
+   The following function was adapted from 
+   http://bavotasan.com/2009/a-settings-link-for-your-wordpress-plugins/ 
+*/
+function goodreviews_settings_link($links) {
+  $settings_link = '<a href="options-general.php?page=goodrev-options">Settings</a>';
+  array_unshift($links,$settings_link);
+  return $links;
+  
+}
 function goodreviews_admin_add_page() {
    add_options_page('GoodReviews Settings','GoodReviews','manage_options','goodrev-options','goodreviews_options');
 }
@@ -24,8 +52,34 @@ function goodreviews_options() {
 <td valign="top" align="left"><input type="text" name="goodreviews-api-key" id="goodreviews-api-key" size="80" value="<?php echo get_option('goodreviews-api-key');?>" /><td>
 </tr>
 <tr>
+<td valign="top" align="left" width="200">Requirements Check</td>
+<td valign="top" align="left">
+<?php
+$green = "<strong>cURL Status:</strong> ";
+$red = "<strong>file_get_contents Status:</strong> ";
+if((gr_check_for_curl())&&(gr_curl_exec_enabled())) {
+   $green .= '<span style="color:green">Available and enabled</span>';
+} elseif ((gr_check_for_curl())&&(!(gr_curl_exec_enabled()))) {
+   $green .= '<span style="color:red">Available, but not enabled</span>';
+} else {
+   $green = '<span style="color:red">Not available</span>';
+} 
+if(gr_check_for_fopen()) {
+   $red .= '<span style="color:orange">Enabled</span>';
+   if((gr_check_for_curl())&&(gr_curl_exec_enabled())) {
+      $red .= '<span style="color:orange">, but you should use cURL</span>';
+   }
+} else {
+   $red .= '<span style="color:lime">Disabled</span>';
+} 
+echo $green . '<br>';
+echo $red;
+?>
+</td>
+</tr>
+<tr>
 <td valign="top" align="left"><input type="checkbox" name="goodreviews-getmethod" id="goodreviews-getmethod" value="on" <?php if(get_option('goodreviews-getmethod')) { echo get_option('goodreviews-getmethod'); } else { add_option('goodreviews-getmethod','unchecked'); } ?> /></td>
-<td valign="top" align="left" width="300">If you receive cURL errors when attempting to retrieve reviews, check this box to use file_get_contents instead.</td>
+<td valign="top" align="left" width="300">Select this checkbox to use file_get_contents instead of cURL (<span style="color:red">not recommended</span>).</td>
 </tr>
 </table>
 <p class="submit"><input type="submit" class="button-primary" value="<?php _e('Save Changes');?>"/></p>

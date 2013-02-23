@@ -8,7 +8,7 @@ Author URI:        http://www.timetides.com
 Author:            James R. Hanback, Jr.
 Donate link: 	   http://www.timetides.com
 Requires at least: 3.3 
-Tested up to:      3.5
+Tested up to:      3.5.1
 Stable tag:        trunk
 
 Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
@@ -121,6 +121,9 @@ Ensure that you enter the shortcode in HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 1.0.5 =
+Upgrade to enable basic GoodReviews troubleshooting tools on the Settings page.
+
 = 1.0.4 =
 Upgrade to be able to retrieve titles by their Goodreads ID and to display author images.
 
@@ -142,6 +145,10 @@ This is the first version of the plugin
 2. A look at the plugin in action
 
 == Changelog ==
+
+= 1.0.5 =
+* Added a link to Settings on the Plugins page.
+* Added basic PHP environment detection on the Settings page to assist in troubleshooting.
 
 = 1.0.4 =
 * Added the ability to retrieve a title by its Goodreads ID instead of ISBN.

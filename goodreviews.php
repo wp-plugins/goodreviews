@@ -3,7 +3,7 @@
 Plugin Name: GoodReviews
 Plugin URI: http://www.timetides.com/goodreviews-plugin-wordpress
 Description: Retrieves Goodreads.com reviews for books you choose to display on your Wordpress blog.
-Version: 1.0.5
+Version: 1.1.0
 Author: James R. Hanback, Jr.
 Author URI: http://www.timetides.com
 License: GPL3
@@ -25,20 +25,35 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-# Load plugin files and configuration
+// Load plugin files and configuration
 $grplugin = plugin_basename(__FILE__); 
 $greviewspath = plugin_dir_path(__FILE__);
 $greviewspath .= '/goodreviews-functions.php';
 include_once($greviewspath);
 
+// Register default stylesheet
+$gr_alt_style = get_option('goodreviews-alt-style');
+$grdefaults = plugins_url('goodreviews/goodreviews.css');
+wp_register_style('gr-default-style',$grdefaults);
+wp_enqueue_style('gr-default-style');
+
+// If it exists and is a URL, register alternate stylesheet
+if(preg_match('/^http:\/\/[\w\W]*/i',$gr_alt_style)) {
+   wp_register_style('gr-alternate-style',$gr_alt_style);
+   wp_dequeue_style('gr-default-style');
+   wp_enqueue_style('gr-alternate-style');
+}
+   
 // Create admin page and settings, if required
 if (is_admin()) {
    add_action('admin_init','goodreviews_register_settings');
    add_action('admin_menu','goodreviews_admin_add_page');
 }
 
+// Create a settings link on the plugin page
 add_filter("plugin_action_links_$grplugin", 'goodreviews_settings_link' );
 
 // Add shortcode functionality
-   add_shortcode( 'goodreviews', 'goodreviews_shortcode' );
+add_shortcode( 'goodreviews', 'goodreviews_shortcode' );
+
 ?>

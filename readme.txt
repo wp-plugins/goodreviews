@@ -55,15 +55,37 @@ For example, to display the book information and reviews in 500x500 elements wit
 
 [goodreviews isbn="0000000000000" height="500" width="500" border="On"]
 
-Alternatively, you can use your own CSS to customize the book information elements. To override the default style sheets, issue the shortcode with the <code>grstyles</code> parameter set to <code>off</code>. For example:
+= How do I turn off the default CSS for this plugin? =
 
-[goodreviews isbn="0000000000000" grstyles="off"]
+As of version 1.1.0, you can completely disable the default styles by providing a valid URL to an alternate stylesheet in the Alternate Stylesheet URL field on the GoodReviews Settings page. If you have previously altered your theme CSS to modify GoodReviews CSS elements for a previous version of GoodReviews, you should provide a URL to a blank stylesheet file in the Alternate Stylesheet URL field.
 
-After you have disabled the default CSS, you can style the goodreviews elements yourself by adding the appropriate CSS code to your theme.
+In versions 1.0.5 and earlier, you can disable the default styles per-shortcode by issuing the <code>grstyle="off"</code> parameter within the shortcode. However, the grstyles parameter does not disable the default CSS in the Reviews element.
 
-= How do I customize the CSS for the reviews iframe? =
+= How do I customize the CSS for this plugin? =
 
-At this time, there is no easy way to customize the CSS for the reviews iframe. Goodreads' feed includes the CSS for the reviews frame inline. I recommend you keep their default CSS for the reviews frame and simply adjust the height and width of it by using the shortcode.
+As of version 1.1.0, you can customize the look of the book info, buy info, and reviews elements by supplying the URL to an alternate stylesheet on the Settings page. You can also use the following shortcode parameters:
+
+* grbackground - provide the hexadecimal code for the background color you want (do not include the # symbol)
+* grtext - provide the hexadecimal code for the text color you want (do not include the # symbol)
+* grstars - provide the hexadecimal code for the star color you want (do not include the # symbol)
+* grlinks - provide the hexadecimal code for the text color you want (do not include the $ symbol)
+* grheader - provide the text that you want to appear above the reviews frame
+
+For example, issuing the following shortcode will style the GoodReviews elements with white text on black background along with blue stars and red links. The header above the reviews frame will be "My Reviews."
+
+<code>[goodreviews isbn="0000000000000" grbackground="000" grtext="fff" grstars="00f" grlinks="f00" grheader="My Reviews"]</code>
+
+= Can I control the number of reviews that the plugin returns? =
+
+You can use the <code>grnumber</code> parameter to control the number of reviews that are displayed on each page of reviews. By default, 10 reviews per page are displayed. The following code would configure GoodReviews to return 20 reviews per page instead:
+
+<code>[goodreviews isbn="0000000000000" grnumber="20"]</code>
+
+= What if I don't want people to see 1-star reviews of my title? =
+
+You can configure GoodReviews to return only the reviews that meet a minimum star rating. By default, the plugin returns all reviews, regardless of star rating. The following code would configure GoodReviews to return only reviews that have a 3-star rating or higher:
+
+<code>[goodreviews isbn="0000000000000" grminimum="3"]</code>
 
 = How do I make the cover image bigger or smaller, or turn it off completely? =
 
@@ -117,9 +139,12 @@ No, nor should you. Turning off the Goodreads credits is a violation of their AP
 
 = The shortcode doesn't seem to work. What should I do? =
 
-Ensure that you enter the shortcode in HTML mode, not VISUAL mode.
+Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Major update. Upgrade to 1.1.0 to enable more granular control over the look of output. *WARNING* The grstyles parameter in previous versions of GoodReviews is no longer supported. See the FAQ for more information.
 
 = 1.0.5 =
 Upgrade to enable basic GoodReviews troubleshooting tools on the Settings page.
@@ -145,6 +170,19 @@ This is the first version of the plugin
 2. A look at the plugin in action
 
 == Changelog ==
+
+= 1.1.0 =
+* Replaced star images with text-based stars so that colors can be easily modified.
+* Added a field to Settings to enable the use of an alternate stylesheet.
+* Moved default stylesheet to an included file instead of echoing it from functions.
+* Removed support for the grstyles shortcode parameter.
+* Added the grstars parameter to enable changing the color of the review stars.
+* Added the grlinks parameter to enable changing the color of the review links.
+* Added the grheader parameter to enable changing the text of the header above the reviews iframe.
+* Added the grbackground parameter to enable changing the color of the review background.
+* Added the grtext parameter to enable changing the color of the review text.
+* Added the grnumber parameter to allow configuration of the initial number of reviews that are returned.
+* Added the grminimum parameter to allow the configuration of a minimum review rating requirement.
 
 = 1.0.5 =
 * Added a link to Settings on the Plugins page.

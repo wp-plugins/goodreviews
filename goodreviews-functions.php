@@ -41,18 +41,19 @@ function goodreviews_options() {
    settings_fields('goodreviews_options');
 ?>
 
+
 <p>In order to access review data from Goodreads.com, you must have a Goodreads.com <a href="http://www.goodreads.com/api/">API developer key</a> and abide by the <a href="http://www.goodreads.com/api/terms">Goodreads API Terms and Conditions</a>.</p>
 
-<table width="650" border="0">
+<table border="0">
 <tr>
-<td valign="top" align="left"><input type="checkbox" name="goodreviews-agree" id="goodreviews-agree" value="on" <?php if(get_option('goodreviews-agree')) { echo get_option('goodreviews-agree'); } else { add_option('goodreviews-agree','unchecked'); } ?> /></td>
+<td valign="top" align="left" width="150"><input type="checkbox" name="goodreviews-agree" id="goodreviews-agree" value="on" <?php if(get_option('goodreviews-agree')) { echo get_option('goodreviews-agree'); } else { add_option('goodreviews-agree','unchecked'); } ?> /></td>
 <td valign="top" align="left" width="300">You MUST agree to allow GoodReviews to display Goodreads.com links on your site in order to use this plugin. Select this checkbox to agree.</td>
 </tr>
 <tr><td valign="top" align="left" width="300">Goodreads API Developer Key </td>
-<td valign="top" align="left"><input type="text" name="goodreviews-api-key" id="goodreviews-api-key" size="80" value="<?php echo get_option('goodreviews-api-key');?>" /><td>
+<td valign="top" align="left" width="150"><input type="text" name="goodreviews-api-key" id="goodreviews-api-key" size="80" value="<?php echo get_option('goodreviews-api-key');?>" /></td>
 </tr>
 <tr>
-<td valign="top" align="left" width="200">Requirements Check</td>
+<td valign="top" align="left" width="150">Requirements Check</td>
 <td valign="top" align="left">
 <?php
 $green = "<strong>cURL Status:</strong> ";
@@ -78,8 +79,12 @@ echo $red;
 </td>
 </tr>
 <tr>
-<td valign="top" align="left"><input type="checkbox" name="goodreviews-getmethod" id="goodreviews-getmethod" value="on" <?php if(get_option('goodreviews-getmethod')) { echo get_option('goodreviews-getmethod'); } else { add_option('goodreviews-getmethod','unchecked'); } ?> /></td>
+<td valign="top" align="left" width="150"><input type="checkbox" name="goodreviews-getmethod" id="goodreviews-getmethod" value="on" <?php if(get_option('goodreviews-getmethod')) { echo get_option('goodreviews-getmethod'); } else { add_option('goodreviews-getmethod','unchecked'); } ?> /></td>
 <td valign="top" align="left" width="300">Select this checkbox to use file_get_contents instead of cURL (<span style="color:red">not recommended</span>).</td>
+</tr>
+<tr>
+<td valign="top" align="left" width="200">Alternate Stylesheet URL</td>
+<td valign="top" align="left" width="300"><input type="text" name="goodreviews-alt-style" id="goodreviews-alt-style" size="80" value="<?php echo get_option('goodreviews-alt-style');?>" /></td>
 </tr>
 </table>
 <p class="submit"><input type="submit" class="button-primary" value="<?php _e('Save Changes');?>"/></p>
@@ -96,10 +101,16 @@ echo $red;
 * <b>author:</b> toggles the author image display. "Large" displays the large image, "small" displays the small image, and "off" removes the image from display. "Off" is default.<br>
 * <b>bookinfo:</b> toggles book information element. "On" displays the element. "Off" removes the element from display. "On" is default.<br>
 * <b>buyinfo:</b> toggles book buying links elements. "On" displays the element. "Off" removes the element from display. "On" is default.<br>
-* <b>grstyles:</b> toggles the default CSS for bookinfo and buyinfo elements. "On" uses default CSS. "Off" uses no CSS, thereby allowing you to create your own. "On" is default.<br>
 * <b>width:</b> defines the full width of the GoodReviews element. Should be a numeric pixel value.<br>
 * <b>height:</b> defines the height of each GoodReviews element. Should be a numeric pixel value.<br>
 * <b>border:</b> toggles the reviews element iframe border. "On" enables the border. "Off" disables the border. "Off" is default.<br>
+* <b>grbackground:</b> defines the hexadecimal background color of the plugin elements. Do not include the "#" symbol.<br>
+* <b>grtext:</b> defines the hexadecimal text color of the plugin elements. Do not include the "#" symbol.<br>
+* <b>grstars:</b> defines the hexadecimal stars color of the plugin elements. Do not include the "#" symbol.<br>
+* <b>grlinks:</b> defines the hexadecimal link color of the plugin elements. Do not include the "#" symbol.<br>
+* <b>grheader:</b> defines the header text that appears above the reviews element.<br>
+* <b>grnumber:</b> defines the number of reviews per page. Default is 10.<br>
+* <b>grminimum:</b> defines the minimum star rating that is required for a review to be displayed. By default, all reviews are displayed.<br>
 </p>
 <p>For example, the following shortcode would display reviews only:</p>
 <p><code>[goodreviews isbn="0000000000000" bookinfo="off" buyinfo="off" cover="off"]</code></p>
@@ -107,11 +118,8 @@ echo $red;
 <p>The following shortcode would display everything except the book's cover image</p>
 <p><code>[goodreviews isbn="0000000000000" cover="off"]</code></p>
 
-<p>The following shortcode would display everything without the default CSS. However, the CSS delivered for the Goodreads reviews iframe remains intact:</p>
-<p><code>[goodreviews isbn="0000000000000" grstyles="off"]</code></p>
-
 <p>If your title does not have an ISBN but does have a Goodreads ID, you can replace the <strong>isbn</strong> parameter with <strong>grid</strong>:</p>
-<p><code>[goodreviews grid="0000000000" grstyles="off"]</code></p>
+<p><code>[goodreviews grid="0000000000"]</code></p>
 
 </div>
 <?php
@@ -121,6 +129,17 @@ function goodreviews_register_settings() {
    register_setting('goodreviews_options','goodreviews-api-key','goodreviews_validate_api');
    register_setting('goodreviews_options','goodreviews-getmethod','goodreviews_validate_getmethod');
    register_setting('goodreviews_options','goodreviews-agree','goodreviews_validate_agree');
+   register_setting('goodreviews_options','goodreviews-alt-style','goodreviews_validate_style');
+}
+
+function goodreviews_validate_style($input) {
+   $newKey = trim($input);
+   if(isset($newKey)) {
+      if(!preg_match('/[\w\W]*/i',$newKey)) {
+         $newKey='';
+      }
+   }
+   return $newKey;
 }
 
 function goodreviews_validate_getmethod($input) {
@@ -168,175 +187,117 @@ function goodreviews_shortcode($goodrevAtts) {
       'height' => '400',
       'bookinfo' => 'on',
       'buyinfo' => 'on',
-      'grstyles' => 'on',
       'cover' => 'large',
-      'author' => 'off'
+      'author' => 'off',
+      'grstars' => '000',
+      'grlinks' => '660',
+      'grheader' => '',
+      'grbackground' => 'fff',
+      'grtext' => '382110',
+      'grnumber' => '',
+      'grminimum' => '',
 	  ), $goodrevAtts ) );
-   return goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$bookinfo,$buyinfo,$grstyles);
+
+   $width = preg_replace('/px/i','',$width);
+   $height = preg_replace('/px/i','',$height);
+   $grstars = preg_replace('/\#/','',$grstars);
+   $grlinks = preg_replace('/\#/','',$grlinks);
+   $grheader = preg_replace('/\#/','',$grheader);
+   $grbackground = preg_replace('/\#/','',$grbackground);
+   $grtext = preg_replace('/\#/','',$grtext);
+
+   return goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$bookinfo,$buyinfo,$grlinks,$grstars,$grheader,$grbackground,$grtext,$grnumber,$grminimum);
 }
 
-function goodreviews_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grstyles) {
-   if(((preg_match('/on/i',$bookinfo))||(preg_match('/on/i',$buyinfo)))&&(preg_match('/on/i',$grstyles))) {
+function goodreviews_mod_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grlinks,$grstars,$grheader,$grbackground,$grtext,$grnumber,$grminimum) {
+   $goodreviews_style_mods = "<style>\n";
+   if(!preg_match('/382110/',$grlinks)) {
+      $goodreviews_style_mods .= "#goodreviews-div a,#goodreads-widget .gr_branding,.goodreviews-label { color:#" . $grlinks . ";}\n";
+   }
+   if((!preg_match('/fff/i',$grbackground))||(!preg_match('/382110/',$grtext))) {
+      $goodreviews_style_mods .= ".goodreviews-booklist {";
+      if(!preg_match('/fff/i',$grbackground)) {
+         $goodreviews_style_mods .= "background-color:#" . $grbackground . ";";
+      }
+      $goodreviews_style_mods .= "color:#" . $grtext . ";";
+      $goodreviews_style_mods .= "}\n";
+   }
+   if(!preg_match('/400/',$height)) {
+      $goodreviews_style_mods .= "#goodreviews-bookinfo, #goodreviews-data, #goodreviews-buybook { ";
+      $goodreviews_style_mods .= " height:" . $height . "px; ";
+      $goodreviews_style_mods .= "}\n";
+   } else {
+      $grdataheight = $height . 'px';
+   }
+   if(!preg_match('/565/',$width)) {
       $grstylewidth = $width . 'px';
-      if(preg_match('/off/i',$buyinfo)) {
-         $grdatawidth = $width . 'px';
-      } else {
-         $grdatawidth = ($width * .65) . 'px';
-      }
+      $goodreviews_style_mods .= "#goodreviews-div { width:" . $grstylewidth . "; }\n";
+      $goodreviews_style_mods .= "#goodreads-widget { width:" . $grstylewidth ."; }\n";
+   }
+   if(preg_match('/off/i',$buyinfo)) {
+      $grdatawidth = $width . 'px';
+      $goodreviews_style_mods .= "#goodreviews-bookinfo { width:" . $grdatawidth . "; }\n";
+   }
+   if((preg_match('/off/i',$bookinfo))||(!preg_match('/fff/i',$grbackground))||(!preg_match('/382110/',$grtext))) {
+      $grbuywidth = $width . 'px';
+      $goodreviews_style_mods .= "#goodreviews-buybook { ";
       if(preg_match('/off/i',$bookinfo)) {
-         $grbuywidth = $width . 'px';
-      } else {
-         $grbuywidth = ($width * .33) . 'px';
+         $goodreviews_style_mods .= "width:" . $grbuywidth . "; height:" . $grdataheight . "; ";
       }
-      $grdataheight = ($height * .65) . 'px';
-      if(preg_match('/large/i',$cover)) {
-         $coversize = '115px';
-      } else {
-         $coversize = '63px';
+      if(!preg_match('/fff/i',$grbackground)) {
+         $goodreviews_style_mods .= "background-color:#" . $grbackground . ";";      
       }
+      $goodreviews_style_mods .= "color:#" . $grtext .";";
+      $goodreviews_style_mods .= " }\n";
+   }
+   if(!preg_match('/000/i',$grstars)) {
+      $goodreviews_style_mods .= ".goodreviews-star { color:#" . $grstars . "; }\n";
+   }
+   if(!preg_match('/large/i',$cover)) {
+      $coversize = "55px";
       if(preg_match('/off/i',$cover)) {
          $coverdisplay = "none";
       } else {
          $coverdisplay = "block";
       }
-      if(preg_match('/off/i',$author)) {
-         $authordisplay = "none";
-      } else {
-         $authordisplay = "block";
-      }
-      $goodreviews_style = <<<EOS
-<style>
-#goodreviews-div {
-   display: block;
-   width: $grstylewidth;
-   float: none;
-}
-.goodreviews-label {
-   color:#660;
-   font-family: georgia, serif;
-   font-size: 16px;
-   text-align: right;
-}
-#goodreviews-bookinfo {
-   display: block;
-   margin: 0;
-   padding: 0;
-   width: $grdatawidth;
-   float: left;
-}
-#goodreviews-cover {
-  display: $coverdisplay;
-  float: left;
-  width: $coversize;
-  height: $grdataheight;
-  border: none;
-}
-#goodreviews-data {
-  border: none;  
-  margin: 0;
-  padding-left: 5px;
-  padding-right: 5px;
-  font-family: georgia, serif;
-  font-size: 12px;
-  color: #382110;
-  line-height: 1.5em;
-  height: $grdataheight;
-  overflow: scroll;
-}
-#goodreviews-data a,
-#goodreviews-data a:hover,
-#goodreviews-data a:visited,
-#goodreviews-data a:active {
-  color: #382110;
-  text-decoration: underline;
-}
-.goodreviews-based {
-  font-size: 9px;
-  line-height: 1em;
-}
-.goodreviews-booklist {
-  border-top: solid 1px #382110;
-  border-bottom: solid 1px #382110;
-  background-color: #fff;
-  padding: 5px;
-  margin: 0;
-  list-style: none;
-}
-#goodreviews-buybook {
-   display: block;
-   margin: 0;
-   padding: 0;
-   float: left;
-}
-#grauthorimage {
-   display: $authordisplay;
-   margin: 0;
-   padding: 0;
-}
-.goodreviews-buylist {
-  position: relative;
-  border-top: solid 1px #382110;
-  border-bottom: solid 1px #382110;
-  background-color: #fff;
-  padding: 5px;
-  margin: 0;
-  list-style: none;
-  width: $grbuywidth;
-  height: $grdataheight;
-}
-.goodreviews-buylist li {
-  display: block;
-  font-family: georgia, serif;
-  font-size: 12px;
-  color: #382110;
-  line-height: 1.5em;
-}
-.goodreviews-buylist li a,
-.goodreviews-buylist li a:hover,
-.goodreviews-buylist li a:active,
-.goodreviews-buylist li a:visited {
-  color: #382110;
-  text-decoration: underline;
-}
-.goodreviews-clear {
-  float:none;
-  clear:both;
-}
-.goodreviews-credit,
-.goodreviews-credit a {
-  color: #382110; 
-  font-size: 11px;
-  text-decoration: none; 
-  font-family: verdana, arial, helvetica, sans-serif; 
-  text-align: right;
-}
-.goodreviews-credit a:hover {
-  text-decoration: underline;
-}
-</style>
-EOS;
    } else {
-      $goodreviews_style = "";
+      $coversize = "115px";
+      $coverdisplay = "block";
    }
-        
+   $goodreviews_style_mods .= "#goodreviews-cover { display:" . $coverdisplay . "; width:" . $coversize . "; height:" . $grdataheight . "; }\n";
+   if(!preg_match('/off/i',$author)) {
+      $authordisplay = "block";
+      $goodreviews_style_mods .= "#grauthorimage { display:" . $authordisplay . "; }\n";
+   }
+   $goodreviews_style_mods .= "</style>\n";
+   return $goodreviews_style_mods;
+}
+
+function goodreviews_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grlinks,$grstars,$grheader,$grbackground,$grtext,$grnumber,$grminimum) {
+   if(((preg_match('/on/i',$bookinfo))||(preg_match('/on/i',$buyinfo)))&&(preg_match('/on/i',$grstyles))) {
+      $goodreviews_style = goodreviews_mod_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grlinks,$grstars,$grheader,$grbackground,$grtext,$grnumber,$grminimum);
+   } else {
+      if(preg_match('/[\w\W]*/i',$gr_alt_style)) {
+         $goodreviews_style = goodreviews_mod_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grlinks,$grstars,$grheader,$grbackground,$grtext,$grnumber,$grminimum);
+      } else {
+         $goodreviews_style = goodreviews_mod_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grlinks,$grstars,$grheader,$grbackground,$grtext,$grnumber,$grminimum);
+      }
+   }
    return $goodreviews_style;
 }
 
 function goodreviews_stars($Result) {
    $goodreviewAvg = floor($Result->book->average_rating);
-   if($Result->book->average_rating>$goodreviewAvg) {
-      $goodreviewHalf='<img src="' . plugins_url('goodreviews') .'/images/grev_star_half.png">';
-   } else {
-      $goodreviewHalf="";
-   }
-      
    $stars = '<b>Average Rating:</b><br>';
 
    for($i=0;$i<$goodreviewAvg;$i++) {
-      $stars .= '<img src="' . plugins_url('goodreviews') .'/images/grev_star.png">';
+      $stars .= '<span class="goodreviews-star">&#9733;</span>';
    }
-   $stars .= $goodreviewHalf .
-             '<br>' .
+   $blankstars = 5 - $goodreviewAvg;
+   for($i=0;$i<$blankstars;$i++) {
+      $stars .= '<span class="goodreviews-star">&#9734;</span>';
+   }
+   $stars .= '<br>' .
              '<span class="goodreviews-based">based on ' . $Result->book->ratings_count . ' rating(s)</span><br><br>';
 EOSTARS;
       return $stars;
@@ -389,8 +350,8 @@ function goodreviews_bookinfo($author,$cover,$bookinfo,$Result) {
 
 function goodreviews_buyinfo($buyinfo,$Result) {
    if(preg_match('/on/i',$buyinfo)) {
-      $buybook = '<div id="goodreviews-buybook">' .
-                 '<label for="goodreviews-buybook" class="goodreviews-label">Buy This Book</label>' .
+      $buybook = '<div><label for="goodreviews-buybook" class="goodreviews-label">Buy This Book</label>' .
+                 '<div id="goodreviews-buybook">' .
                  '<ul class="goodreviews-buylist">';
 
       foreach($Result->book->book_links->book_link as $buyme) {
@@ -398,19 +359,19 @@ function goodreviews_buyinfo($buyinfo,$Result) {
       }
       
       $buybook .= '</ul>' .
-      '<div class="goodreviews-credit"><a href="http://www.goodreads.com">Links from Goodreads.com</a></div>' .
       '</div>' .
-      '<div class="goodreviews-clear">&nbsp;</div>';
+      '<div class="goodreviews-credit"><a href="http://www.goodreads.com">Links from Goodreads.com</a></div></div>';
    } else {
       $buybook = "";
    }
    return $buybook;
 }
 
-function goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$bookinfo,$buyinfo,$grstyles) {
+function goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$bookinfo,$buyinfo,$grlinks,$grstars,$grheader,$grbackground,$grtext,$grnumber,$grminimum) {
    $goodreviews_api = get_option('goodreviews-api-key');
    $goodreviews_getmethod = get_option('goodreviews-getmethod');
    $goodreviews_getagree = get_option('goodreviews-agree');
+   $goodreviews_alt_style = get_option('goodreviews-alt-style');
 
    if(preg_match('/unchecked/i',$goodreviews_getagree)) {
       echo "<!-- You MUST allow Goodreads.com links on your site in order to use this plugin -->";
@@ -455,7 +416,7 @@ function goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$b
         if(isset($Result->book->id)) {
 
               // Set styles
-              $goodreviews_display = goodreviews_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grstyles);
+              $goodreviews_display = goodreviews_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grlinks,$grstars,$grheader,$grbackground,$grtext,$grnumber,$grminimum);
               $goodreviews_display .= '<div id="goodreviews-div">';
               
               // Book Info
@@ -463,10 +424,44 @@ function goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$b
         
               // Buy Info
               $goodreviews_display .= goodreviews_buyinfo($buyinfo,$Result);
+              $goodreviews_display .='<div class="goodreviews-clear">&nbsp;</div>';
+              
+              // BROKEN OUT Review Info
+              preg_match('/src="([^"]*)"/',$Result->book->reviews_widget,$gr_iframe_src);
+              preg_match('/(<div[\w\W]*)<iframe/',$Result->book->reviews_widget,$gr_pre_iframe);
 
-              // Review Info
+              if($grheader!="") {
+                $gr_pre_iframe[1] = preg_replace('/((<a [^>]*)).[^<]*/','\\1>'.$grheader,$gr_pre_iframe[1]);
+              }
+              
+              preg_match('/<\/iframe>([\w\W]*<\/div>)/',$Result->book->reviews_widget,$gr_post_iframe);   
+              preg_match('/http[^?]*/',$gr_iframe_src[1],$gr_iframe_url);
+              preg_match('/(\?[\w\W]*)links/',$gr_iframe_src[1],$gr_params1);
+              $gr_iframe_parsed = $gr_iframe_url[0] . 
+                                  $gr_params1[1] .
+                                 "links=" . $grlinks .
+                                 "&header_text=" . preg_replace('/ /','+',$grheader) .
+                        		 "&min_rating=" . $grminimum .
+                                 "&num_reviews=" . $grnumber . 
+                                 "&review_back=" . $grbackground .
+                                 "&stars=" . $grstars .
+                                 "&stylesheet=" . $goodreviews_alt_style .
+                                 "&text=" . $grtext;
               $goodreviews_message = $goodreviews_display .
-                                     $Result->book->reviews_widget;
+                                     $gr_pre_iframe[1] .
+                                     "<iframe src=\"" .
+                                     $gr_iframe_parsed .
+                                     "\" width=\"" . $width .
+                                     "\" height=\"" . $height .
+                                     "\" frameborder=\"";
+              if(preg_match('/on/i',$border)) {
+                 $goodreviews_message .= "0";
+              } else {
+                 $goodreviews_message .= "1";
+              }
+              $goodreviews_message .= "\"></iframe>" .
+                                      $gr_post_iframe[1]; 
+
               if(strlen($height)>0) {
                  $goodreviews_message = str_replace('400',$height,$goodreviews_message);
               }
@@ -490,7 +485,9 @@ function goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$b
    } else {
       $goodreviews_message = "\n<!-- A valid ISBN or Goodreads.com ID was not provided, or GoodReviews is not properly configured. -->\n";
    }
+   add_action( 'wp_print_styles', 'goodreviews_deregister_styles', 100 );
    return $goodreviews_message;
    }
 }
+
 ?>

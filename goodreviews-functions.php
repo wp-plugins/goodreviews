@@ -31,6 +31,15 @@ function goodreviews_admin_add_page() {
    add_options_page('GoodReviews Settings','GoodReviews','manage_options','goodrev-options','goodreviews_options');
 }
 
+function goodreviews_deregister_styles() {
+  if(preg_match('/^(http|https):\/\//i',get_option('goodreviews-alt-style'))) {
+    wp_dequeue_style('gr-alternate-style');
+  } else {
+    // Deegister default stylesheet
+    wp_dequeue_style('gr-default-style');
+  }
+}
+
 function goodreviews_options() {
    if(!current_user_can('manage_options')) {
       wp_die( __('You do not have sufficient permissions to access this page.'));
@@ -274,7 +283,7 @@ function goodreviews_mod_styles($author,$cover,$width,$height,$bookinfo,$buyinfo
 }
 
 function goodreviews_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grlinks,$grstars,$grheader,$grbackground,$grtext,$grnumber,$grminimum) {
-   if(((preg_match('/on/i',$bookinfo))||(preg_match('/on/i',$buyinfo)))&&(preg_match('/on/i',$grstyles))) {
+   if((preg_match('/on/i',$bookinfo))||(preg_match('/on/i',$buyinfo))) {
       $goodreviews_style = goodreviews_mod_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grlinks,$grstars,$grheader,$grbackground,$grtext,$grnumber,$grminimum);
    } else {
       if(preg_match('/[\w\W]*/i',$gr_alt_style)) {
@@ -299,7 +308,6 @@ function goodreviews_stars($Result) {
    }
    $stars .= '<br>' .
              '<span class="goodreviews-based">based on ' . $Result->book->ratings_count . ' rating(s)</span><br><br>';
-EOSTARS;
       return $stars;
 }
 
@@ -394,7 +402,12 @@ function goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$b
                "&id=" . $grid .
                "&key=" . $goodreviews_api; 
      }
-     $uri = "http://" . $host . $path . $req;
+    if(isset($_SERVER['HTTPS']) || (is_ssl())) {
+        $gr_proto = "https://";
+     } else {
+        $gr_proto = "http://";
+     }
+     $uri = $gr_proto . $host . $path . $req;
 
      if (strlen(trim($goodreviews_api))>0)  {
         if(preg_match('/unchecked/',$goodreviews_getmethod)) {
@@ -419,12 +432,17 @@ function goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$b
               $goodreviews_display = goodreviews_styles($author,$cover,$width,$height,$bookinfo,$buyinfo,$grlinks,$grstars,$grheader,$grbackground,$grtext,$grnumber,$grminimum);
               $goodreviews_display .= '<div id="goodreviews-div">';
               
-              // Book Info
-              $goodreviews_display .= goodreviews_bookinfo($author,$cover,$bookinfo,$Result);
-        
-              // Buy Info
-              $goodreviews_display .= goodreviews_buyinfo($buyinfo,$Result);
-              $goodreviews_display .='<div class="goodreviews-clear">&nbsp;</div>';
+              if(preg_match('/on/i',$bookinfo)) {
+                 // Book Info
+                 $goodreviews_display .= goodreviews_bookinfo($author,$cover,$bookinfo,$Result);
+              }
+              if(preg_match('/on/i',$buyinfo)) {
+                 // Buy Info
+                 $goodreviews_display .= goodreviews_buyinfo($buyinfo,$Result);
+              }
+              if((preg_match('/on/i',$bookinfo))||(preg_match('/on/i',$buyinfo))) {
+                 $goodreviews_display .='<div class="goodreviews-clear">&nbsp;</div>';
+              }
               
               // BROKEN OUT Review Info
               preg_match('/src="([^"]*)"/',$Result->book->reviews_widget,$gr_iframe_src);
@@ -485,9 +503,9 @@ function goodreviews_scrape($author,$cover,$grid,$isbn,$border,$width,$height,$b
    } else {
       $goodreviews_message = "\n<!-- A valid ISBN or Goodreads.com ID was not provided, or GoodReviews is not properly configured. -->\n";
    }
-   add_action( 'wp_print_styles', 'goodreviews_deregister_styles', 100 );
    return $goodreviews_message;
    }
+   add_action('wp_print_styles', 'goodreviews_deregister_styles');
 }
 
 ?>

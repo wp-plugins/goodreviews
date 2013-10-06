@@ -8,7 +8,7 @@ Author URI:        http://www.timetides.com
 Author:            James R. Hanback, Jr.
 Donate link: 	   http://www.timetides.com
 Requires at least: 3.3 
-Tested up to:      3.5.1
+Tested up to:      3.6.1
 Stable tag:        trunk
 
 Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
@@ -143,6 +143,9 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 1.1.1 =
+Upgrade to automatically remove clear space div when only the reviews pane is displayed and fix a stylesheet handling bug.
+
 = 1.1.0 =
 Major update. Upgrade to 1.1.0 to enable more granular control over the look of output. *WARNING* The grstyles parameter in previous versions of GoodReviews is no longer supported. See the FAQ for more information.
 
@@ -170,6 +173,11 @@ This is the first version of the plugin
 2. A look at the plugin in action
 
 == Changelog ==
+
+= 1.1.1=
+* Fixed a stylesheet loading bug
+* Added code to remove clear space div element when only the reviews pane is displayed.
+* Cleaned up some leftover pre-1.1.0 code.
 
 = 1.1.0 =
 * Replaced star images with text-based stars so that colors can be easily modified.

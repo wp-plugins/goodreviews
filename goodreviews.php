@@ -3,7 +3,7 @@
 Plugin Name: GoodReviews
 Plugin URI: http://www.timetides.com/goodreviews-plugin-wordpress
 Description: Retrieves Goodreads.com reviews for books you choose to display on your Wordpress blog.
-Version: 1.1.0
+Version: 1.1.1
 Author: James R. Hanback, Jr.
 Author URI: http://www.timetides.com
 License: GPL3
@@ -34,16 +34,21 @@ include_once($greviewspath);
 // Register default stylesheet
 $gr_alt_style = get_option('goodreviews-alt-style');
 $grdefaults = plugins_url('goodreviews/goodreviews.css');
-wp_register_style('gr-default-style',$grdefaults);
-wp_enqueue_style('gr-default-style');
 
-// If it exists and is a URL, register alternate stylesheet
-if(preg_match('/^http:\/\/[\w\W]*/i',$gr_alt_style)) {
-   wp_register_style('gr-alternate-style',$gr_alt_style);
-   wp_dequeue_style('gr-default-style');
-   wp_enqueue_style('gr-alternate-style');
-}
-   
+function gr_enqueues() {
+  // If it exists and is a URL, register alternate stylesheet
+  if(preg_match('/^(http|https):\/\//i',get_option('goodreviews-alt-style'))) {
+    wp_register_style('gr-alternate-style',get_option('goodreviews-alt-style'));
+    wp_enqueue_style('gr-alternate-style');
+  } else {
+    // Register default stylesheet
+    wp_register_style('gr-default-style',plugins_url('goodreviews/goodreviews.css'));
+    wp_enqueue_style('gr-default-style');
+  }
+}  
+
+add_action('wp_enqueue_scripts', 'gr_enqueues');
+
 // Create admin page and settings, if required
 if (is_admin()) {
    add_action('admin_init','goodreviews_register_settings');

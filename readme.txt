@@ -175,7 +175,7 @@ This is the first version of the plugin
 == Changelog ==
 
 = 1.1.1=
-* Fixed a stylesheet loading bug
+* Fixed a stylesheet loading bug.
 * Added code to remove clear space div element when only the reviews pane is displayed.
 * Cleaned up some leftover pre-1.1.0 code.
 

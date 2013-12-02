@@ -8,7 +8,7 @@ Author URI:        http://www.timetides.com
 Author:            James R. Hanback, Jr.
 Donate link: 	   http://www.timetides.com
 Requires at least: 3.3 
-Tested up to:      3.6.1
+Tested up to:      3.7.1
 Stable tag:        trunk
 
 Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
@@ -143,6 +143,9 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 1.1.2 =
+Upgrade to fix a bug in the default stylesheet that could affect link colors sitewide.
+
 = 1.1.1 =
 Upgrade to automatically remove clear space div when only the reviews pane is displayed and fix a stylesheet handling bug.
 
@@ -173,6 +176,9 @@ This is the first version of the plugin
 2. A look at the plugin in action
 
 == Changelog ==
+
+= 1.1.2 =
+* Fixed a default stylesheet bug that could cause links sitewide to display as HTML color #660.
 
 = 1.1.1 =
 * Fixed a stylesheet loading bug.

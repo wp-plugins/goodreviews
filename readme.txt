@@ -8,7 +8,7 @@ Author URI:        http://www.timetides.com
 Author:            James R. Hanback, Jr.
 Donate link: 	   http://www.timetides.com
 Requires at least: 3.3 
-Tested up to:      3.9
+Tested up to:      3.9.1
 Stable tag:        1.1.2
 
 Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
@@ -143,6 +143,9 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 2.0.0 =
+Upgrade to 2.0.0 to enable better Wordpress Settings API integration, better API throttling protection, new GoodReviews widgets, and the possibility of using responsive styles.
+
 = 1.1.2 =
 Upgrade to fix a bug in the default stylesheet that could affect link colors sitewide.
 
@@ -172,10 +175,21 @@ This is the first version of the plugin
 
 == Screenshots ==
 
-1. The settings page
-2. A look at the plugin in action
+1. The Settings page
+2. The plugin in action
+3. The shortcode in a post
 
 == Changelog ==
+
+= 2.0.0 =
+* Plugin has been completely rewritten to better integrate with the Wordpress Settings API.
+* Added support for styling the output in a more responsive way.
+* Added separate WordPress widgets for book buying links, book information, and book reviews. 
+* Added support for WordPress localization (i18n).
+* Added support for HTTP retries and an exponential backoff method of dealing with throttling problems.
+* Added support for context-sensitive help on the Settings page.
+* Added support for an uninstall process that removes all settings and plugin files.
+* Added support for a shortcut parameter that disables the reviews pane.
 
 = 1.1.2 =
 * Fixed a default stylesheet bug that could cause links sitewide to display as HTML color #660.

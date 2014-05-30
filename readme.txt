@@ -183,8 +183,8 @@ This is the first version of the plugin
 
 = 2.0.0 =
 * Plugin has been completely rewritten to better integrate with the Wordpress Settings API.
+* Added widgets for book buying links, book information, and book reviews. 
 * Added support for styling the output in a more responsive way.
-* Added separate WordPress widgets for book buying links, book information, and book reviews. 
 * Added support for WordPress localization (i18n).
 * Added support for HTTP retries and an exponential backoff method of dealing with throttling problems.
 * Added support for context-sensitive help on the Settings page.

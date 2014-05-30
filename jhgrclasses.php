@@ -210,6 +210,14 @@ class jhgrWPOptions
                           __('removes the element from display.','goodreviews') .
                           ' <code>on</code> ' .
                           __('is default.','goodreviews') .
+                          '</li><li><code>reviews</code>: ' .
+                          __('toggles the reviews frame. ','goodreviews') .
+                          '<code>on</code> ' .
+                          __('displays the reviews frame. ','goodreviews') .
+                          '<code>off</code> ' .
+                          __('removes the reviews frame from display.','goodreviews') .
+                          ' <code>on</code> ' .
+                          __('is default.','goodreviews') .
                           '</li><li><code>grbackground</code>: ' .
                           __('defines the hexadecimal background color of the plugin elements. Do not include the "#" symbol.','goodreviews') .
                           '</li><li><code>grtext</code>: ' .

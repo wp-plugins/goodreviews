@@ -747,6 +747,288 @@ class jhgrBuyBookWidget extends WP_Widget {
     }
 }
 
+class jhgrBookInfoWidget extends WP_Widget {
+    var $textdomain;
+ 
+    function __construct() {
+        $this->textdomain = 'goodreviews';
+ 
+        // This is where we add the style and script
+        add_action( 'load-widgets.php', array(&$this, 'jhgrLoadBuyBookWidget') );
+ 
+        $this->WP_Widget( 
+            'goodreviews-bookinfo', 
+            'About This Book', 
+            array( 'classname' => 'goodreviews-bookinfo', 'description' => 'Goodreads.com Book Information' )
+        );
+    }
+ 
+    function jhgrLoadBuyBookWidget() {    
+        wp_enqueue_style( 'wp-color-picker' );        
+        wp_enqueue_script( 'wp-color-picker' );    
+    }
+ 
+    function widget($args, $instance) {
+        extract( $args, EXTR_SKIP );
+        echo $before_widget;
+
+		if( isset ($instance[ 'itemtype' ]) )
+		{
+		    if(empty($instance['itemtype']))
+		    {
+		        $instance['itemtype'] = 'isbn';
+		    }
+		    $jhgrSCode = '[goodreviews ' . strip_tags($instance['itemtype']) . '="' . strip_tags($instance['itemvalue']) . '"';
+		    if(($instance['width']!=0) && isset ($instance[ 'width' ]) )
+		    {
+		        $jhgrSCode .= ' width="' . absint($instance[ 'width' ]) . '"';
+		    }
+		    if(($instance['height']!=0) && isset ($instance[ 'height' ]) )
+		    {
+		        $jhgrSCode .= ' height="' . absint($instance[ 'height' ]) . '"';
+		    }
+		    if(isset ($instance[ 'grbackground' ]) )
+		    {
+		        $jhgrSCode .= ' grbackground="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grbackground' ])) . '"';
+		    }
+		    if(isset ($instance[ 'grlinks' ]) )
+		    {
+		        $jhgrSCode .= ' grlinks="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grlinks' ])) . '"';
+		    }
+		    if(isset ($instance[ 'grtext' ]) )
+		    {
+		        $jhgrSCode .= ' grtext="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grtext' ])) . '"';
+		    }
+
+		    if(isset ($instance[ 'grstars' ]) )
+		    {
+		        $jhgrSCode .= ' grstars="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grstars' ])) . '"';
+		    }
+		    if(isset ($instance[ 'cover' ]) )
+		    {
+		        $jhgrSCode .= ' cover="' . strip_tags($instance[ 'cover' ]) . '"';
+		    }
+		    if(isset ($instance[ 'author' ]) )
+		    {
+		        $jhgrSCode .= ' author="' . strip_tags($instance[ 'author' ]) . '"';
+		    }
+		    $jhgrSCode .= ' buyinfo="off" reviews="off"]';
+		    echo do_shortcode($jhgrSCode);
+		}
+
+        echo $after_widget;
+    }
+ 
+    function update($new_instance, $old_instance) {
+        $instance = $old_instance;
+        $instance = $new_instance;
+        $instance['grbackground'] = $new_instance['grbackground'];
+        return $instance;
+    }
+    
+    function jhgrSanitizeHexColor($jhgrHexColor)
+    {
+        // Based on WP 4.0 alpha code
+        $jhgrHexColor = ltrim($jhgrHexColor,'#');
+        if(''===$jhgrHexColor)
+            return '';
+        if(preg_match('|^([A-Fa-f0-9]{3}){1,2}$|', $jhgrHexColor))
+            return $jhgrHexColor;
+        return null;
+    }
+ 
+    function form($instance) {
+        $defaults = array(
+            'itemvalue'    => '',
+            'grbackground' => '#ffffff',
+            'grlinks'      => '#000000',
+            'itemtype'     => 'isbn',
+            'width'        => '350',
+            'height'       => '500',
+            'author'       => 'off',
+            'grstars'      => '#1e73be',
+            'cover'        => 'small'
+        );
+ 
+        // Merge the user-selected arguments with the defaults
+        $instance = wp_parse_args( (array) $instance, $defaults ); ?>
+        <script>
+            var elems = jQuery('#widgets-right .jhgr-color-picker, .inactive-sidebar .jhgr-color-picker');
+            var widget_id = 'goodreviews-buybook';
+            jQuery(document).ready(function($) {
+                elems.wpColorPicker();
+            }).ajaxComplete(function(e, xhr, settings) {
+                if( settings.data.search('action=save-widget') != -1 && settings.data.search('id_base=' + widget_id) != -1 ) {  
+                    elems.wpColorPicker();
+                }
+            });
+        </script>
+        <p>
+            <span><?php _e( 'Book Identifier:', $this->textdomain ); ?></span><br />
+            <select class="widefat" id="<?php echo $this->get_field_id( 'itemtype' ); ?>" name="<?php echo $this->get_field_name( 'itemtype' ); ?>">
+                 <option value="isbn" <?php echo (esc_attr($instance['itemtype'])=='isbn') ? 'selected' : ''; ?>>ISBN</option>
+                 <option value="grid" <?php echo (esc_attr($instance['itemtype'])=='grid') ? 'selected' : ''; ?>>Goodreads ID</option>
+            </select><br />
+            <span><?php _e( ' Identifer Value:', $this->textdomain ); ?></span><br />
+            <input class="widefat" id="<?php echo $this->get_field_id( 'itemvalue' ); ?>" name="<?php echo $this->get_field_name( 'itemvalue' ); ?>" type="text" value="<?php echo esc_attr( $instance['itemvalue'] ); ?>" /><br />
+            <span><?php _e( 'Cover Image:', $this->textdomain ); ?></span><br />
+                <select class="widefat" id="<?php echo $this->get_field_id( 'cover' ); ?>" name="<?php echo $this->get_field_name( 'cover' ); ?>">
+                 <option value="large" <?php echo (esc_attr($instance['cover'])=='large') ? 'selected' : ''; ?>>Large</option>
+                 <option value="small" <?php echo (esc_attr($instance['cover'])=='small') ? 'selected' : ''; ?>>Small</option>
+                 <option value="off" <?php echo (esc_attr($instance['cover'])=='off') ? 'selected' : ''; ?>>Off</option>
+            </select><br />
+            <span><?php _e( 'Author Image:', $this->textdomain ); ?></span><br />
+                <select class="widefat" id="<?php echo $this->get_field_id( 'author' ); ?>" name="<?php echo $this->get_field_name( 'author' ); ?>">
+                 <option value="large" <?php echo (esc_attr($instance['author'])=='large') ? 'selected' : ''; ?>>Large</option>
+                 <option value="small" <?php echo (esc_attr($instance['author'])=='small') ? 'selected' : ''; ?>>Small</option>
+                 <option value="off" <?php echo (esc_attr($instance['author'])=='off') ? 'selected' : ''; ?>>Off</option>
+            </select><br />
+            <span><?php _e( ' Width (in pixels):', $this->textdomain ); ?></span><br />
+            <input class="widefat" id="<?php echo $this->get_field_id( 'width' ); ?>" name="<?php echo $this->get_field_name( 'width' ); ?>" type="text" value="<?php echo esc_attr( $instance['width'] ); ?>" /><br />
+            <span><?php _e( ' Height (in pixels):', $this->textdomain ); ?></span><br />
+            <input class="widefat" id="<?php echo $this->get_field_id( 'height' ); ?>" name="<?php echo $this->get_field_name( 'height' ); ?>" type="text" value="<?php echo esc_attr( $instance['height'] ); ?>" /><br />
+            <span><?php _e( 'Background Color:', $this->textdomain ); ?></span><br />
+            <input class="jhgr-color-picker" type="text" id="<?php echo $this->get_field_id( 'grbackground' ); ?>" name="<?php echo $this->get_field_name( 'grbackground' ); ?>" value="<?php echo esc_attr( $instance['grbackground'] ); ?>" /><br />                            
+            <span><?php _e( 'Link Color:', $this->textdomain ); ?></span><br />
+            <input class="jhgr-color-picker" type="text" id="<?php echo $this->get_field_id( 'grlinks' ); ?>" name="<?php echo $this->get_field_name( 'grlinks' ); ?>" value="<?php echo esc_attr( $instance['grlinks'] ); ?>" /><br />                         
+            <span><?php _e( 'Text Color:', $this->textdomain ); ?></span><br />
+            <input class="jhgr-color-picker" type="text" id="<?php echo $this->get_field_id( 'grtext' ); ?>" name="<?php echo $this->get_field_name( 'grtext' ); ?>" value="<?php echo esc_attr( $instance['grtext'] ); ?>" /><br />                         
+            <span><?php _e( 'Star Rating Color:', $this->textdomain ); ?></span><br />
+            <input class="jhgr-color-picker" type="text" id="<?php echo $this->get_field_id( 'grstars' ); ?>" name="<?php echo $this->get_field_name( 'grstars' ); ?>" value="<?php echo esc_attr( $instance['grstars'] ); ?>" /><br />                         
+        </p><?php
+    }
+}
+
+class jhgrReviewsWidget extends WP_Widget {
+    var $textdomain;
+ 
+    function __construct() {
+        $this->textdomain = 'goodreviews';
+ 
+        // This is where we add the style and script
+        add_action( 'load-widgets.php', array(&$this, 'jhgrLoadBuyBookWidget') );
+ 
+        $this->WP_Widget( 
+            'goodreviews-reviews', 
+            'Reviews From Goodreads', 
+            array( 'classname' => 'goodreviews-reviews', 'description' => 'Goodreads.com Book Reviews' )
+        );
+    }
+ 
+    function jhgrLoadBuyBookWidget() {    
+        wp_enqueue_style( 'wp-color-picker' );        
+        wp_enqueue_script( 'wp-color-picker' );    
+    }
+ 
+    function widget($args, $instance) {
+        extract( $args, EXTR_SKIP );
+        echo $before_widget;
+
+		if( isset ($instance[ 'itemtype' ]) )
+		{
+		    if(empty($instance['itemtype']))
+		    {
+		        $instance['itemtype'] = 'isbn';
+		    }
+		    $jhgrSCode = '[goodreviews ' . strip_tags($instance['itemtype']) . '="' . strip_tags($instance['itemvalue']) . '"';
+		    if(($instance['width']!=0) && isset ($instance[ 'width' ]) )
+		    {
+		        $jhgrSCode .= ' width="' . absint($instance[ 'width' ]) . '"';
+		    }
+		    if(($instance['height']!=0) && isset ($instance[ 'height' ]) )
+		    {
+		        $jhgrSCode .= ' height="' . absint($instance[ 'height' ]) . '"';
+		    }
+		    if(isset ($instance[ 'grbackground' ]) )
+		    {
+		        $jhgrSCode .= ' grbackground="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grbackground' ])) . '"';
+		    }
+		    if(isset ($instance[ 'grlinks' ]) )
+		    {
+		        $jhgrSCode .= ' grlinks="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grlinks' ])) . '"';
+		    }
+		    if(isset ($instance[ 'grtext' ]) )
+		    {
+		        $jhgrSCode .= ' grtext="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grtext' ])) . '"';
+		    }
+		    if(isset ($instance[ 'grstars' ]) )
+		    {
+		        $jhgrSCode .= ' grstars="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grstars' ])) . '"';
+		    }
+		    $jhgrSCode .= ' buyinfo="off" bookinfo="off"]';
+		    echo do_shortcode($jhgrSCode);
+		}
+
+        echo $after_widget;
+    }
+ 
+    function update($new_instance, $old_instance) {
+        $instance = $old_instance;
+        $instance = $new_instance;
+        $instance['grbackground'] = $new_instance['grbackground'];
+        return $instance;
+    }
+    
+    function jhgrSanitizeHexColor($jhgrHexColor)
+    {
+        // Based on WP 4.0 alpha code
+        $jhgrHexColor = ltrim($jhgrHexColor,'#');
+        if(''===$jhgrHexColor)
+            return '';
+        if(preg_match('|^([A-Fa-f0-9]{3}){1,2}$|', $jhgrHexColor))
+            return $jhgrHexColor;
+        return null;
+    }
+ 
+    function form($instance) {
+        $defaults = array(
+            'itemvalue'    => '',
+            'grbackground' => '#ffffff',
+            'grlinks'      => '#000000',
+            'itemtype'     => 'isbn',
+            'width'        => '350',
+            'height'       => '500',
+            'grtext'       => '#000000',
+            'grstars'      => '#000000'
+        );
+ 
+        // Merge the user-selected arguments with the defaults
+        $instance = wp_parse_args( (array) $instance, $defaults ); ?>
+        <script>
+            var elems = jQuery('#widgets-right .jhgr-color-picker, .inactive-sidebar .jhgr-color-picker');
+            var widget_id = 'goodreviews-buybook';
+            jQuery(document).ready(function($) {
+                elems.wpColorPicker();
+            }).ajaxComplete(function(e, xhr, settings) {
+                if( settings.data.search('action=save-widget') != -1 && settings.data.search('id_base=' + widget_id) != -1 ) {  
+                    elems.wpColorPicker();
+                }
+            });
+        </script>
+        <p>
+            <span><?php _e( 'Book Identifier:', $this->textdomain ); ?></span><br />
+            <select class="widefat" id="<?php echo $this->get_field_id( 'itemtype' ); ?>" name="<?php echo $this->get_field_name( 'itemtype' ); ?>">
+                 <option value="isbn" <?php echo (esc_attr($instance['itemtype'])=='isbn') ? 'selected' : ''; ?>>ISBN</option>
+                 <option value="grid" <?php echo (esc_attr($instance['itemtype'])=='grid') ? 'selected' : ''; ?>>Goodreads ID</option>
+            </select><br />
+            <span><?php _e( ' Identifer Value:', $this->textdomain ); ?></span><br />
+            <input class="widefat" id="<?php echo $this->get_field_id( 'itemvalue' ); ?>" name="<?php echo $this->get_field_name( 'itemvalue' ); ?>" type="text" value="<?php echo esc_attr( $instance['itemvalue'] ); ?>" /><br />
+            <span><?php _e( ' Width (in pixels):', $this->textdomain ); ?></span><br />
+            <input class="widefat" id="<?php echo $this->get_field_id( 'width' ); ?>" name="<?php echo $this->get_field_name( 'width' ); ?>" type="text" value="<?php echo esc_attr( $instance['width'] ); ?>" /><br />
+            <span><?php _e( ' Height (in pixels):', $this->textdomain ); ?></span><br />
+            <input class="widefat" id="<?php echo $this->get_field_id( 'height' ); ?>" name="<?php echo $this->get_field_name( 'height' ); ?>" type="text" value="<?php echo esc_attr( $instance['height'] ); ?>" /><br />
+            <span><?php _e( 'Background Color:', $this->textdomain ); ?></span><br />
+            <input class="jhgr-color-picker" type="text" id="<?php echo $this->get_field_id( 'grbackground' ); ?>" name="<?php echo $this->get_field_name( 'grbackground' ); ?>" value="<?php echo esc_attr( $instance['grbackground'] ); ?>" /><br />                            
+            <span><?php _e( 'Link Color:', $this->textdomain ); ?></span><br />
+            <input class="jhgr-color-picker" type="text" id="<?php echo $this->get_field_id( 'grlinks' ); ?>" name="<?php echo $this->get_field_name( 'grlinks' ); ?>" value="<?php echo esc_attr( $instance['grlinks'] ); ?>" /><br />                         
+            <span><?php _e( 'Text Color:', $this->textdomain ); ?></span><br />
+            <input class="jhgr-color-picker" type="text" id="<?php echo $this->get_field_id( 'grtext' ); ?>" name="<?php echo $this->get_field_name( 'grtext' ); ?>" value="<?php echo esc_attr( $instance['grtext'] ); ?>" /><br />                         
+            <span><?php _e( 'Star Rating Color:', $this->textdomain ); ?></span><br />
+            <input class="jhgr-color-picker" type="text" id="<?php echo $this->get_field_id( 'grstars' ); ?>" name="<?php echo $this->get_field_name( 'grstars' ); ?>" value="<?php echo esc_attr( $instance['grstars'] ); ?>" /><br />                         
+        </p><?php
+    }
+}
+
 class jhgrShortcode
 {
     public function jhgrIsSSL()
@@ -794,7 +1076,6 @@ class jhgrShortcode
         $jhgrURL .= (isset($jhgrSCAtts["grbackground"])) ? '&review_back=' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grbackground"]) : '';
         $jhgrURL .= (isset($jhgrSCAtts["grnumber"])) ? '&num_reviews=' . absint($jhgrSCAtts["grnumber"]) : '';
         $jhgrURL .= (isset($jhgrCustomCSS)) ? '&stylesheet=' . esc_url($jhgrCustomCSS) : '';
-        //$jhgrURL .= (isset($jhgrSCAtts["grheader"])) ? '&header_text=' . urlencode(sanitize_text_field($jhgrSCAtts["grheader"])) : '';
         
         while(($jhgrRetries<5)&&($jhgrCCode != "200")) {
             usleep(500000*pow($jhgrRetries,2));

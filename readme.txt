@@ -7,7 +7,7 @@ Tags:              goodreads,readers,reviews,stars,isbn
 Author URI:        http://www.timetides.com
 Author:            James R. Hanback, Jr.
 Donate link: 	   http://www.timetides.com
-Requires at least: 3.3 
+Requires at least: 3.8 
 Tested up to:      3.9.1
 Stable tag:        1.1.2
 
@@ -19,8 +19,10 @@ The GoodReviews plugin displays information about a specific title from Goodread
 
 Features:
 
-* Allows use of a shortcode to display Goodreads reviews and book information for a specific ISBN or Goodreads.com ID in any page or post.
-* Returns book information in divs and reviews in an iframe that can be custom styled or use the default styles.
+* Uses a shortcode to display Goodreads reviews and book information for a specific ISBN or Goodreads.com ID in any page or post.
+* Returns book information in divs and reviews in an iframe that can be styled manually from the shortcode, via custom CSS, or via a built-in responsive style sheet.
+* Includes three separate widgets that can be used in place of the shortcode.
+* Supports WordPress localization (i18n)
 
 == Installation ==
 
@@ -39,9 +41,13 @@ This section describes how to install the plugin and get it working.
 
 GoodReviews serves a very specific requirement. It was primarily developed to enable an author or a bookseller to display Goodreads title information and reader reviews on a Wordpress site. Goodreads is a social network for book lovers that enables members to rate and review books.
 
+= Why do I need WordPress version 3.8 or later to use this plugin? =
+
+WordPress 3.8 introduced support for the dashicons font, which contains the star and half-star symbols that GoodReviews uses in the Book Info pane. If you do not use the Book Info pane, you can probably successfully install and use GoodReviews in WordPress 3.5 or later.
+
 = What if my title does not have an ISBN? =
 
-As of version 1.0.4 of Goodreviews, you can use the Goodreads ID instead of the ISBN to retrieve title information from Goodreads. Replace the <code>isbn</code> parameter in the shortcode with <code>grid</code> and use the Goodreads ID number instead of an ISBN.
+Version 1.0.4 or later supports the use of a Goodreads ID instead of an ISBN to retrieve title information from Goodreads. Replace the <code>isbn</code> parameter in the shortcode with <code>grid</code> and use the Goodreads ID number instead of an ISBN. ISBNs are still supported as well.
 
 = How do I customize the height and width of the book information and reviews pane =
 
@@ -53,27 +59,24 @@ GoodReviews offers two ways to control the height and width of its elements. You
 
 For example, to display the book information and reviews in 500x500 elements with a bordered iframe reviews element, you could issue the following shortcode:
 
-[goodreviews isbn="0000000000000" height="500" width="500" border="On"]
+<code>[goodreviews isbn="0000000000000" height="500" width="500" border="On"]</code>
 
 = How do I turn off the default CSS for this plugin? =
 
-As of version 1.1.0, you can completely disable the default styles by providing a valid URL to an alternate stylesheet in the Alternate Stylesheet URL field on the GoodReviews Settings page. If you have previously altered your theme CSS to modify GoodReviews CSS elements for a previous version of GoodReviews, you should provide a URL to a blank stylesheet file in the Alternate Stylesheet URL field.
-
-In versions 1.0.5 and earlier, you can disable the default styles per-shortcode by issuing the <code>grstyle="off"</code> parameter within the shortcode. However, the grstyles parameter does not disable the default CSS in the Reviews element.
+Version 1.1.0 and later supports the complete disabling of the default styles by providing a valid URL to an alternate stylesheet on the GoodReviews Settings page. If you have previously altered your theme CSS to modify GoodReviews CSS elements for a previous version of GoodReviews, you should provide a URL to a blank stylesheet file in the Alternate Stylesheet URL field.
 
 = How do I customize the CSS for this plugin? =
 
-As of version 1.1.0, you can customize the look of the book info, buy info, and reviews elements by supplying the URL to an alternate stylesheet on the Settings page. You can also use the following shortcode parameters:
+Version 1.1.0 and later supports customizing the look of the book info, buy info, and reviews elements by supplying the URL to an alternate stylesheet on the Settings page. You can also use the following shortcode parameters:
 
 * grbackground - provide the hexadecimal code for the background color you want (do not include the # symbol)
 * grtext - provide the hexadecimal code for the text color you want (do not include the # symbol)
 * grstars - provide the hexadecimal code for the star color you want (do not include the # symbol)
 * grlinks - provide the hexadecimal code for the text color you want (do not include the $ symbol)
-* grheader - provide the text that you want to appear above the reviews frame
 
-For example, issuing the following shortcode will style the GoodReviews elements with white text on black background along with blue stars and red links. The header above the reviews frame will be "My Reviews."
+For example, issuing the following shortcode will style the GoodReviews elements with white text on black background along with blue stars and red links.
 
-<code>[goodreviews isbn="0000000000000" grbackground="000" grtext="fff" grstars="00f" grlinks="f00" grheader="My Reviews"]</code>
+<code>[goodreviews isbn="0000000000000" grbackground="000" grtext="fff" grstars="00f" grlinks="f00"]</code>
 
 = Can I control the number of reviews that the plugin returns? =
 
@@ -101,11 +104,9 @@ To turn off the cover completely, you would issue the following shortcode:
 
 [goodreviews isbn="0000000000000" cover="off"]
 
-Please be aware that, at this time, turning off the cover only works if you're using the default CSS supplied with GoodReviews.
-
 = Can I display my Goodreads.com author photo in the book information element? =
 
-Yes, as of version 1.0.4. By default, the author photo is not displayed. You can enable the display of either the large version or the scaled version of your Goodreads author photo by issuing the shortcode with the <code>author</code> parameter. For example, to show the large version of your author photo, you could use the following shortcode:
+Yes, as of version 1.0.4 and later. By default, the author photo is not displayed. You can enable the display of either the large version or the scaled version of your Goodreads author photo by issuing the shortcode with the <code>author</code> parameter. For example, to show the large version of your author photo, you could use the following shortcode:
 
 [goodreviews isbn="0000000000000" author="large"]
 
@@ -127,7 +128,7 @@ You can turn off the book buying links by issuing the shortcode with the <code>b
 
 = What if I don't want to display the reviews iframe? =
 
-Because the main point of GoodReviews is to display reviews, no shortcode parameter yet exists to turn off the reviews iframe.
+Version 2.0.0 supports disabling the reviews frame by configuring the <code>reviews</code> parameter to <code>off</code>. However, because the main point of GoodReviews is to display reviews, this parameter was only implemented so that the Buy This Book widget and the Book Info widget could be dislayed without reviews.
 
 = Why is some information (such as the cover image, publisher information, or publication date) missing from the GoodReviews elements when it is visible on the Goodreads site? =
 

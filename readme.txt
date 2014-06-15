@@ -184,6 +184,7 @@ This is the first version of the plugin
 
 = 2.0.0 =
 * Plugin has been completely rewritten to better integrate with the Wordpress Settings API.
+* Now shows ratings count for all editions of a title.
 * Added widgets for book buying links, book information, and book reviews. 
 * Added support for styling the output in a more responsive way.
 * Added support for WordPress localization (i18n).

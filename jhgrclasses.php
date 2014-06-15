@@ -1111,7 +1111,7 @@ class jhgrShortcode
         $args = array(
             'rating' => floatval($jhgrXML->book->average_rating),
             'type'   => 'rating',
-            'number' => intval($jhgrXML->book->ratings_count),
+            'number' => intval($jhgrXML->book->work->ratings_count),
         );
            
 	    $defaults = array(
@@ -1137,7 +1137,7 @@ class jhgrShortcode
 
 	    if ( $number ) {
 		    /* translators: 1: The rating, 2: The number of ratings */
-		    $title = _n( '%1$s rating based on %2$s rating', '%1$s rating based on %2$s ratings', $number );
+		    $title = _n( '%1$s rating based on %2$s rating (all editions)', '%1$s rating based on %2$s ratings (all editions)', $number );
 		    $title = sprintf( $title, number_format_i18n( $rating, 1 ), number_format_i18n( $number ) );
 	    } else {
 		    /* translators: 1: The rating */

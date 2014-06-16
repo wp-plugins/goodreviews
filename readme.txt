@@ -23,6 +23,7 @@ Features:
 * Returns book information in divs and reviews in an iframe that can be styled manually from the shortcode, via custom CSS, or via a built-in responsive style sheet.
 * Includes three separate widgets that can be used in place of the shortcode.
 * Supports WordPress localization (i18n)
+* Uses WordPress 3.8 and later Dashicons to display average ratings.
 
 == Installation ==
 
@@ -44,6 +45,10 @@ GoodReviews serves a very specific requirement. It was primarily developed to en
 = Why do I need WordPress version 3.8 or later to use this plugin? =
 
 WordPress 3.8 introduced support for the dashicons font, which contains the star and half-star symbols that GoodReviews uses in the Book Info pane. If you do not use the Book Info pane, you can probably successfully install and use GoodReviews in WordPress 3.5 or later.
+
+= Can I use a widget to display reviews instead of a shortcode? =
+
+As of GoodReviews 2.0.0, you can use either a widget OR the shortcode to display each of the three GoodReviews panes (About This Book, Buy This Book, and Reviews From Goodreads). However, style issues might make it tricky to try to use both the widgets and the shortcode on the same site because any CSS/style changes you make will apply to both the widgets and the shortcode. It is recommended that you choose to use either the GoodReviews widgets or the GoodReviews shortcode, not both.
 
 = What if my title does not have an ISBN? =
 
@@ -145,7 +150,7 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 == Upgrade Notice ==
 
 = 2.0.0 =
-Upgrade to 2.0.0 to enable better Wordpress Settings API integration, better API throttling protection, new GoodReviews widgets, and the possibility of using responsive styles.
+Upgrade to 2.0.0 to enable better Wordpress Settings API integration, better API throttling protection, new GoodReviews widgets, and the possibility of using responsive styles. WARNING! This version of the plugin requires WordPress 3.8 or later.
 
 = 1.1.2 =
 Upgrade to fix a bug in the default stylesheet that could affect link colors sitewide.

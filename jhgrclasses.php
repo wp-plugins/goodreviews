@@ -246,6 +246,23 @@ class jhgrWPOptions
                           '</p><p>' . 
                           __('If you do not see sample Goodreads.com output on this tab, your GoodReviews settings might be incorrect.','goodreviews') .
                           '</p>';
+        $jhgrWidgetsUse   = '<p>' .
+                          __('GoodReviews comes with three widgets that can be accessed by using the Appearance &gt; Widgets admin menu: ','goodreviews') .
+                          '<ul><li><strong>' .
+                          __('About This Book: ','goodreviews') .
+                          '</strong> ' .
+                          __('Use this widget to display the average rating, description, and other general information about the title.','goodreviews') .
+                          '</li><li><strong>' .
+                          __('Buy This Book:','goodreviews') .
+                          '</strong> ' .
+                          __('Use this widget to display Goodreads.com links to bookstores where the title can be purchased.','goodreviews') .
+                          '</li><li><strong>' .
+                          __('Reviews From Goodreads','goodreviews') .
+                          '</strong> ' .
+                          __('Use this widget to display Goodreads.com reviews for a given title.</li>','goodreviews') .
+                          '</li></ul></p><p>' .
+                          __('WARNING! It is not recommended to use both the GoodReviews widgets and the GoodReviews shortcode on the same site. The GoodReviews stylesheet applies to the shortcode and the widgets equally. Therefore, trying to use both the shortcode and the widgets might create strange appearance results on your site.','goodreviews') . 
+                          '</p>';
     
         $jhgrScreen   = get_current_screen();           
         $jhgrScreen->add_help_tab(array(
@@ -299,6 +316,11 @@ class jhgrWPOptions
     public function jhgrGetAgreement()
     {
         $this->jhgrTermsAgreement = get_option('goodreviews-agree','');
+        // Upgrading from 1.x?
+        if($this->jhgrTermsAgreement=='checked')
+        {
+           $this->jhgrTermsAgreement = 1;
+        }
         return $this->jhgrTermsAgreement;
     }
 

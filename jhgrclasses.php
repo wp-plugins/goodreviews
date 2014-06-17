@@ -247,7 +247,11 @@ class jhgrWPOptions
                           __('If you do not see sample Goodreads.com output on this tab, your GoodReviews settings might be incorrect.','goodreviews') .
                           '</p>';
         $jhgrWidgetsUse   = '<p>' .
-                          __('GoodReviews comes with three widgets that can be accessed by using the Appearance &gt; Widgets admin menu: ','goodreviews') .
+                          __('GoodReviews comes with three widgets that can be accessed by using the ','goodreviews') .
+                          '<strong>' .
+                          __('Appearance &gt; Widgets','goodreviews') .
+                          '</strong>' .
+                          __(' admin menu: ','goodreviews') .
                           '<ul><li><strong>' .
                           __('About This Book: ','goodreviews') .
                           '</strong> ' .
@@ -260,8 +264,10 @@ class jhgrWPOptions
                           __('Reviews From Goodreads','goodreviews') .
                           '</strong> ' .
                           __('Use this widget to display Goodreads.com reviews for a given title.</li>','goodreviews') .
-                          '</li></ul></p><p>' .
-                          __('WARNING! It is not recommended to use both the GoodReviews widgets and the GoodReviews shortcode on the same site. The GoodReviews stylesheet applies to the shortcode and the widgets equally. Therefore, trying to use both the shortcode and the widgets might create strange appearance results on your site.','goodreviews') . 
+                          '</li></ul></p><p><strong>' .
+                          __('WARNING','goodreviews') .
+                          '</strong>: ' .
+                          __('It is not recommended to use both the GoodReviews widgets and the GoodReviews shortcode on the same site. The GoodReviews stylesheet applies to the shortcode and the widgets equally. Therefore, trying to use both the shortcode and the widgets might create strange appearance results on your site.','goodreviews') . 
                           '</p>';
     
         $jhgrScreen   = get_current_screen();           
@@ -284,6 +290,11 @@ class jhgrWPOptions
             'id'      => 'jhgrTestsUseTab',
             'title'   => __('Tests Tab','goodreviews'),
             'content' => $jhgrTestsUse,
+        ));
+        $jhgrScreen->add_help_tab(array(
+            'id'      => 'jhgrWidgetsUseTab',
+            'title'   => __('Widgets','goodreviews'),
+            'content' => $jhgrWidgetsUse,
         ));
         return $jhgrContextHelp;
     }

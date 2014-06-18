@@ -197,6 +197,7 @@ This is the first version of the plugin
 * Added support for context-sensitive help on the Settings page.
 * Added support for an uninstall process that removes all settings and plugin files.
 * Added support for a shortcut parameter that disables the reviews pane.
+* Removed support for grheader shortcode parameter because calls to Goodreads API appear to no longer support modifying the header text.
 
 = 1.1.2 =
 * Fixed a default stylesheet bug that could cause links sitewide to display as HTML color #660.

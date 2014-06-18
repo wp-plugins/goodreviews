@@ -226,8 +226,6 @@ class jhgrWPOptions
                           __('defines the hexadecimal stars color of the plugin elements. Do not include the "#" symbol.','goodreviews') .
                           '</li><li><code>grlinks</code>: ' .
                           __('defines the hexadecimal link color of the plugin elements. Do not include the "#" symbol.','goodreviews') .
-                          '</li><li><code>grheader</code>: ' .
-                          __('defines the header text that appears above the reviews element. Default is the book title.','goodreviews') .
                           '</li><li><code>grnumber</code>: ' .
                           __('defines the number of reviews per page. Default is 10.','goodreviews') .
                           '</li><li><code>grminimum</code>: ' .

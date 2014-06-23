@@ -462,7 +462,7 @@ class jhgrWPOptions
            'goodrev-options',
            'goodreviews_retrieval_section',
            array(
-              __('If your site uses a responsive theme, you can enable a default GoodReviews stylesheet that includes responsive elements. If you enable this option, any Custom CSS URL you have specific above will be ignored.','goodreviews')
+              __('If your site uses a responsive theme, you can enable a default GoodReviews stylesheet that includes responsive elements. If you enable this option, any Custom CSS URL you have specified above will be ignored.','goodreviews')
            )
         );
         

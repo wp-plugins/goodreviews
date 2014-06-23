@@ -150,7 +150,7 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 == Upgrade Notice ==
 
 = 2.0.0 =
-Upgrade to 2.0.0 to enable better Wordpress Settings API integration, better API throttling protection, new GoodReviews widgets, and the possibility of using responsive styles. WARNING! This version of the plugin requires WordPress 3.8 or later.
+WARNING! GoodReviews 2.0.0 is compatible only with WordPress versions 3.8 or later. Upgrade to 2.0.0 to enable better Wordpress Settings API integration, better API throttling protection, new GoodReviews widgets, and the possibility of using responsive styles.
 
 = 1.1.2 =
 Upgrade to fix a bug in the default stylesheet that could affect link colors sitewide.

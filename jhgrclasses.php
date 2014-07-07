@@ -1093,7 +1093,7 @@ class jhgrShortcode
     {
         $jhgrOpts      = new jhgrWPOptions;
         $jhgrRetries   = 0;
-        $jhgrSCCode    = "500";
+        $jhgrCCode    = "500";
         $jhgrCustomCSS = $jhgrOpts->jhgrGetCustomCSS();
         
         $jhgrURL  = $this->jhgrIsSSL . 'www.goodreads.com' . $this->jhgrGetIDType($jhgrSCAtts["isbn"],$jhgrSCAtts["grid"]);
@@ -1108,24 +1108,32 @@ class jhgrShortcode
         $jhgrURL .= (isset($jhgrSCAtts["grnumber"])) ? '&num_reviews=' . absint($jhgrSCAtts["grnumber"]) : '';
         $jhgrURL .= (isset($jhgrCustomCSS)) ? '&stylesheet=' . esc_url($jhgrCustomCSS) : '';
         
-        while(($jhgrRetries<5)&&($jhgrCCode != "200")) {
+        if($jhgrOpts->jhgrGetRetrieveMethod()!=1)
+        {
+            $jhgrCurl = curl_init();
+            curl_setopt($jhgrCurl, CURLOPT_URL, $jhgrURL);
+            curl_setopt($jhgrCurl, CURLOPT_RETURNTRANSFER, true);
+        }
+        
+        while(($jhgrRetries<5)&&(!preg_match("/200/",$jhgrCCode))) {
             usleep(500000*pow($jhgrRetries,2));
             if($jhgrOpts->jhgrGetRetrieveMethod()==1)
             {
                 $jhgrXML = file_get_contents($jhgrURL);
+                $jhgrCCode = $http_response_header[0];
             }
             else 
             {
-                $jhgrCurl = curl_init();
-                curl_setopt($jhgrCurl, CURLOPT_URL, $jhgrURL);
-                curl_setopt($jhgrCurl, CURLOPT_RETURNTRANSFER, true);
                 $jhgrXML = curl_exec($jhgrCurl);
                 $jhgrCCode = curl_getinfo($jhgrCurl,CURLINFO_HTTP_CODE);
-                curl_close($jhgrCurl);
             }
             $jhgrRetries = $jhgrRetries + 1;
         }
 
+        if($jhgrOpts->jhgrGetRetrieveMethod()!=1)
+        {
+            curl_close($jhgrCurl);
+        }
         unset($jhgrOpts);
 
         return @simplexml_load_string($jhgrXML);

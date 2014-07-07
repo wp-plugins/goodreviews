@@ -149,6 +149,9 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 2.0.1 =
+Optimized instantiation/destruction of data retrieval function.
+
 = 2.0.0 =
 WARNING! GoodReviews 2.0.0 is compatible only with WordPress versions 3.8 or later. Upgrade to 2.0.0 to enable better Wordpress Settings API integration, better API throttling protection, new GoodReviews widgets, and the possibility of using responsive styles.
 
@@ -186,6 +189,10 @@ This is the first version of the plugin
 3. The shortcode in a post
 
 == Changelog ==
+
+= 2.0.1 =
+* Optimized instantiation/destruction of data retrieval function.
+* Fixed an issue with data retrieval that could have resulted in performance problems on some sites.
 
 = 2.0.0 =
 * Plugin has been completely rewritten to better integrate with the Wordpress Settings API.

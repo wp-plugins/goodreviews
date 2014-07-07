@@ -1096,7 +1096,7 @@ class jhgrShortcode
         $jhgrCCode    = "500";
         $jhgrCustomCSS = $jhgrOpts->jhgrGetCustomCSS();
         
-        $jhgrURL  = $this->jhgrIsSSL . 'www.goodreads.com' . $this->jhgrGetIDType($jhgrSCAtts["isbn"],$jhgrSCAtts["grid"]);
+        $jhgrURL  = $this->jhgrIsSSL() . 'www.goodreads.com' . $this->jhgrGetIDType($jhgrSCAtts["isbn"],$jhgrSCAtts["grid"]);
         $jhgrURL .= '&key=' . $jhgrOpts->jhgrGetAPIKey();
         $jhgrURL .= (isset($jhgrSCAtts["grminimum"])) ? '&min_rating=' . absint($jhgrSCAtts["grminimum"]) : '';
         $jhgrURL .= (isset($jhgrSCAtts["width"])) ? '&width=' . absint($jhgrSCAtts["width"]) : '';
@@ -1106,7 +1106,7 @@ class jhgrShortcode
         $jhgrURL .= (isset($jhgrSCAtts["grtext"])) ? '&text=' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grtext"]) : '';
         $jhgrURL .= (isset($jhgrSCAtts["grbackground"])) ? '&review_back=' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grbackground"]) : '';
         $jhgrURL .= (isset($jhgrSCAtts["grnumber"])) ? '&num_reviews=' . absint($jhgrSCAtts["grnumber"]) : '';
-        $jhgrURL .= (isset($jhgrCustomCSS)) ? '&stylesheet=' . esc_url($jhgrCustomCSS) : '';
+        $jhgrURL .= (! empty($jhgrCustomCSS)) ? '&stylesheet=' . esc_url($jhgrCustomCSS) : '';
         
         if($jhgrOpts->jhgrGetRetrieveMethod()!=1)
         {

@@ -1,0 +1,310 @@
+/* goodreviews.css is part of the GoodReviews plugin for WordPress
+ * 
+ * This file is distributed as part of the GoodReviews plugin for WordPress
+ * and is not intended to be used apart from that package. You can download
+ * the entire GoodReviews plugin from the WordPress plugin repository at
+ * http://wordpress.org/plugins/goodreviews/
+ */
+
+/* 
+ * Copyright 2011-2014	James R. Hanback, Jr.  (email : james@jameshanback.com)
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+@font-face {
+   font-family: "dashicons";
+   src: url("fonts/dashicons.eot");
+}
+ 
+@font-face {
+   font-family: "dashicons";
+   src: url(data:application/x-font-woff;charset=utf-8;base64,/* !! Large amount of data removed, see wp-includes/css/dashicons.css for complete data !! */) format("woff"),
+   url("fonts/dashicons.ttf") format("truetype"),
+   url("fonts/dashicons.svg#dashicons") format("svg");
+   font-weight: normal;
+   font-style: normal;
+}
+ 
+.star-rating .star-full:before {
+   content: "\f155";
+}
+ 
+.star-rating .star-half:before {
+   content: "\f459";
+}
+ 
+.star-rating .star-empty:before {
+   content: "\f154";
+}
+ 
+.star-rating .star {
+   color: #000;
+   display: inline-block;
+   font-family: dashicons;
+   font-size: 20px;
+   font-style: normal;
+   font-weight: 400;
+   height: 20px;
+   line-height: 1;
+   text-align: center;
+   text-decoration: inherit;
+   vertical-align: top;
+   width: 20px;
+}
+
+#goodreviews-div {
+   display: block;
+   width: 565px;
+   float: none;
+}
+#goodreviews-div a {
+   color:#382110;
+}
+.goodreviews-label {
+   color:#382110;
+   font-family: georgia, serif;
+   font-size: 16px;
+   text-align: right; 
+}
+#goodreviews-bookinfo {
+   position:relative;
+   display: block;
+   margin: 0;
+   padding: 0;
+   width: 70%;
+   height: 400px;
+   float: left;
+   z-index:1;
+}
+#goodreviews-cover {
+  display: block;
+  background-color: transparent;
+  float: left;
+  width: 55px;
+  padding: 5px;
+  border: none;
+}
+#goodreviews-cover.large {
+  display: block;
+  background-color: transparent;
+  float: left;
+  width: 115px;
+  padding: 5px;
+  border: none;
+}
+#goodreviews-data {
+  display: block;
+  border: none;
+  margin: 0;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-family: georgia, serif;
+  font-size: 12px;
+  line-height: 1.5em;
+  height: 400px;
+  overflow: scroll;
+}
+#goodreviews-data a,
+#goodreviews-data a:hover,
+#goodreviews-data a:visited,
+#goodreviews-data a:active {
+  text-decoration: underline;
+}
+.goodreviews-based {
+  font-size: 9px;
+  line-height: 1em;
+}
+.goodreviews-booklist {
+  border-top: solid 1px #382110;
+  border-bottom: solid 1px #382110;
+  background-color: #fff;
+  padding: 0px;
+  margin: 0;
+  list-style: none;
+}
+#goodreviews-buybook {
+   position: relative;
+   display: block;
+   background-color:#fff;
+   margin: 0;
+   padding: 0;
+   border-top: solid 1px #382110;
+   border-bottom: solid 1px #382110;
+   width: 30%;
+   height: 400px;
+   float: left;
+   overflow: scroll;
+   z-index:1;
+}
+#grauthorimage {
+   display: block;
+   margin: 0;
+   padding: 0;
+}
+.goodreviews-buylist {
+  display: block;
+  margin: 0;
+  padding: 5px;
+  list-style: none;
+}
+.goodreviews-buylist li {
+  display: block;
+  font-family: georgia, serif;
+  font-size: 12px;
+  line-height: 1.5em;
+}
+.goodreviews-buylist li a,
+.goodreviews-buylist li a:hover,
+.goodreviews-buylist li a:active,
+.goodreviews-buylist li a:visited {
+  text-decoration: underline;
+}
+.goodreviews-clear {
+  float:none;
+  clear:both;
+}
+.goodreviews-credit,
+.goodreviews-credit a {
+  position: relative;
+  font-size: 11px;
+  text-decoration: none; 
+  font-family: verdana, arial, helvetica, sans-serif; 
+  text-align: right;
+  top: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+.goodreviews-credit a:hover {
+  text-decoration: underline;
+}
+.goodreviews-star {
+   color: #000;
+   font-size: 12pt;
+}
+#goodreads-widget { 
+  font-family: georgia, serif; 
+  width: 565px;
+  padding: 18px 0; 
+} 
+#goodreads-widget h1 { 
+  font-weight:normal; 
+  font-size: 16px; 
+  border-bottom: 1px solid #BBB596; 
+  margin-bottom: 0; 
+} 
+#goodreads-widget a { 
+  text-decoration: none; 
+  color:#660; 
+} 
+#goodreads-widget iframe { 
+  border: none;
+} 
+#goodreads-widget a:hover { 
+  text-decoration: underline; 
+} 
+#goodreads-widget a:active { 
+  color:#660; 
+} 
+#gr_footer { 
+  width: 100%; 
+  border-top: 1px solid #BBB596; 
+  text-align: right; 
+} 
+#goodreads-widget .gr_branding { 
+  color: #382110; 
+  font-size: 11px; 
+  text-decoration: none; 
+  font-family: verdana, arial, helvetica, sans-serif; 
+} 
+.gr_reviews_container {
+  font-family: arial,helvetica,sans-serif;
+}
+.gr_review_container {
+  font-size: 13px;
+  border-bottom: 1px solid #ddd;
+  color: #000;
+  word-wrap: break-word;
+  padding: 9px 0 8px; 
+}
+.gr_review_by a {
+  font-weight: bold;
+}
+.gr_separator {
+  color: #aaa;
+}
+.gr_review_text {
+  width: 100%;
+  font-family: arial,helvetica,sans-serif;
+  padding-top: 9px;
+}
+.gr_rating {
+  color: #000;
+}
+.gr_reviews_showing {
+  padding: 18px 0;
+  float: left;
+  width: 100%;
+}
+.gr_write_review_button {
+  float: left;
+  font-weight: bold;
+}
+.gr_reviews_showing span {
+  color: #555;
+  font-size: 11px;
+  line-height: 18px;
+  float: right;
+}
+span.gr_write_review_explanation {
+  float: left;
+  color: #999;
+  margin-left: 10px;
+}
+.gr_more_link {
+  font-weight: bold;
+}
+.gr_pagination{
+  text-align: center;
+}
+.gr_write_review_button {
+  display: inline-block;
+  zoom: 1; /* ie */
+  *display: inline; /* ie */
+  color: #222;
+  font-weight: bold;
+  padding: 3px 8px;
+  margin-top: -4px;
+  text-shadow: 0 1px 1px #fff;
+  border: 1px solid #907164;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: #ddd 0px 3px 3px;
+  box-shadow: #ddd 0px 3px 3px;
+  font-family: arial,helvetica,sans-serif;
+  background-color:#F5F5EA;
+  background: -moz-linear-gradient(top, #F5F5EA, #D4CEB9);
+  background: -webkit-gradient(linear, center top, center bottom, from(#F5F5EA), to(#D4CEB9));
+  outline: 0;
+  white-space: nowrap;
+}
+.gr_write_review_button:hover {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: #E5DEC8;
+  background: -moz-linear-gradient(top, #F9F9F0, #E5DEC8);
+  background: -webkit-gradient(linear, center top, center bottom, from(#fff), to(#E5DEC8));
+}

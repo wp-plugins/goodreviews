@@ -9,7 +9,7 @@ Author:            James R. Hanback, Jr.
 Donate link: 	   http://www.timetides.com
 Requires at least: 3.8 
 Tested up to:      3.9.1
-Stable tag:        2.0.0
+Stable tag:        2.0.1
 
 Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
 

@@ -149,6 +149,9 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 2.0.4 =
+Adds caching to enhance performance. Optimizes shortcode defaults and fixes some variable initialization issues. Other fixes.
+
 = 2.0.1 =
 Optimized instantiation/destruction of data retrieval function. Added bug fixes.
 
@@ -189,6 +192,12 @@ This is the first version of the plugin
 3. The shortcode in a post
 
 == Changelog ==
+
+= 2.0.4 =
+* Fixed some style issues that hindered responsive design.
+* Added caching mechanism to enhance performance.
+* Fixed some variable and index initializations.
+* Optimized shortcode input defaults.
 
 = 2.0.1 =
 * Optimized instantiation/destruction of data retrieval function.

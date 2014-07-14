@@ -27,6 +27,7 @@
 
 class jhgrRequirements
 {
+    public $jhgrTransient  = "jhgrT-";
     public $jhgrCurlEnabled    = 'Client URL (cURL) is enabled on your server. GoodReviews can use it to retrieve reviews.';
     public $jhgrCurlDisabled   = 'Client URL (cURL) is either <a href="http://us2.php.net/manual/en/curl.setup.php">not installed or not enabled</a> on your server. GoodReviews might not be able to retrieve reviews.';
     public $jhgrFileGetEnabled = 'PHP fopen wrappers (file_get_contents) are enabled on your server. For security, <a href="http://www.php.net/manual/en/filesystem.configuration.php#ini.allow-url-fopen" target="_blank">disable fopen wrappers</a> and <a href="http://us2.php.net/manual/en/curl.setup.php">use cURL</a> instead.';
@@ -85,8 +86,10 @@ class jhgrRequirements
     {
         $jhgrScreenID = get_current_screen()->id;
         $jhgrUser     = wp_get_current_user();
+        $jhgrRestore  = (isset($_GET['restore_jhgrNotices'])) ? $_GET['restore_jhgrNotices'] : '0';
+        $jhgrDisabled = '';
         
-        if ('1' == absint($_GET['restore_jhgrNotices'])) 
+        if ('1' == absint($jhgrRestore)) 
         {
             $this->jhgrRestoreNotices();
         }
@@ -428,7 +431,7 @@ class jhgrWPOptions
     
     public function jhgrGRTestField($args)
     {
-        echo do_shortcode('[goodreviews isbn="1451627289" buyinfo="off" bookinfo="off"]');
+        echo do_shortcode('[goodreviews isbn="1451627289" buyinfo="off" bookinfo="off" width="565" height="400"]');
     }
     
     public function jhgrGetOptionsForm()
@@ -1072,8 +1075,8 @@ class jhgrShortcode
     {
         $jhgrItemType = '';
         
-        if(isset($jhgrISBN))  { $jhgrItemType = '/book/isbn?format=xml&isbn=' . $jhgrISBN; }
-        if(isset($jhgrGRID))  { $jhgrItemType = '/book/show?format=xml&id=' . $jhgrGRID; }
+        if(! empty($jhgrGRID))  { $jhgrItemType = '/book/show?format=xml&id=' . $jhgrGRID; }
+        if(! empty($jhgrISBN))  { $jhgrItemType = '/book/isbn?format=xml&isbn=' . $jhgrISBN; }
         
         return $jhgrItemType;
     }
@@ -1240,7 +1243,7 @@ class jhgrShortcode
                                '<b>Published:</b> ' . $jhgrXML->book->publication_month . '/' . $jhgrXML->book->publication_day . '/' . $jhgrXML->book->publication_year . '<br><br>' .
                                $jhgrXML->book->description;
             $jhgrBookOutput .= '</div></div>';
-            $jhgrBookOutput .= '<div class="goodreviews-credit"><a href="http://www.goodreads.com">Information from Goodreads.com</a></div>';
+            $jhgrBookOutput .= '<div class="goodreviews-creditl"><a href="http://www.goodreads.com">Information from Goodreads.com</a></div>';
             $jhgrBookOutput .= '</div>';
         }
         else
@@ -1299,8 +1302,6 @@ class jhgrShortcode
         $jhgrInlineStyles .= (isset($jhgrSCAtts["width"])) ? '#goodreviews-div, #goodreads-widget { width:' . absint($jhgrSCAtts["width"]) . 'px; } ' : '';       
         $jhgrInlineStyles .= (isset($jhgrSCAtts["height"])) ? '#goodreviews-bookinfo, #goodreviews-data, #goodreviews-buybook  { height:' . absint($jhgrSCAtts["height"]) . 'px; } ' : '';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["grstars"])) ? '.star-rating .star { color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grstars"]) . '; } ' : '';
-        $jhgrInlineStyles .= (isset($jhgrSCAtts["bookinfo"])) ? '#goodreviews-buybook { width: 100%; } ' : '';
-        $jhgrInlineStyles .= (isset($jhgrSCAtts["buyinfo"])) ? '#goodreviews-bookinfo { width: 100%; }' : ''; 
         $jhgrInlineStyles .= (isset($jhgrSCAtts["grlinks"])) ? '#goodreviews-div a,#goodreads-widget .gr_branding,.goodreviews-label { color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grlinks"]) . '; } ' : '';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["grbackground"])) ? '#goodreviews-buybook,.goodreviews-booklist { background-color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grbackground"]) . '; } ' : '';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["grtext"])) ? '.goodreviews-booklist { color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grtext"]) . '; } ' : '';
@@ -1308,37 +1309,69 @@ class jhgrShortcode
         return $jhgrInlineStyles;
     }
     
-    public function jhgrParseShortcode($jhgrSCAtts)
+    public function jhgrAddResponsiveInlineStyles($jhgrSCAtts)
+    {
+        $jhgrInlineStyles  = '<style type="text/css">';
+        $jhgrInlineStyles .= (isset($jhgrSCAtts["width"])) ? '#goodreviews-div, #goodreads-widget { width:100%; } ' : '';       
+        $jhgrInlineStyles .= (isset($jhgrSCAtts["height"])) ? '#goodreviews-bookinfo, #goodreviews-data, #goodreviews-buybook  { height:' . absint($jhgrSCAtts["height"]) . 'px; } ' : '';
+        $jhgrInlineStyles .= (isset($jhgrSCAtts["grstars"])) ? '.star-rating .star { color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grstars"]) . '; } ' : '';
+        $jhgrInlineStyles .= (isset($jhgrSCAtts["grlinks"])) ? '#goodreviews-div a,#goodreads-widget .gr_branding,.goodreviews-label { color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grlinks"]) . '; } ' : '';
+        $jhgrInlineStyles .= (isset($jhgrSCAtts["grbackground"])) ? '#goodreviews-buybook,.goodreviews-booklist { background-color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grbackground"]) . '; } ' : '';
+        $jhgrInlineStyles .= (isset($jhgrSCAtts["grtext"])) ? '.goodreviews-booklist { color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grtext"]) . '; } ' : '';
+        $jhgrInlineStyles .= '</style>';
+    }
+    
+    public function jhgrTransientID()
+    {
+        $jhgrScreen     = (is_admin()) ? get_current_screen()->id : ''; 
+        $jhgrTransient  = "jhgrT-";
+        $jhgrTransient  .= ($jhgrScreen != 'admin_page_goodrev-tests') ? get_the_ID() : 'testpanel';
+        $jhgrTransient  = (strlen($jhgrTransient) > 40) ? substr($jhgrTransient,0,40) : $jhgrTransient;
+        return $jhgrTransient; 
+    }
+    
+    public function jhgrDeleteTransient()
+    {
+        delete_transient($this->jhgrTransientID());
+    }
+    
+    public function jhgrParseShortcode($jhgrAtts)
     { 
-        $jhgrOpts = new jhgrWPOptions;
+        $jhgrOpts   = new jhgrWPOptions;
+        $jhgrOutput = '';
         if($jhgrOpts->jhgrGetAgreement()==1)
         {
-            extract( shortcode_atts( array(
-                 'grid'         => '',
-                 'isbn'         => '',
-                 'border'       => 'off',
-                 'width'        => '565',
-                 'height'       => '400',
-                 'bookinfo'     => 'on',
-                 'buyinfo'      => 'on',
-                 'cover'        => 'large',
-                 'author'       => 'off',
-                 'grstars'      => '000',
-                 'grlinks'      => '660',
-                 'grbackground' => 'fff',
-                 'grtext'       => '382110',
-                 'grnumber'     => '10',
-                 'grminimum'    => '1',
-                 'greditions'   => 'false',
-                 'reviews'      => 'on'
-	         ), $jhgrSCAtts) );
-	         
-	         $jhgrOutput  = $this->jhgrAddInlineStyles($jhgrSCAtts);
-             $jhgrOutput .= $this->jhgrShowReviews($jhgrSCAtts);
+           $jhgrSCAtts = shortcode_atts( array(
+                       'grid'         => '',
+                       'isbn'         => '',
+                       'border'       => 'off',
+                       'width'        => '565',
+                       'height'       => '400',
+                       'bookinfo'     => 'on',
+                       'buyinfo'      => 'on',
+                       'cover'        => 'large',
+                       'author'       => 'off',
+                       'grstars'      => '000',
+                       'grlinks'      => '660',
+                       'grbackground' => 'fff',
+                       'grtext'       => '382110',
+                       'grnumber'     => '10',
+                       'grminimum'    => '1',
+                       'greditions'   => 'false',
+                       'reviews'      => 'on'
+	         ), $jhgrAtts);
+
+            if (false === ($jhgrOut = get_transient($this->jhgrTransientID())))
+            {      
+	             $jhgrOutput  = ($jhgrOpts->jhgrGetResponsive()=='1') ? $this->jhgrAddResponsiveInlineStyles($jhgrSCAtts) : $this->jhgrAddInlineStyles($jhgrSCAtts);
+                 //$jhgrOutput .= $this->jhgrShowReviews($jhgrSCAtts);
+                 set_transient ($this->jhgrTransientID(), $this->jhgrShowReviews($jhgrSCAtts), 60*60*12 );
+            }
+            $jhgrOutput .= get_transient($this->jhgrTransientID()); 
         }
         else
         {
-             $jhgrOutput = '<div id="goodreviews-output"><div id="goodreviews-error">' . __('You must allow GoodReviews to display Goodreads.com links on your site in order to use this plugin. Please review the GoodReviews Settings page.') . '</div></div>'; 
+            $jhgrOutput = '<div id="goodreviews-output"><div id="goodreviews-error">' . __('You must allow GoodReviews to display Goodreads.com links on your site in order to use this plugin. Please review the GoodReviews Settings page.') . '</div></div>'; 
         }
         
         return $jhgrOutput;

@@ -3,7 +3,7 @@
  * Plugin Name: GoodReviews
  * Plugin URI: http://www.timetides.com/goodreviews-plugin-wordpress
  * Description: Retrieves Goodreads.com reviews for books you choose to display on your Wordpress blog.
- * Version: 2.0.1
+ * Version: 2.0.4
  * Author: James R. Hanback, Jr.
  * Author URI: http://www.timetides.com
  * License: GPL3
@@ -28,6 +28,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+ 
+// error_reporting(E_ALL);
 
 // Load plugin files and configuration
 $jhgrPlugin = plugin_basename(__FILE__); 
@@ -52,6 +54,11 @@ if (is_admin()) {
 }
 
 add_filter("plugin_action_links_$jhgrPlugin", array(&$jhgrOpts, 'jhgrOptionsLink'));
+
+
+// Make sure transient gets cleaned up appropriately if necessary
+add_action( 'edit_post', array(&$jhgrShcd,'jhgrDeleteTransient') );
+add_action( 'deleted_post', array(&$jhgrShcd,'jhgrDeleteTransient') );
 
 // Add shortcode functionality
 add_shortcode( 'goodreviews', array(&$jhgrShcd, 'jhgrParseShortcode') );

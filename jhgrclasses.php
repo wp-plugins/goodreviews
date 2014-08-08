@@ -128,7 +128,20 @@ class jhgrWPOptions
     public $jhgrRetrieveMethod  = '';
     public $jhgrTermsAgreement  = '1';
     public $jhgrResponsiveStyle = '0';
-    
+    public $jhgrCacheExpire     = 12;
+    public $jhgrClearCache      = 0;
+
+    public function jhgrCleanCache()
+    {
+        global $wpdb;
+        $jhgrDBquery = 'SELECT option_name FROM ' . $wpdb->options . ' WHERE option_name LIKE \'_transient_timeout_jhgrT-%\';';
+        $jhgrCleanDB = $wpdb->get_col($jhgrDBquery);
+        foreach ($jhgrCleanDB as $jhgrTransient) {
+            $jhgrDBKey = str_replace('_transient_timeout_','',$jhgrTransient);
+            delete_transient($jhgrDBKey);
+        }
+    }
+
     public function jhgrAddHelp($jhgrContextHelp)
     {
         $jhgrOverview     = '<p>' .
@@ -270,6 +283,18 @@ class jhgrWPOptions
                           '</strong>: ' .
                           __('It is not recommended to use both the GoodReviews widgets and the GoodReviews shortcode on the same site. The GoodReviews stylesheet applies to the shortcode and the widgets equally. Therefore, trying to use both the shortcode and the widgets might create strange appearance results on your site.','goodreviews') . 
                           '</p>';
+        $jhgrPerfUse      = '<p>' .
+                          __('By default, GoodReviews caches Goodreads calls for 12 hours to enhance site performance. ','goodreviews') .
+                          __('You can adjust the amount of time GoodReviews caches this data by adjusting the ','goodreviews') .
+                          '<strong>' .
+                          __('Cache Expires In','goodreviews') .
+                          '</strong> ' .
+                          __('value to the number of hours you want the cached data to persist.','goodreviews') .
+                          '</p><p>' . 
+                          __('You can also choose to clear the existing cached data from the WordPress database. However, you should always back up your WordPress database before attempting to delete data in bulk.','goodreviews') .
+                          '</p><p>' .
+                          __('Please be aware that if you are using a caching plugin, such as W3 Total Cache, with object caching enabled, the Clear Cache option will not do anything. You will need to clear the object cache by using the caching plugin\'s clear cache feature.','goodreviews') .
+                          '</p>';
     
         $jhgrScreen   = get_current_screen();           
         $jhgrScreen->add_help_tab(array(
@@ -291,6 +316,11 @@ class jhgrWPOptions
             'id'      => 'jhgrTestsUseTab',
             'title'   => __('Tests Tab','goodreviews'),
             'content' => $jhgrTestsUse,
+        ));
+        $jhgrScreen->add_help_tab(array(
+            'id'      => 'jhgrPerfUseTab',
+            'title'   => __('Performance Tab','goodreviews'),
+            'content' => $jhgrPerfUse,
         ));
         $jhgrScreen->add_help_tab(array(
             'id'      => 'jhgrWidgetsUseTab',
@@ -366,6 +396,31 @@ class jhgrWPOptions
         $this->jhgrGoodReviewsCSS = esc_url($newval);
         return $this->jhgrGoodReviewsCSS;
     }
+    
+    public function jhgrSetCacheExpire($newval)
+    {
+        $this->jhgrCacheExpire = (! empty($newval)) ? trim($newval) : 12;
+        return absint($this->jhgrCacheExpire);
+    }
+    
+    public function jhgrGetCacheExpire()
+    {
+        $this->jhgrCacheExpire = get_option('goodrev-perform','12');
+        return absint($this->jhgrCacheExpire);
+    }
+    
+    public function jhgrSetClearCache($newval)
+    {
+        $this->jhgrClearCache = (! empty($newval)) ? trim($newval) : 0;
+        return absint($this->jhgrClearCache);
+    }
+    
+    public function jhgrGetClearCache()
+    {
+        $jhgrClear = get_option('goodrev-clearcache','0');
+        update_option('goodrev-clearcache','0');
+        return($jhgrClear);
+    }
 
     public function jhgrRegisterSettings() 
     {
@@ -374,6 +429,8 @@ class jhgrWPOptions
        register_setting('goodrev_options','goodreviews-agree',array(&$this,'jhgrSetAgreement'));
        register_setting('goodrev_options','goodreviews-alt-style',array(&$this,'jhgrSetCustomCSS'));
        register_setting('goodrev_options','goodreviews-responsive-style',array(&$this,'jhgrSetResponsive'));
+       register_setting('goodrev_perform','goodrev-perform',array(&$this, 'jhgrSetCacheExpire'));
+       register_setting('goodrev_perform','goodrev-clearcache',array(&$this, 'jhgrSetClearCache'));
     }
     
     public function jhgrGoodreadsAPIKeyField($args)
@@ -432,6 +489,32 @@ class jhgrWPOptions
     public function jhgrGRTestField($args)
     {
         echo do_shortcode('[goodreviews isbn="1451627289" buyinfo="off" bookinfo="off" width="565" height="400"]');
+    }
+    
+    public function jhgrCacheExpireField($args)
+    {
+	    $jhgrField = '<select id="goodrev-perform" name="goodrev-perform">';
+	    for($x=1;$x<24;$x++)
+	    {
+	        $jhgrFieldSelected = ($this->jhgrGetCacheExpire()==$x) ? ' selected="selected"' : '';
+	        $jhgrField .= '<option value="' .
+	                    absint($x) .
+	                    '"' .
+	                    sanitize_text_field($jhgrFieldSelected) .
+	                    '>' .
+	                    absint($x) .
+	                    '</option>';
+	    }
+	    $jhgrField .= '</select> Hours<br />';
+        $jhgrField .= '<label for="goodrev-perform"> '  . sanitize_text_field($args[0]) . '</label>';
+	    echo $jhgrField;
+    }
+    
+    public function jhgrClearCacheField($args)
+    {
+        $jhgrField  = '<input type="checkbox" name="goodrev-clearcache" id="goodrev-clearcache" value="1" /><br />';
+        $jhgrField .= '<label for="goodrev-clearcache"> '  . sanitize_text_field($args[0]) . '</label>';
+        echo $jhgrField;
     }
     
     public function jhgrGetOptionsForm()
@@ -513,6 +596,28 @@ class jhgrWPOptions
             )
         );
         
+        add_settings_field(
+            'goodrev-perform',
+            __('Cache Expires In','goodreviews'),
+            array(&$this, 'jhgrCacheExpireField'),
+            'goodrev-perform',
+            'goodreviews_perform_section',
+            array(
+                __('The number of hours that should pass before cached Goodreads calls expire. Cannot be more than 23 hours. Default is 12.','goodreviews')
+            )
+        );
+        
+        add_settings_field(
+            'goodrev-clear-cache-field',
+            __('Clear Cache','goodreviews'),
+            array(&$this, 'jhgrClearCacheField'),
+            'goodrev-perform',
+            'goodreviews_perform_section',
+            array(
+                __('Clears GoodReviews transient data.','goodreviews')
+            )
+        );
+        
     }
         
     public function jhgrOptionsCallback()
@@ -529,6 +634,15 @@ class jhgrWPOptions
         $jhgr1      = __('If you have correctly configured GoodReviews, you should see an iframe below that contains Goodreads.com reviews for the Stephen King novel 11/22/63. The shortcode used to produce this test is ','goodreviews');
         $jhgr2      = __('. If you see reviews in the iframe below, GoodReviews is configured correctly and should work on your site. If you see no data or if you see an error displayed below, please double-check your configuration.','goodreviews');
         $jhgrFormat = '<p>%s<code>[goodreviews isbn="1451627289" buyinfo="off" bookinfo="off"]</code>%s</p>';
+
+        printf($jhgrFormat,$jhgr1,$jhgr2);
+    }
+    
+    public function jhgrPerformCallback()
+    {
+        $jhgr1      = __('WARNING!','goodreviews');
+        $jhgr2      = __('You should make a backup of your WordPress database before attempting to use the <strong>Clear Cache</strong> option. The <strong>Clear Cache</strong> option attempts to delete data directly from the WordPress database and is therefore dangerous. Use the <strong>Clear Cache</strong> option with caution.','goodreviews');
+        $jhgrFormat = '<p><h2>%s</h2></p><p>%s</p>';
 
         printf($jhgrFormat,$jhgr1,$jhgr2);
     }
@@ -563,6 +677,9 @@ class jhgrWPOptions
             case 'Tests':
                  $_GET['tab'] = 'goodreviews_test_section';
                  break;
+            case 'Performance':
+                 $_GET['tab'] = 'goodreviews_perform_section';
+                 break;
             case 'Usage':
                  $_GET['tab'] = 'goodreviews_usage_section';
                  break;
@@ -576,12 +693,13 @@ class jhgrWPOptions
         echo $active_tab == 'goodreviews_retrieval_section' ? 'nav-tab-active' : '';
         echo '">GoodReviews</a><a href="' . admin_url() .'admin.php?page=goodrev-tests&tab=goodreviews_test_section" class="nav-tab ';
         echo $active_tab == 'goodreviews_test_section' ? 'nav-tab-active' : '';
-        echo '">Tests</a><a href="' . admin_url() .'admin.php?page=goodrev-usages&tab=goodreviews_usage_section" class="nav-tab ';
+        echo '">Tests</a><a href="' . admin_url() .'admin.php?page=goodrev-perform&tab=goodreviews_perform_section" class="nav-tab ';
+        echo $active_tab == 'goodreviews_perform_section' ? 'nav-tab-active' : '';
+        echo '">Performance</a><a href="' . admin_url() .'admin.php?page=goodrev-usages&tab=goodreviews_usage_section" class="nav-tab ';
         echo $active_tab == 'goodreviews_usage_section' ? 'nav-tab-active' : '';
         echo '">Usage</a></h2>';
-        
-        // Settings form
-        echo '<form method="post" action="options.php">';
+                
+        // Settings sections
 
         add_settings_section(
             'goodreviews_retrieval_section',
@@ -596,6 +714,13 @@ class jhgrWPOptions
             array(&$this, 'jhgrTestCallback'),
             'goodrev-tests'
         );
+        
+        add_settings_section(
+            'goodreviews_perform_section',
+            __('GoodReviews Performance','goodreviews'),
+            array(&$this, 'jhgrPerformCallback'),
+            'goodrev-perform'
+        );
                
         add_settings_section(
             'goodreviews_usage_section',
@@ -606,32 +731,42 @@ class jhgrWPOptions
         
         // Create settings fields
         $this->jhgrGetOptionsForm();
-        settings_fields('goodrev_options');
+        //settings_fields('goodrev_options');
         
         switch($active_tab)
         {
             case 'goodreviews_retrieval_section':
+                 echo '<form method="post" action="options.php">';
+                 settings_fields('goodrev_options');
                  do_settings_sections('goodrev-options');
                  echo get_submit_button();
+                 echo '</form>';
                  break;
             case 'goodreviews_test_section':
                  do_settings_sections('goodrev-tests');
+                 break;
+            case 'goodreviews_perform_section':
+                 echo '<form method="post" action="options.php">';
+                 settings_fields('goodrev_perform');
+                 do_settings_sections('goodrev-perform');
+                 echo get_submit_button();
+                 echo '</form>';
                  break;
             case 'goodreviews_usage_section':
                  do_settings_sections('goodrev-usages');
                  break;
         }
-        
-        echo '</form>';
     }
     
     public function jhgrAddAdminPage() 
     {
         $jhgrOptionsPage = add_submenu_page('options-general.php','GoodReviews','GoodReviews','manage_options','goodrev-options',array(&$this, 'jhgrGetOptionsScreen'));
         $jhgrTestingPage = add_submenu_page('goodrev-options','Tests','Tests','manage_options','goodrev-tests',array(&$this, 'jhgrGetOptionsScreen'));
+        $jhgrCachingPage = add_submenu_page('goodrev-options','Performance','Performance','manage_options','goodrev-perform',array(&$this, 'jhgrGetOptionsScreen'));
         $jhgrUsingPage   = add_submenu_page('goodrev-options','Usage','Usage','manage_options','goodrev-usages',array(&$this, 'jhgrGetOptionsScreen'));    
         add_action('load-' . $jhgrOptionsPage, array(&$this, 'jhgrAddHelp'));
         add_action('load-' . $jhgrTestingPage, array(&$this, 'jhgrAddHelp'));
+        add_action('load-' . $jhgrCachingPage, array(&$this, 'jhgrAddHelp'));
         add_action('load-' . $jhgrUsingPage, array(&$this, 'jhgrAddHelp'));       
     }
     
@@ -662,6 +797,16 @@ class jhgrWPOptions
         wp_dequeue_style('goodrev-styles');
         wp_deregister_style('goodrev-styles');
         wp_dequeue_style('dashicons');
+    }
+    
+    public function jhgrShowNPNotices()
+    {
+        if($this->jhgrGetClearCache()=='1') 
+        {
+            add_settings_error( 'goodreviews-notices', 'goodrev-cache-cleared', __('Cache cleared', 'goodreviews'), 'updated' );
+            $this->jhgrCleanCache();
+        }
+        settings_errors('goodreviews-notices');
     }
 }
 
@@ -713,6 +858,7 @@ class jhgrBuyBookWidget extends WP_Widget {
 		    {
 		        $jhgrSCode .= ' grlinks="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grlinks' ])) . '"';
 		    }
+		    $jhgrSCode .= ' iswidget="' . $instance['itemtype'] . $instance['itemvalue'] . $instance['width'] . $instance['height'] . '"';
 		    $jhgrSCode .= ' bookinfo="off" reviews="off"]';
 		    echo do_shortcode($jhgrSCode);
 		}
@@ -846,6 +992,7 @@ class jhgrBookInfoWidget extends WP_Widget {
 		    {
 		        $jhgrSCode .= ' author="' . strip_tags($instance[ 'author' ]) . '"';
 		    }
+		    $jhgrSCode .= ' iswidget="' . $instance['itemtype'] . $instance['itemvalue'] . $instance['width'] . $instance['height'] . '"';
 		    $jhgrSCode .= ' buyinfo="off" reviews="off"]';
 		    echo do_shortcode($jhgrSCode);
 		}
@@ -989,6 +1136,7 @@ class jhgrReviewsWidget extends WP_Widget {
 		    {
 		        $jhgrSCode .= ' grstars="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grstars' ])) . '"';
 		    }
+		    $jhgrSCode .= ' iswidget="' . $instance['itemtype'] . $instance['itemvalue'] . $instance['width'] . $instance['height'] . '"';
 		    $jhgrSCode .= ' buyinfo="off" bookinfo="off"]';
 		    echo do_shortcode($jhgrSCode);
 		}
@@ -1321,24 +1469,27 @@ class jhgrShortcode
         $jhgrInlineStyles .= '</style>';
     }
     
-    public function jhgrTransientID()
+    public function jhgrTransientID($jhgrSCAtts)
     {
         $jhgrScreen     = (is_admin()) ? get_current_screen()->id : ''; 
+        
         $jhgrTransient  = "jhgrT-";
-        $jhgrTransient  .= ($jhgrScreen != 'admin_page_goodrev-tests') ? get_the_ID() : 'testpanel';
+        if($jhgrScreen != 'admin_page_goodrev-tests')
+        {
+            $jhgrTransient .=($jhgrSCAtts["iswidget"]!='false') ? $jhgrSCAtts["iswidget"] : implode("",$jhgrSCAtts);
+        } else {
+            $jhgrTransient .= 'testpanel';
+        }
         $jhgrTransient  = (strlen($jhgrTransient) > 40) ? substr($jhgrTransient,0,40) : $jhgrTransient;
         return $jhgrTransient; 
-    }
-    
-    public function jhgrDeleteTransient()
-    {
-        delete_transient($this->jhgrTransientID());
     }
     
     public function jhgrParseShortcode($jhgrAtts)
     { 
         $jhgrOpts   = new jhgrWPOptions;
         $jhgrOutput = '';
+        $jhgrTransientExpire = $jhgrOpts->jhgrGetCacheExpire();
+
         if($jhgrOpts->jhgrGetAgreement()==1)
         {
            $jhgrSCAtts = shortcode_atts( array(
@@ -1358,16 +1509,25 @@ class jhgrShortcode
                        'grnumber'     => '10',
                        'grminimum'    => '1',
                        'greditions'   => 'false',
-                       'reviews'      => 'on'
+                       'reviews'      => 'on',
+                       'iswidget'     => 'false'
 	         ), $jhgrAtts);
+	         
+	         $jhgrTransientID = $this->jhgrTransientID($jhgrSCAtts);
 
-            if (false === ($jhgrOut = get_transient($this->jhgrTransientID())))
-            {      
-	             $jhgrOutput  = ($jhgrOpts->jhgrGetResponsive()=='1') ? $this->jhgrAddResponsiveInlineStyles($jhgrSCAtts) : $this->jhgrAddInlineStyles($jhgrSCAtts);
-                 //$jhgrOutput .= $this->jhgrShowReviews($jhgrSCAtts);
-                 set_transient ($this->jhgrTransientID(), $this->jhgrShowReviews($jhgrSCAtts), 60*60*12 );
+            if ((false === ($jhgrOut = get_transient($jhgrTransientID)))||($jhgrTransientID=='jhgrT-testpanel'))
+            {
+                 $jhgrOutput  = ($jhgrOpts->jhgrGetResponsive()=='1') ? $this->jhgrAddResponsiveInlineStyles($jhgrSCAtts) : $this->jhgrAddInlineStyles($jhgrSCAtts);
+                 if($jhgrTransientID=='jhgrT-testpanel')
+                 {
+                     $jhgrOutput = $this->jhgrShowReviews($jhgrSCAtts);
+                 } else {
+                     set_transient ($jhgrTransientID, $this->jhgrShowReviews($jhgrSCAtts), $jhgrTransientExpire * HOUR_IN_SECONDS );
+                     $jhgrOutput = get_transient($jhgrTransientID);
+                 }
+            } else {
+                 $jhgrOutput = get_transient($jhgrTransientID);
             }
-            $jhgrOutput .= get_transient($this->jhgrTransientID()); 
         }
         else
         {

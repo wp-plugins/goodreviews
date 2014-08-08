@@ -8,7 +8,7 @@ Author URI:        http://www.timetides.com
 Author:            James R. Hanback, Jr.
 Donate link: 	   http://www.timetides.com
 Requires at least: 3.8 
-Tested up to:      3.9.1
+Tested up to:      3.9.2
 Stable tag:        2.0.1
 
 Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
@@ -149,7 +149,10 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
-= 2.0.4 =
+= 2.1.0 =
+Adds a caching mechanism for enhanced performance.
+
+= 2.0.5 =
 Adds caching to enhance performance. Optimizes shortcode defaults and fixes some variable initialization issues. Other fixes.
 
 = 2.0.1 =
@@ -193,11 +196,15 @@ This is the first version of the plugin
 
 == Changelog ==
 
-= 2.0.4 =
+= 2.1.0 =
+* Added a caching mechanism and related settings for faster performance.
 * Fixed some style issues that hindered responsive design.
 * Added caching mechanism to enhance performance.
 * Fixed some variable and index initializations.
 * Optimized shortcode input defaults.
+* Updated context-sensitive help.
+* Updated POT file.
+* Updated readme and FAQ.
 
 = 2.0.1 =
 * Optimized instantiation/destruction of data retrieval function.

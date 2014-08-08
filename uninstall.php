@@ -3,7 +3,7 @@
  * 
  * This file is distributed as part of the GoodReviews plugin for WordPress
  * and is not intended to be used apart from that package. You can download
- * the entire ScrapeAZon plugin from the WordPress plugin repository at
+ * the entire GoodReviews plugin from the WordPress plugin repository at
  * http://wordpress.org/plugins/goodreviews/
  */
 
@@ -30,6 +30,8 @@ if(!defined('ABSPATH')&& !defined('WP_UNINSTALL_PLUGIN'))
     exit();
 }
 
+global $wpdb;
+
 $jhgrUser = wp_get_current_user();
 
 // Remove settings stored in database
@@ -48,4 +50,12 @@ $jhgrDelete_all = true;
 delete_metadata( $jhgrMeta_type, $jhgrUser_id, 'goodreviews_ignore_FileGetEnabled', $jhgrMeta_value, $jhgrDelete_all );
 delete_metadata( $jhgrMeta_type, $jhgrUser_id, 'goodreviews_ignore_CurlEnabled', $jhgrMeta_value, $jhgrDelete_all );
 delete_metadata( $jhgrMeta_type, $jhgrUser_id, 'goodreviews_ignore_CurlDisabled', $jhgrMeta_value, $jhgrDelete_all );
+
+// Remove ScrapeAZon transients
+$dbquery = 'SELECT option_name FROM ' . $wpdb->options . ' WHERE option_name LIKE \'_transient_timeout_jhgrT-%\';';
+$cleandb = $wpdb->get_col($dbquery);
+foreach ($cleandb as $transient) {
+    $key = str_replace('_transient_timeout_','',$transient);
+    delete_transient($key);
+}
 ?>

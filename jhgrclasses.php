@@ -130,6 +130,7 @@ class jhgrWPOptions
     public $jhgrResponsiveStyle = '0';
     public $jhgrCacheExpire     = 12;
     public $jhgrClearCache      = 0;
+    public $jhgrDefer           = 0;
 
     public function jhgrCleanCache()
     {
@@ -294,6 +295,12 @@ class jhgrWPOptions
                           __('You can also choose to clear the existing cached data from the WordPress database. However, you should always back up your WordPress database before attempting to delete data in bulk.','goodreviews') .
                           '</p><p>' .
                           __('Please be aware that if you are using a caching plugin, such as W3 Total Cache, with object caching enabled, the Clear Cache option will not do anything. You will need to clear the object cache by using the caching plugin\'s clear cache feature.','goodreviews') .
+                          '</p><p>' .
+                          __('Select the ','goodreviews') .
+                          '<strong>' .
+                          __('Defer Until Footer','goodreviews') .
+                          '</strong>' .
+                          __(' field to ensure that the entire main page of your site loads before GoodReviews attempts to load the Goodreads reviews iframe.','goodreviews') .
                           '</p>';
     
         $jhgrScreen   = get_current_screen();           
@@ -419,7 +426,19 @@ class jhgrWPOptions
     {
         $jhgrClear = get_option('goodrev-clearcache','0');
         update_option('goodrev-clearcache','0');
-        return($jhgrClear);
+        return absint($jhgrClear);
+    }
+    
+    public function jhgrSetDefer($newval)
+    {
+        $this->jhgrDefer = (trim($newval)=='checked') ? 1 : trim($newval);
+        return absint($this->jhgrDefer);
+    }
+    
+    public function jhgrGetDeferParse()
+    {
+        $this->jhgrDefer = get_option('goodrev-defer','');
+        return $this->jhgrDefer;
     }
 
     public function jhgrRegisterSettings() 
@@ -431,6 +450,7 @@ class jhgrWPOptions
        register_setting('goodrev_options','goodreviews-responsive-style',array(&$this,'jhgrSetResponsive'));
        register_setting('goodrev_perform','goodrev-perform',array(&$this, 'jhgrSetCacheExpire'));
        register_setting('goodrev_perform','goodrev-clearcache',array(&$this, 'jhgrSetClearCache'));
+       register_setting('goodrev_perform','goodrev-defer',array(&$this, 'jhgrSetDefer'));
     }
     
     public function jhgrGoodreadsAPIKeyField($args)
@@ -514,6 +534,16 @@ class jhgrWPOptions
     {
         $jhgrField  = '<input type="checkbox" name="goodrev-clearcache" id="goodrev-clearcache" value="1" /><br />';
         $jhgrField .= '<label for="goodrev-clearcache"> '  . sanitize_text_field($args[0]) . '</label>';
+        echo $jhgrField;
+    }
+    
+    public function jhgrDeferField($args)
+    {
+        $jhgrField  = '<input type="checkbox" name="goodrev-defer" id="goodrev-defer" value="1" Fef' .
+        checked(1, $this->jhgrGetDeferParse(), false) .
+        $this->jhgrGetDeferParse() .
+        ' /><br />';
+        $jhgrField .= '<label for="goodrev-defer"> '  . sanitize_text_field($args[0]) . '</label>';
         echo $jhgrField;
     }
     
@@ -608,6 +638,17 @@ class jhgrWPOptions
         );
         
         add_settings_field(
+            'goodrev-defer',
+            __('Defer Until Footer','goodreviews'),
+            array(&$this, 'jhgrDeferField'),
+            'goodrev-perform',
+            'goodreviews_perform_section',
+            array(
+                __('Loads GoodReviews data asyncrhonously for better site performance.','goodreviews')
+            )
+        );
+        
+        add_settings_field(
             'goodrev-clear-cache-field',
             __('Clear Cache','goodreviews'),
             array(&$this, 'jhgrClearCacheField'),
@@ -616,8 +657,7 @@ class jhgrWPOptions
             array(
                 __('Clears GoodReviews transient data.','goodreviews')
             )
-        );
-        
+        );        
     }
         
     public function jhgrOptionsCallback()
@@ -731,7 +771,6 @@ class jhgrWPOptions
         
         // Create settings fields
         $this->jhgrGetOptionsForm();
-        //settings_fields('goodrev_options');
         
         switch($active_tab)
         {
@@ -1213,6 +1252,8 @@ class jhgrReviewsWidget extends WP_Widget {
 
 class jhgrShortcode
 {
+    public $jhgrGRWidget        = '';
+    
     public function jhgrIsSSL()
     {
         $jhgrSSL = (isset($_SERVER['HTTPS'])) || (is_ssl()) ? 'https://' : 'http://';
@@ -1272,6 +1313,7 @@ class jhgrShortcode
             {
                 $jhgrXML = file_get_contents($jhgrURL);
                 $jhgrCCode = $http_response_header[0];
+                echo $jhgrCCode;
             }
             else 
             {
@@ -1427,7 +1469,7 @@ class jhgrShortcode
         
         return $jhgrBuyOutput;
     }
-
+    
     public function jhgrShowReviews($jhgrSCAtts)
     {
         $jhgrOutput = '<div id="goodreviews-div">';
@@ -1484,6 +1526,16 @@ class jhgrShortcode
         return $jhgrTransient; 
     }
     
+
+public function jhgrDeferReviews()
+{
+    echo '<script type="text/javascript">' .
+         '$jhgrQuery = jQuery.noConflict();' .
+         ' $jhgrQuery(document).ready(function() {' .
+         '    $jhgrQuery(\'#defergrreviews\').append(\'' . $this->jhgrGRWidget . '\');' . 
+         ' });' .
+         '</script>';
+}
     public function jhgrParseShortcode($jhgrAtts)
     { 
         $jhgrOpts   = new jhgrWPOptions;
@@ -1533,8 +1585,16 @@ class jhgrShortcode
          {
              $jhgrOutput = '<div id="goodreviews-output"><div id="goodreviews-error">' . __('You must allow GoodReviews to display Goodreads.com links on your site in order to use this plugin. Please review the GoodReviews Settings page.') . '</div></div>'; 
          }
-        
-         return $jhgrOutput;
+         
+         if(($jhgrOpts->jhgrGetDeferParse()=='1')&&($jhgrTransientID!='jhgrT-testpanel'))
+         {
+             $this->jhgrGRWidget = $jhgrOutput;
+             $this->jhgrGRWidget = str_replace(array("\n", "\t", "\r"), '', $this->jhgrGRWidget);
+             add_action('wp_footer', array(&$this,'jhgrDeferReviews'),100);
+             return '<div id="defergrreviews"></div>';
+         } else {
+             return $jhgrOutput;
+         }
      }
 }
 

@@ -1515,27 +1515,27 @@ class jhgrShortcode
 	         
 	         $jhgrTransientID = $this->jhgrTransientID($jhgrSCAtts);
 
-            if ((false === ($jhgrOut = get_transient($jhgrTransientID)))||($jhgrTransientID=='jhgrT-testpanel'))
-            {
-                 $jhgrOutput  = ($jhgrOpts->jhgrGetResponsive()=='1') ? $this->jhgrAddResponsiveInlineStyles($jhgrSCAtts) : $this->jhgrAddInlineStyles($jhgrSCAtts);
-                 if($jhgrTransientID=='jhgrT-testpanel')
-                 {
-                     $jhgrOutput = $this->jhgrShowReviews($jhgrSCAtts);
-                 } else {
-                     set_transient ($jhgrTransientID, $this->jhgrShowReviews($jhgrSCAtts), $jhgrTransientExpire * HOUR_IN_SECONDS );
-                     $jhgrOutput = get_transient($jhgrTransientID);
-                 }
-            } else {
-                 $jhgrOutput = get_transient($jhgrTransientID);
-            }
-        }
-        else
-        {
-            $jhgrOutput = '<div id="goodreviews-output"><div id="goodreviews-error">' . __('You must allow GoodReviews to display Goodreads.com links on your site in order to use this plugin. Please review the GoodReviews Settings page.') . '</div></div>'; 
-        }
+             if ((false === ($jhgrOut = get_transient($jhgrTransientID)))||($jhgrTransientID=='jhgrT-testpanel'))
+             {
+                  $jhgrOutput  = ($jhgrOpts->jhgrGetResponsive()=='1') ? $this->jhgrAddResponsiveInlineStyles($jhgrSCAtts) : $this->jhgrAddInlineStyles($jhgrSCAtts);
+                  if($jhgrTransientID=='jhgrT-testpanel')
+                  {
+                      $jhgrOutput .= $this->jhgrShowReviews($jhgrSCAtts);
+                  } else {
+                      set_transient ($jhgrTransientID, $jhgrOutput . $this->jhgrShowReviews($jhgrSCAtts), $jhgrTransientExpire * HOUR_IN_SECONDS );
+                      $jhgrOutput .= get_transient($jhgrTransientID);
+                  }
+             } else {
+                  $jhgrOutput = get_transient($jhgrTransientID);
+             }
+         }
+         else
+         {
+             $jhgrOutput = '<div id="goodreviews-output"><div id="goodreviews-error">' . __('You must allow GoodReviews to display Goodreads.com links on your site in order to use this plugin. Please review the GoodReviews Settings page.') . '</div></div>'; 
+         }
         
-        return $jhgrOutput;
-    }
+         return $jhgrOutput;
+     }
 }
 
 ?>

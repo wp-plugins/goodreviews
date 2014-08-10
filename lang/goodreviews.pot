@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the GoodReviews package.
 msgid ""
 msgstr ""
-"Project-Id-Version: GoodReviews 2.1.0-beta1\n"
+"Project-Id-Version: GoodReviews 2.1.0-beta4\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/goodreviews\n"
-"POT-Creation-Date: 2014-08-08 02:07:21+00:00\n"
+"POT-Creation-Date: 2014-08-10 01:11:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,25 +16,25 @@ msgstr ""
 msgid "Hide Notice"
 msgstr ""
 
-#: jhgrclasses.php:148
+#: jhgrclasses.php:149
 msgid ""
 "The GoodReviews plugin retrieves Goodreads.com reader reviews for books you "
 "choose and displays them in pages or posts on your WordPress blog by way of "
 "a WordPress shortcode."
 msgstr ""
 
-#: jhgrclasses.php:150
+#: jhgrclasses.php:151
 msgid ""
 "You must have a Goodreads API Developer Key in order to use this plugin. "
 "Links to Goodreads.com information about this program are available on the "
 "GoodReviews Settings page."
 msgstr ""
 
-#: jhgrclasses.php:152 jhgrclasses.php:282
+#: jhgrclasses.php:153 jhgrclasses.php:283
 msgid "WARNING"
 msgstr ""
 
-#: jhgrclasses.php:154
+#: jhgrclasses.php:155
 msgid ""
 "If your PHP implementation does not have client URL (cURL) installed and "
 "enabled, you should not attempt to use this plugin. You might be able to use "
@@ -42,41 +42,41 @@ msgid ""
 "enabled. However, fopen wrappers can be a security risk."
 msgstr ""
 
-#: jhgrclasses.php:157
+#: jhgrclasses.php:158
 msgid "The following GoodReviews Settings fields are "
 msgstr ""
 
-#: jhgrclasses.php:159
+#: jhgrclasses.php:160
 msgid "required"
 msgstr ""
 
-#: jhgrclasses.php:160
+#: jhgrclasses.php:161
 msgid "Goodreads.com API Developer Key"
 msgstr ""
 
-#: jhgrclasses.php:161
+#: jhgrclasses.php:162
 msgid "A key assigned to you by Goodreads."
 msgstr ""
 
-#: jhgrclasses.php:162 jhgrclasses.php:557
+#: jhgrclasses.php:163 jhgrclasses.php:591
 msgid "Display Goodreads.com Links"
 msgstr ""
 
-#: jhgrclasses.php:163
+#: jhgrclasses.php:164
 msgid ""
 "Indicates that you agree to display Goodreads.com links on publicly "
 "accessible pages or posts on your WordPress site."
 msgstr ""
 
-#: jhgrclasses.php:165
+#: jhgrclasses.php:166
 msgid "The following GoodReviews Settings are optional"
 msgstr ""
 
-#: jhgrclasses.php:166 jhgrclasses.php:535
+#: jhgrclasses.php:167 jhgrclasses.php:569
 msgid "Custom CSS URL"
 msgstr ""
 
-#: jhgrclasses.php:167
+#: jhgrclasses.php:168
 msgid ""
 "GoodReviews comes with a stock CSS file based on Goodreads.com styles. "
 "However, you can use your own CSS to style GoodReviews output. If you have "
@@ -84,11 +84,11 @@ msgid ""
 "Otherwise, leave this field blank."
 msgstr ""
 
-#: jhgrclasses.php:168 jhgrclasses.php:546
+#: jhgrclasses.php:169 jhgrclasses.php:580
 msgid "Use Responsive Style"
 msgstr ""
 
-#: jhgrclasses.php:169
+#: jhgrclasses.php:170
 msgid ""
 "GoodReviews comes with a stock CSS file based on Goodreads.com styles. "
 "However, you can opt to use an alternate style designed for sites with "
@@ -96,11 +96,11 @@ msgid ""
 "any values you enter in the Custom CSS URL field."
 msgstr ""
 
-#: jhgrclasses.php:170
+#: jhgrclasses.php:171
 msgid "Use file_get_contents"
 msgstr ""
 
-#: jhgrclasses.php:171
+#: jhgrclasses.php:172
 msgid ""
 "If cURL is enabled on your site, DO NOT select this checkbox. If your site "
 "does not support cURL, you can select this checkbox to use fopen wrappers "
@@ -108,15 +108,15 @@ msgid ""
 "cURL."
 msgstr ""
 
-#: jhgrclasses.php:174
+#: jhgrclasses.php:175
 msgid "Type the shortcode "
 msgstr ""
 
-#: jhgrclasses.php:176
+#: jhgrclasses.php:177
 msgid "where "
 msgstr ""
 
-#: jhgrclasses.php:178
+#: jhgrclasses.php:179
 msgid ""
 "is the ISBN-10 or ISBN-13 of the book associated with the reviews you want "
 "to retrieve. The shortcode must be issued in text format in your page or "
@@ -124,217 +124,217 @@ msgid ""
 "might be rendered incorrectly."
 msgstr ""
 
-#: jhgrclasses.php:180
+#: jhgrclasses.php:181
 msgid ""
 "You can also issue the GoodReviews shortcode with the following identifer "
 "instead of using an ISBN"
 msgstr ""
 
-#: jhgrclasses.php:182
+#: jhgrclasses.php:183
 msgid "Retrieves reviews by using the ID assigned by Goodreads.com."
 msgstr ""
 
-#: jhgrclasses.php:184
+#: jhgrclasses.php:185
 msgid ""
 "You can also issue the GoodReviews shortcode with the following additional "
 "parameters"
 msgstr ""
 
-#: jhgrclasses.php:186
+#: jhgrclasses.php:187
 msgid ""
 "Specifies the width of the reviews iframe, or of the containing element if "
 "the responsive option is enabled."
 msgstr ""
 
-#: jhgrclasses.php:188
+#: jhgrclasses.php:189
 msgid ""
 "Specifies the height of the reviews iframe, or of the containing element if "
 "the responsive option is enabled."
 msgstr ""
 
-#: jhgrclasses.php:190
+#: jhgrclasses.php:191
 msgid "When set to "
 msgstr ""
 
-#: jhgrclasses.php:192
+#: jhgrclasses.php:193
 msgid "disables the border that some browsers automatically add to iframes."
 msgstr ""
 
-#: jhgrclasses.php:194
+#: jhgrclasses.php:195
 msgid "toggles book cover image display."
 msgstr ""
 
-#: jhgrclasses.php:196
+#: jhgrclasses.php:197
 msgid "displays the large cover,"
 msgstr ""
 
-#: jhgrclasses.php:198
+#: jhgrclasses.php:199
 msgid "displays the small cover, and "
 msgstr ""
 
-#: jhgrclasses.php:200
+#: jhgrclasses.php:201
 msgid "removes the cover from display."
 msgstr ""
 
-#: jhgrclasses.php:202 jhgrclasses.php:212 jhgrclasses.php:220
-#: jhgrclasses.php:228 jhgrclasses.php:236
+#: jhgrclasses.php:203 jhgrclasses.php:213 jhgrclasses.php:221
+#: jhgrclasses.php:229 jhgrclasses.php:237
 msgid "is default."
 msgstr ""
 
-#: jhgrclasses.php:204
+#: jhgrclasses.php:205
 msgid "toggles the author image display."
 msgstr ""
 
-#: jhgrclasses.php:206
+#: jhgrclasses.php:207
 msgid "displays the large image,"
 msgstr ""
 
-#: jhgrclasses.php:208
+#: jhgrclasses.php:209
 msgid "displays the small image, and"
 msgstr ""
 
-#: jhgrclasses.php:210
+#: jhgrclasses.php:211
 msgid "removes the image from display."
 msgstr ""
 
-#: jhgrclasses.php:214
+#: jhgrclasses.php:215
 msgid "toggles book information element. "
 msgstr ""
 
-#: jhgrclasses.php:216
+#: jhgrclasses.php:217
 msgid "displays the element."
 msgstr ""
 
-#: jhgrclasses.php:218
+#: jhgrclasses.php:219
 msgid "removes the element from display. "
 msgstr ""
 
-#: jhgrclasses.php:222
+#: jhgrclasses.php:223
 msgid "toggles book buying links elements. "
 msgstr ""
 
-#: jhgrclasses.php:224
+#: jhgrclasses.php:225
 msgid "displays the element. "
 msgstr ""
 
-#: jhgrclasses.php:226
+#: jhgrclasses.php:227
 msgid "removes the element from display."
 msgstr ""
 
-#: jhgrclasses.php:230
+#: jhgrclasses.php:231
 msgid "toggles the reviews frame. "
 msgstr ""
 
-#: jhgrclasses.php:232
+#: jhgrclasses.php:233
 msgid "displays the reviews frame. "
 msgstr ""
 
-#: jhgrclasses.php:234
+#: jhgrclasses.php:235
 msgid "removes the reviews frame from display."
 msgstr ""
 
-#: jhgrclasses.php:238
+#: jhgrclasses.php:239
 msgid ""
 "defines the hexadecimal background color of the plugin elements. Do not "
 "include the \"#\" symbol."
 msgstr ""
 
-#: jhgrclasses.php:240
+#: jhgrclasses.php:241
 msgid ""
 "defines the hexadecimal text color of the plugin elements. Do not include "
 "the \"#\" symbol."
 msgstr ""
 
-#: jhgrclasses.php:242
+#: jhgrclasses.php:243
 msgid ""
 "defines the hexadecimal stars color of the plugin elements. Do not include "
 "the \"#\" symbol."
 msgstr ""
 
-#: jhgrclasses.php:244
+#: jhgrclasses.php:245
 msgid ""
 "defines the hexadecimal link color of the plugin elements. Do not include "
 "the \"#\" symbol."
 msgstr ""
 
-#: jhgrclasses.php:246
+#: jhgrclasses.php:247
 msgid "defines the number of reviews per page. Default is 10."
 msgstr ""
 
-#: jhgrclasses.php:248
+#: jhgrclasses.php:249
 msgid ""
 "defines the minimum star rating that is required for a review to be "
 "displayed. By default, all reviews are displayed."
 msgstr ""
 
-#: jhgrclasses.php:251
+#: jhgrclasses.php:252
 msgid "After you have saved your GoodReviews Settings by clicking the "
 msgstr ""
 
-#: jhgrclasses.php:253
+#: jhgrclasses.php:254
 msgid "Save Changes"
 msgstr ""
 
-#: jhgrclasses.php:255
+#: jhgrclasses.php:256
 msgid "button, you can click the "
 msgstr ""
 
-#: jhgrclasses.php:257
+#: jhgrclasses.php:258
 msgid "Tests"
 msgstr ""
 
-#: jhgrclasses.php:259
+#: jhgrclasses.php:260
 msgid "tab to view some sample reviews frames based on your settings."
 msgstr ""
 
-#: jhgrclasses.php:261
+#: jhgrclasses.php:262
 msgid ""
 "If you do not see sample Goodreads.com output on this tab, your GoodReviews "
 "settings might be incorrect."
 msgstr ""
 
-#: jhgrclasses.php:264
+#: jhgrclasses.php:265
 msgid "GoodReviews comes with three widgets that can be accessed by using the "
 msgstr ""
 
-#: jhgrclasses.php:266
+#: jhgrclasses.php:267
 msgid "Appearance &gt; Widgets"
 msgstr ""
 
-#: jhgrclasses.php:268
+#: jhgrclasses.php:269
 msgid " admin menu: "
 msgstr ""
 
-#: jhgrclasses.php:270
+#: jhgrclasses.php:271
 msgid "About This Book: "
 msgstr ""
 
-#: jhgrclasses.php:272
+#: jhgrclasses.php:273
 msgid ""
 "Use this widget to display the average rating, description, and other "
 "general information about the title."
 msgstr ""
 
-#: jhgrclasses.php:274
+#: jhgrclasses.php:275
 msgid "Buy This Book:"
 msgstr ""
 
-#: jhgrclasses.php:276
+#: jhgrclasses.php:277
 msgid ""
 "Use this widget to display Goodreads.com links to bookstores where the title "
 "can be purchased."
 msgstr ""
 
-#: jhgrclasses.php:278
+#: jhgrclasses.php:279
 msgid "Reviews From Goodreads"
 msgstr ""
 
-#: jhgrclasses.php:280
+#: jhgrclasses.php:281
 msgid ""
 "Use this widget to display Goodreads.com reviews for a given title.</li>"
 msgstr ""
 
-#: jhgrclasses.php:284
+#: jhgrclasses.php:285
 msgid ""
 "It is not recommended to use both the GoodReviews widgets and the "
 "GoodReviews shortcode on the same site. The GoodReviews stylesheet applies "
@@ -343,34 +343,34 @@ msgid ""
 "site."
 msgstr ""
 
-#: jhgrclasses.php:287
+#: jhgrclasses.php:288
 msgid ""
 "By default, GoodReviews caches Goodreads calls for 12 hours to enhance site "
 "performance. "
 msgstr ""
 
-#: jhgrclasses.php:288
+#: jhgrclasses.php:289
 msgid ""
 "You can adjust the amount of time GoodReviews caches this data by adjusting "
 "the "
 msgstr ""
 
-#: jhgrclasses.php:290 jhgrclasses.php:601
+#: jhgrclasses.php:291 jhgrclasses.php:635
 msgid "Cache Expires In"
 msgstr ""
 
-#: jhgrclasses.php:292
+#: jhgrclasses.php:293
 msgid "value to the number of hours you want the cached data to persist."
 msgstr ""
 
-#: jhgrclasses.php:294
+#: jhgrclasses.php:295
 msgid ""
 "You can also choose to clear the existing cached data from the WordPress "
 "database. However, you should always back up your WordPress database before "
 "attempting to delete data in bulk."
 msgstr ""
 
-#: jhgrclasses.php:296
+#: jhgrclasses.php:297
 msgid ""
 "Please be aware that if you are using a caching plugin, such as W3 Total "
 "Cache, with object caching enabled, the Clear Cache option will not do "
@@ -378,134 +378,169 @@ msgid ""
 "plugin's clear cache feature."
 msgstr ""
 
-#: jhgrclasses.php:302
+#: jhgrclasses.php:299
+msgid "Select the "
+msgstr ""
+
+#: jhgrclasses.php:301 jhgrclasses.php:646
+msgid "Defer Until Footer"
+msgstr ""
+
+#: jhgrclasses.php:303
+msgid ""
+" field to ensure that the entire main page of your site loads before "
+"GoodReviews attempts to load the Goodreads reviews iframe."
+msgstr ""
+
+#: jhgrclasses.php:305
+msgid ""
+"Please be aware that if you are using a caching plugin, such as W3 Total "
+"Cache, with object caching enabled, and/or the CloudFlare RocketLauncher "
+"script service, you might need to optimize your caching plugin's settings "
+"for this option to work properly. A good guide for configuring W3 Total "
+"Cache and CloudFlare together is"
+msgstr ""
+
+#: jhgrclasses.php:307
+msgid " here"
+msgstr ""
+
+#: jhgrclasses.php:313
 msgid "Overview"
 msgstr ""
 
-#: jhgrclasses.php:307 jhgrclasses.php:664
+#: jhgrclasses.php:318 jhgrclasses.php:708
 msgid "Settings"
 msgstr ""
 
-#: jhgrclasses.php:312 jhgrclasses.php:652
+#: jhgrclasses.php:323 jhgrclasses.php:696
 msgid "Shortcode"
 msgstr ""
 
-#: jhgrclasses.php:317
+#: jhgrclasses.php:328
 msgid "Tests Tab"
 msgstr ""
 
-#: jhgrclasses.php:322
+#: jhgrclasses.php:333
 msgid "Performance Tab"
 msgstr ""
 
-#: jhgrclasses.php:327
+#: jhgrclasses.php:338
 msgid "Widgets"
 msgstr ""
 
-#: jhgrclasses.php:484
+#: jhgrclasses.php:508
 msgid "Restore Hidden GoodReviews Notices"
 msgstr ""
 
-#: jhgrclasses.php:524
+#: jhgrclasses.php:558
 msgid "Goodreads.com<br />API Developer Key"
 msgstr ""
 
-#: jhgrclasses.php:529
+#: jhgrclasses.php:563
 msgid "Type or paste your Goodreads.com API Developer Key in this field."
 msgstr ""
 
-#: jhgrclasses.php:540
+#: jhgrclasses.php:574
 msgid ""
 "If you have a customized CSS file for GoodReviews, type or paste the URL to "
 "it here. Otherwise, leave this field blank."
 msgstr ""
 
-#: jhgrclasses.php:551
+#: jhgrclasses.php:585
 msgid ""
 "If your site uses a responsive theme, you can enable a default GoodReviews "
 "stylesheet that includes responsive elements. If you enable this option, any "
 "Custom CSS URL you have specified above will be ignored."
 msgstr ""
 
-#: jhgrclasses.php:562
+#: jhgrclasses.php:596
 msgid ""
 "You MUST agree to allow GoodReviews to display Goodreads.com links on your "
 "WordPress posts or pages in order to use this plugin. If you do not select "
 "this checkbox, GoodReviews will not display reviews."
 msgstr ""
 
-#: jhgrclasses.php:568
+#: jhgrclasses.php:602
 msgid ""
 "Use file_get_contents<br><span style=\"color:red\">(Not Recommended)</span>"
 msgstr ""
 
-#: jhgrclasses.php:573
+#: jhgrclasses.php:607
 msgid ""
 "Select this checkbox to use fopen wrappers if your host does not support "
 "cURL (not recommended)."
 msgstr ""
 
-#: jhgrclasses.php:579
+#: jhgrclasses.php:613
 msgid "Restore Notices"
 msgstr ""
 
-#: jhgrclasses.php:584
+#: jhgrclasses.php:618
 msgid ""
 "Click this link to restore any important GoodReviews Settings notifications "
 "you might have hidden."
 msgstr ""
 
-#: jhgrclasses.php:590
+#: jhgrclasses.php:624
 msgid "Test Frame"
 msgstr ""
 
-#: jhgrclasses.php:595
+#: jhgrclasses.php:629
 msgid "GoodReviews Test Frame."
 msgstr ""
 
-#: jhgrclasses.php:606
+#: jhgrclasses.php:640
 msgid ""
 "The number of hours that should pass before cached Goodreads calls expire. "
 "Cannot be more than 23 hours. Default is 12."
 msgstr ""
 
-#: jhgrclasses.php:612
+#: jhgrclasses.php:651
+msgid ""
+"Loads GoodReviews data asynchronously for better site performance. If you "
+"use W3 Total Cache and/or CloudFlare, please know that you might need to "
+"adjust your W3TC/CloudFlare Performance settings for this option to work. "
+"See the Help menu for more information."
+msgstr ""
+
+#: jhgrclasses.php:657
 msgid "Clear Cache"
 msgstr ""
 
-#: jhgrclasses.php:617
+#: jhgrclasses.php:662
 msgid "Clears GoodReviews transient data."
 msgstr ""
 
-#: jhgrclasses.php:625
+#: jhgrclasses.php:669
 msgid ""
 "In order to access customer review data from Goodreads.com, you must have a "
 "Goodreads API Developer Key. You can obtain an API Developer Key by visiting "
 msgstr ""
 
-#: jhgrclasses.php:626
+#: jhgrclasses.php:670
 msgid "Goodreads"
 msgstr ""
 
-#: jhgrclasses.php:634
+#: jhgrclasses.php:678
 msgid ""
 "If you have correctly configured GoodReviews, you should see an iframe below "
 "that contains Goodreads.com reviews for the Stephen King novel 11/22/63. The "
 "shortcode used to produce this test is "
 msgstr ""
 
-#: jhgrclasses.php:635
+#: jhgrclasses.php:679
 msgid ""
 ". If you see reviews in the iframe below, GoodReviews is configured "
 "correctly and should work on your site. If you see no data or if you see an "
 "error displayed below, please double-check your configuration."
 msgstr ""
 
-#: jhgrclasses.php:643
+#: jhgrclasses.php:687
 msgid "WARNING!"
 msgstr ""
 
-#: jhgrclasses.php:644
+#: jhgrclasses.php:688
 msgid ""
 "You should make a backup of your WordPress database before attempting to use "
 "the <strong>Clear Cache</strong> option. The <strong>Clear Cache</strong> "
@@ -514,105 +549,105 @@ msgid ""
 "caution."
 msgstr ""
 
-#: jhgrclasses.php:654
+#: jhgrclasses.php:698
 msgid ""
 "Insert the above shortcode into any page or post where you want Goodreads."
 "com customer reviews to appear. Replace "
 msgstr ""
 
-#: jhgrclasses.php:655
+#: jhgrclasses.php:699
 msgid ""
 " with the International Standard Book Number (ISBN) to retrieve and display "
 "the reviews for that product."
 msgstr ""
 
-#: jhgrclasses.php:656
+#: jhgrclasses.php:700
 msgid ""
 "For a more detailed and complete overview of how GoodReviews works, click "
 "the \"Help\" tab on the upper right of the GoodReviews settings page."
 msgstr ""
 
-#: jhgrclasses.php:665
+#: jhgrclasses.php:709
 msgid "Test"
 msgstr ""
 
-#: jhgrclasses.php:706
+#: jhgrclasses.php:750
 msgid "GoodReviews Settings"
 msgstr ""
 
-#: jhgrclasses.php:713
+#: jhgrclasses.php:757
 msgid "GoodReviews Test Frame"
 msgstr ""
 
-#: jhgrclasses.php:720
+#: jhgrclasses.php:764
 msgid "GoodReviews Performance"
 msgstr ""
 
-#: jhgrclasses.php:727
+#: jhgrclasses.php:771
 msgid "GoodReviews Usage"
 msgstr ""
 
-#: jhgrclasses.php:806
+#: jhgrclasses.php:849
 msgid "Cache cleared"
 msgstr ""
 
-#: jhgrclasses.php:911 jhgrclasses.php:1048 jhgrclasses.php:1191
+#: jhgrclasses.php:954 jhgrclasses.php:1091 jhgrclasses.php:1234
 msgid "Book Identifier:"
 msgstr ""
 
-#: jhgrclasses.php:916 jhgrclasses.php:1053 jhgrclasses.php:1196
+#: jhgrclasses.php:959 jhgrclasses.php:1096 jhgrclasses.php:1239
 msgid " Identifer Value:"
 msgstr ""
 
-#: jhgrclasses.php:918 jhgrclasses.php:1067 jhgrclasses.php:1198
+#: jhgrclasses.php:961 jhgrclasses.php:1110 jhgrclasses.php:1241
 msgid " Width (in pixels):"
 msgstr ""
 
-#: jhgrclasses.php:920 jhgrclasses.php:1069 jhgrclasses.php:1200
+#: jhgrclasses.php:963 jhgrclasses.php:1112 jhgrclasses.php:1243
 msgid " Height (in pixels):"
 msgstr ""
 
-#: jhgrclasses.php:922 jhgrclasses.php:1071 jhgrclasses.php:1202
+#: jhgrclasses.php:965 jhgrclasses.php:1114 jhgrclasses.php:1245
 msgid "Background Color:"
 msgstr ""
 
-#: jhgrclasses.php:924 jhgrclasses.php:1073 jhgrclasses.php:1204
+#: jhgrclasses.php:967 jhgrclasses.php:1116 jhgrclasses.php:1247
 msgid "Link Color:"
 msgstr ""
 
-#: jhgrclasses.php:1055
+#: jhgrclasses.php:1098
 msgid "Cover Image:"
 msgstr ""
 
-#: jhgrclasses.php:1061
+#: jhgrclasses.php:1104
 msgid "Author Image:"
 msgstr ""
 
-#: jhgrclasses.php:1075 jhgrclasses.php:1206
+#: jhgrclasses.php:1118 jhgrclasses.php:1249
 msgid "Text Color:"
 msgstr ""
 
-#: jhgrclasses.php:1077 jhgrclasses.php:1208
+#: jhgrclasses.php:1120 jhgrclasses.php:1251
 msgid "Star Rating Color:"
 msgstr ""
 
 #. translators: 1: The rating, 2: The number of ratings
-#: jhgrclasses.php:1330
+#: jhgrclasses.php:1376
 msgid "%1$s rating based on %2$s rating (all editions)"
 msgid_plural "%1$s rating based on %2$s ratings (all editions)"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: The rating
-#: jhgrclasses.php:1334
+#: jhgrclasses.php:1380
 msgid "%s rating"
 msgstr ""
 
-#: jhgrclasses.php:1382
+#: jhgrclasses.php:1428
 msgid "Average Rating"
 msgstr ""
 
-#: jhgrclasses.php:1534
+#: jhgrclasses.php:1590
 msgid ""
 "You must allow GoodReviews to display Goodreads.com links on your site in "
 "order to use this plugin. Please review the GoodReviews Settings page."

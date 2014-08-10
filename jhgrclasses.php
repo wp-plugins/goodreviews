@@ -301,7 +301,11 @@ class jhgrWPOptions
                           __('Defer Until Footer','goodreviews') .
                           '</strong>' .
                           __(' field to ensure that the entire main page of your site loads before GoodReviews attempts to load the Goodreads reviews iframe.','goodreviews') .
-                          '</p>';
+                          '</p><p>' .
+                          __('Please be aware that if you are using a caching plugin, such as W3 Total Cache, with object caching enabled, and/or the CloudFlare RocketLauncher script service, you might need to optimize your caching plugin\'s settings for this option to work properly. A good guide for configuring W3 Total Cache and CloudFlare together is','goodreviews') .
+                          '<a href="https://www.besthostnews.com/guide-to-w3-total-cache-settings-with-cloudflare/" target="_blank">' .
+                          __(' here','goodreviews') .
+                          '</a></p>';
     
         $jhgrScreen   = get_current_screen();           
         $jhgrScreen->add_help_tab(array(
@@ -644,7 +648,7 @@ class jhgrWPOptions
             'goodrev-perform',
             'goodreviews_perform_section',
             array(
-                __('Loads GoodReviews data asyncrhonously for better site performance.','goodreviews')
+                __('Loads GoodReviews data asynchronously for better site performance. If you use W3 Total Cache and/or CloudFlare, please know that you might need to adjust your W3TC/CloudFlare Performance settings for this option to work. See the Help menu for more information.','goodreviews')
             )
         );
         

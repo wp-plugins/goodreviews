@@ -1536,7 +1536,7 @@ public function jhgrDeferReviews()
     echo '<script type="text/javascript">' .
          '$jhgrQuery = jQuery.noConflict();' .
          ' $jhgrQuery(document).ready(function() {' .
-         '    $jhgrQuery(\'#defergrreviews\').append(\'' . $this->jhgrGRWidget . '\');' . 
+         '    $jhgrQuery(\'#defergrreviews\').append(\'' . str_replace('\'','\\\'',$this->jhgrGRWidget) . '\');' . 
          ' });' .
          '</script>';
 }

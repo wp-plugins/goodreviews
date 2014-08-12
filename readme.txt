@@ -198,10 +198,11 @@ This is the first version of the plugin
 
 = 2.1.0 =
 * Added a caching mechanism and related settings for faster performance.
-* Fixed some style issues that hindered responsive design.
-* Added caching mechanism to enhance performance.
-* Fixed some variable and index initializations.
+* Added the option to defer loading of GoodReviews until the page footer.
 * Optimized shortcode input defaults.
+* Fixed some style issues that hindered responsive design.
+* Fixed a stylesheet/script loading issue that caused some WordPress debug errors.
+* Fixed some variable and index initializations.
 * Updated context-sensitive help.
 * Updated POT file.
 * Updated readme and FAQ.

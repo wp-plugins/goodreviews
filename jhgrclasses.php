@@ -815,7 +815,11 @@ class jhgrWPOptions
     
     public function jhgrRequireStyles()
     {
-        $this->jhgrDequeueStyles();
+        if(wp_style_is('goodrev-styles','enqueue'))
+        { 
+            wp_dequeue_style('goodrev-styles');
+            wp_deregister_style('goodrev-styles');
+        }
 
         if ((preg_match('/http/i',$this->jhgrGetCustomCSS()))&&($this->jhgrGetResponsive()!='1'))
         {
@@ -833,13 +837,6 @@ class jhgrWPOptions
         wp_enqueue_style( 'dashicons' );
         
         return true;
-    }
-    
-    public function jhgrDequeueStyles()
-    {
-        wp_dequeue_style('goodrev-styles');
-        wp_deregister_style('goodrev-styles');
-        wp_dequeue_style('dashicons');
     }
     
     public function jhgrShowNPNotices()

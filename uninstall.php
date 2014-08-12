@@ -40,6 +40,9 @@ delete_option('goodreviews-getmethod');
 delete_option('goodreviews-agree');
 delete_option('goodreviews-alt-style');
 delete_option('goodreviews-responsive-style');
+delete_option('goodrev-perform');
+delete_option('goodrev-clearcache');
+delete_option('goodrev-defer');
 
 // Remove ScrapeAZon hidden notices
 $jhgrMeta_type  = 'user';

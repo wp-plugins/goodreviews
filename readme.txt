@@ -7,6 +7,7 @@ Tags:              goodreads,readers,reviews,stars,isbn
 Author URI:        http://www.timetides.com
 Author:            James R. Hanback, Jr.
 Donate link: 	   http://www.timetides.com
+License:           GPLv3
 Requires at least: 3.8 
 Tested up to:      3.9.2
 Stable tag:        2.1.0

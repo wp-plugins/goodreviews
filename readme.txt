@@ -9,7 +9,7 @@ Author:            James R. Hanback, Jr.
 Donate link: 	   http://www.timetides.com
 License:           GPLv3
 Requires at least: 3.8 
-Tested up to:      3.9.2
+Tested up to:      4.0
 Stable tag:        2.1.0
 
 Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
@@ -150,6 +150,9 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 2.1.1 =
+Fixes a form field markup typo.
+
 = 2.1.0 =
 Adds a caching mechanism for enhanced performance.
 
@@ -196,6 +199,9 @@ This is the first version of the plugin
 3. The shortcode in a post
 
 == Changelog ==
+
+= 2.1.1 =
+* Fixed a typo in some input form field markup.
 
 = 2.1.0 =
 * Added a caching mechanism and related settings for faster performance.

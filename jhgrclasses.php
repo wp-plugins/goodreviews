@@ -543,7 +543,7 @@ class jhgrWPOptions
     
     public function jhgrDeferField($args)
     {
-        $jhgrField  = '<input type="checkbox" name="goodrev-defer" id="goodrev-defer" value="1" Fef' .
+        $jhgrField  = '<input type="checkbox" name="goodrev-defer" id="goodrev-defer" value="1" ' .
         checked(1, $this->jhgrGetDeferParse(), false) .
         $this->jhgrGetDeferParse() .
         ' /><br />';

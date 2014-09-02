@@ -24,20 +24,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-@font-face {
-   font-family: "dashicons";
-   src: url("fonts/dashicons.eot");
-}
- 
-@font-face {
-   font-family: "dashicons";
-   src: url(data:application/x-font-woff;charset=utf-8;base64,/* !! Large amount of data removed, see wp-includes/css/dashicons.css for complete data !! */) format("woff"),
-   url("fonts/dashicons.ttf") format("truetype"),
-   url("fonts/dashicons.svg#dashicons") format("svg");
-   font-weight: normal;
-   font-style: normal;
-}
- 
 .star-rating .star-full:before {
    content: "\f155";
 }

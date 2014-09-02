@@ -835,7 +835,6 @@ class jhgrWPOptions
         
         // This requires WordPress 3.8 or later
         wp_enqueue_style( 'dashicons' );
-        
         return true;
     }
     
@@ -1537,7 +1536,8 @@ public function jhgrDeferReviews()
          ' });' .
          '</script>';
 }
-    public function jhgrParseShortcode($jhgrAtts)
+    
+public function jhgrParseShortcode($jhgrAtts)
     { 
         $jhgrOpts   = new jhgrWPOptions;
         $jhgrOutput = '';

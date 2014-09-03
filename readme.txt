@@ -10,7 +10,7 @@ Donate link: 	   http://www.timetides.com
 License:           GPLv3
 Requires at least: 3.8 
 Tested up to:      4.0
-Stable tag:        2.1.1
+Stable tag:        2.1.2
 
 Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
 
@@ -150,6 +150,9 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 2.1.2 =
+Fixes an admin CSS issue that primarily affected Firefox.
+
 = 2.1.1 =
 Fixes a form field markup typo.
 
@@ -199,6 +202,9 @@ This is the first version of the plugin
 3. The shortcode in a post
 
 == Changelog ==
+
+= 2.1.2 =
+* Removed some unneeded CSS that was causing some issues in Firefox.
 
 = 2.1.1 =
 * Fixed a typo in some input form field markup.

@@ -815,26 +815,34 @@ class jhgrWPOptions
     
     public function jhgrRequireStyles()
     {
-        if(wp_style_is('goodrev-styles','enqueue'))
-        { 
-            wp_dequeue_style('goodrev-styles');
-            wp_deregister_style('goodrev-styles');
-        }
+        global $post;
+        // Load responsive stylesheet if required and if shortcode is present
+        // below code does NOT work with do_shortcode and requires WP 3.6 or later
 
-        if ((preg_match('/http/i',$this->jhgrGetCustomCSS()))&&($this->jhgrGetResponsive()!='1'))
+        if(has_shortcode($post->post_content,'goodreviews' ) || is_home() || is_active_widget( false, false, 'goodreviews-buybook', true ) || is_active_widget( false, false, 'goodreviews-bookinfo', true ) || is_active_widget( false, false, 'goodreviews-reviews', true ))
         {
-            $jhgrStylesheet = esc_url($this->jhgrGetCustomCSS());
-        }
-        else
-        {
-            $jhgrStylesheet = ($this->jhgrGetResponsive()!='1') ? plugins_url('goodreviews.css',__FILE__) : plugins_url('goodreviews-rs.css',__FILE__);
-        }
+            if(wp_style_is('goodrev-styles','enqueue'))
+            { 
+                wp_dequeue_style('goodrev-styles');
+                wp_deregister_style('goodrev-styles');
+            }
+
+            if ((preg_match('/http/i',$this->jhgrGetCustomCSS()))&&($this->jhgrGetResponsive()!='1'))
+            {
+                $jhgrStylesheet = esc_url($this->jhgrGetCustomCSS());
+            }
+            else
+            {
+                $jhgrStylesheet = ($this->jhgrGetResponsive()!='1') ? plugins_url('goodreviews.css',__FILE__) : plugins_url('goodreviews-rs.css',__FILE__);
+            }
         
-        wp_register_style('goodrev-styles',$jhgrStylesheet);
-        wp_enqueue_style('goodrev-styles');      
+            wp_register_style('goodrev-styles',$jhgrStylesheet);
+            wp_enqueue_style('goodrev-styles');      
         
-        // This requires WordPress 3.8 or later
-        wp_enqueue_style( 'dashicons' );
+            // This requires WordPress 3.8 or later
+            wp_enqueue_style( 'dashicons' );
+        
+        }
         return true;
     }
     
@@ -872,6 +880,7 @@ class jhgrBuyBookWidget extends WP_Widget {
  
     function widget($args, $instance) {
         extract( $args, EXTR_SKIP );
+        $jhgrAtts = array();
         echo $before_widget;
 
 		if( isset ($instance[ 'itemtype' ]) )
@@ -880,26 +889,20 @@ class jhgrBuyBookWidget extends WP_Widget {
 		    {
 		        $instance['itemtype'] = 'isbn';
 		    }
-		    $jhgrSCode = '[goodreviews ' . strip_tags($instance['itemtype']) . '="' . strip_tags($instance['itemvalue']) . '"';
-		    if(($instance['width']!=0) && isset ($instance[ 'width' ]) )
-		    {
-		        $jhgrSCode .= ' width="' . absint($instance[ 'width' ]) . '"';
-		    }
-		    if(($instance['height']!=0) && isset ($instance[ 'height' ]) )
-		    {
-		        $jhgrSCode .= ' height="' . absint($instance[ 'height' ]) . '"';
-		    }
-		    if(isset ($instance[ 'grbackground' ]) )
-		    {
-		        $jhgrSCode .= ' grbackground="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grbackground' ])) . '"';
-		    }
-		    if(isset ($instance[ 'grlinks' ]) )
-		    {
-		        $jhgrSCode .= ' grlinks="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grlinks' ])) . '"';
-		    }
-		    $jhgrSCode .= ' iswidget="' . $instance['itemtype'] . $instance['itemvalue'] . $instance['width'] . $instance['height'] . '"';
-		    $jhgrSCode .= ' bookinfo="off" reviews="off"]';
-		    echo do_shortcode($jhgrSCode);
+		    $jhgrAtts[strip_tags($instance['itemtype'])] = strip_tags($instance['itemvalue']);
+		    $jhgrAtts["width"]         = ($instance['width']!=0 && isset($instance['width'])) ? absint($instance[ 'width' ]) : '';
+		    $jhgrAtts["height"]        = ($instance['height']!=0 && isset($instance['height'])) ? absint($instance[ 'height' ]) : '';
+		    $jhgrAtts["grbackground"]  = (isset($instance['grbackground'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grbackground' ])) : '';
+		    $jhgrAtts["grlinks"]       = (isset($instance['grlinks'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grlinks' ])) : '';
+		    $jhgrAtts["grstars"]       = (isset($instance['grstars'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grstars' ])) : '';
+		    $jhgrAtts["grtext"]        = (isset($instance['grtext'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grtext' ])) : '';
+		    $jhgrAtts["iswidget"]      = 'true';
+		    $jhgrAtts["reviews"]       = 'off';
+		    $jhgrAtts["bookinfo"]      = 'off';
+		    
+		    $jhgrshcd = new jhgrShortcode;
+		    echo $jhgrshcd->jhgrParseShortcode($jhgrAtts);
+		    unset($jhgrshcd);
 		}
 
         echo $after_widget;
@@ -989,6 +992,7 @@ class jhgrBookInfoWidget extends WP_Widget {
  
     function widget($args, $instance) {
         extract( $args, EXTR_SKIP );
+        $jhgrAtts = array();
         echo $before_widget;
 
 		if( isset ($instance[ 'itemtype' ]) )
@@ -997,43 +1001,22 @@ class jhgrBookInfoWidget extends WP_Widget {
 		    {
 		        $instance['itemtype'] = 'isbn';
 		    }
-		    $jhgrSCode = '[goodreviews ' . strip_tags($instance['itemtype']) . '="' . strip_tags($instance['itemvalue']) . '"';
-		    if(($instance['width']!=0) && isset ($instance[ 'width' ]) )
-		    {
-		        $jhgrSCode .= ' width="' . absint($instance[ 'width' ]) . '"';
-		    }
-		    if(($instance['height']!=0) && isset ($instance[ 'height' ]) )
-		    {
-		        $jhgrSCode .= ' height="' . absint($instance[ 'height' ]) . '"';
-		    }
-		    if(isset ($instance[ 'grbackground' ]) )
-		    {
-		        $jhgrSCode .= ' grbackground="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grbackground' ])) . '"';
-		    }
-		    if(isset ($instance[ 'grlinks' ]) )
-		    {
-		        $jhgrSCode .= ' grlinks="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grlinks' ])) . '"';
-		    }
-		    if(isset ($instance[ 'grtext' ]) )
-		    {
-		        $jhgrSCode .= ' grtext="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grtext' ])) . '"';
-		    }
-
-		    if(isset ($instance[ 'grstars' ]) )
-		    {
-		        $jhgrSCode .= ' grstars="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grstars' ])) . '"';
-		    }
-		    if(isset ($instance[ 'cover' ]) )
-		    {
-		        $jhgrSCode .= ' cover="' . strip_tags($instance[ 'cover' ]) . '"';
-		    }
-		    if(isset ($instance[ 'author' ]) )
-		    {
-		        $jhgrSCode .= ' author="' . strip_tags($instance[ 'author' ]) . '"';
-		    }
-		    $jhgrSCode .= ' iswidget="' . $instance['itemtype'] . $instance['itemvalue'] . $instance['width'] . $instance['height'] . '"';
-		    $jhgrSCode .= ' buyinfo="off" reviews="off"]';
-		    echo do_shortcode($jhgrSCode);
+		    $jhgrAtts[strip_tags($instance['itemtype'])] = strip_tags($instance['itemvalue']);
+		    $jhgrAtts["width"]         = ($instance['width']!=0 && isset($instance['width'])) ? absint($instance[ 'width' ]) : '';
+		    $jhgrAtts["height"]        = ($instance['height']!=0 && isset($instance['height'])) ? absint($instance[ 'height' ]) : '';
+		    $jhgrAtts["grbackground"]  = (isset($instance['grbackground'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grbackground' ])) : '';
+		    $jhgrAtts["grlinks"]       = (isset($instance['grlinks'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grlinks' ])) : '';
+		    $jhgrAtts["grstars"]       = (isset($instance['grstars'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grstars' ])) : '';
+		    $jhgrAtts["grtext"]        = (isset($instance['grtext'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grtext' ])) : '';
+            $jhgrAtts["cover"]         = (isset($instance['cover'])) ? strip_tags($instance['cover']) : '';
+            $jhgrAtts["author"]        = (isset($instance['author'])) ? strip_tags($instance['author']) : '';
+		    $jhgrAtts["iswidget"]      = 'true';
+		    $jhgrAtts["buyinfo"]       = 'off';
+		    $jhgrAtts["reviews"]       = 'off';
+		    
+		    $jhgrshcd = new jhgrShortcode;
+		    echo $jhgrshcd->jhgrParseShortcode($jhgrAtts);
+		    unset($jhgrshcd);
 		}
 
         echo $after_widget;
@@ -1142,6 +1125,8 @@ class jhgrReviewsWidget extends WP_Widget {
  
     function widget($args, $instance) {
         extract( $args, EXTR_SKIP );
+        $jhgrAtts = array();
+        
         echo $before_widget;
 
 		if( isset ($instance[ 'itemtype' ]) )
@@ -1150,34 +1135,20 @@ class jhgrReviewsWidget extends WP_Widget {
 		    {
 		        $instance['itemtype'] = 'isbn';
 		    }
-		    $jhgrSCode = '[goodreviews ' . strip_tags($instance['itemtype']) . '="' . strip_tags($instance['itemvalue']) . '"';
-		    if(($instance['width']!=0) && isset ($instance[ 'width' ]) )
-		    {
-		        $jhgrSCode .= ' width="' . absint($instance[ 'width' ]) . '"';
-		    }
-		    if(($instance['height']!=0) && isset ($instance[ 'height' ]) )
-		    {
-		        $jhgrSCode .= ' height="' . absint($instance[ 'height' ]) . '"';
-		    }
-		    if(isset ($instance[ 'grbackground' ]) )
-		    {
-		        $jhgrSCode .= ' grbackground="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grbackground' ])) . '"';
-		    }
-		    if(isset ($instance[ 'grlinks' ]) )
-		    {
-		        $jhgrSCode .= ' grlinks="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grlinks' ])) . '"';
-		    }
-		    if(isset ($instance[ 'grtext' ]) )
-		    {
-		        $jhgrSCode .= ' grtext="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grtext' ])) . '"';
-		    }
-		    if(isset ($instance[ 'grstars' ]) )
-		    {
-		        $jhgrSCode .= ' grstars="' . strip_tags($this->jhgrSanitizeHexColor($instance[ 'grstars' ])) . '"';
-		    }
-		    $jhgrSCode .= ' iswidget="' . $instance['itemtype'] . $instance['itemvalue'] . $instance['width'] . $instance['height'] . '"';
-		    $jhgrSCode .= ' buyinfo="off" bookinfo="off"]';
-		    echo do_shortcode($jhgrSCode);
+		    $jhgrAtts[strip_tags($instance['itemtype'])] = strip_tags($instance['itemvalue']);
+		    $jhgrAtts["width"]         = ($instance['width']!=0 && isset($instance['width'])) ? absint($instance[ 'width' ]) : '';
+		    $jhgrAtts["height"]        = ($instance['height']!=0 && isset($instance['height'])) ? absint($instance[ 'height' ]) : '';
+		    $jhgrAtts["grbackground"]  = (isset($instance['grbackground'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grbackground' ])) : '';
+		    $jhgrAtts["grlinks"]       = (isset($instance['grlinks'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grlinks' ])) : '';
+		    $jhgrAtts["grstars"]       = (isset($instance['grstars'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grstars' ])) : '';
+		    $jhgrAtts["grtext"]        = (isset($instance['grtext'])) ? strip_tags($this->jhgrSanitizeHexColor($instance[ 'grtext' ])) : '';
+		    $jhgrAtts["iswidget"]      = 'true';
+		    $jhgrAtts["buyinfo"]       = 'off';
+		    $jhgrAtts["bookinfo"]      = 'off';
+		    
+		    $jhgrshcd = new jhgrShortcode;
+		    echo $jhgrshcd->jhgrParseShortcode($jhgrAtts);
+		    unset($jhgrshcd);
 		}
 
         echo $after_widget;
@@ -1253,6 +1224,7 @@ class jhgrReviewsWidget extends WP_Widget {
 class jhgrShortcode
 {
     public $jhgrGRWidget        = '';
+    public $jhgrElementID       = '';
     
     public function jhgrIsSSL()
     {
@@ -1515,14 +1487,16 @@ class jhgrShortcode
     {
         $jhgrScreen     = (is_admin()) ? get_current_screen()->id : ''; 
         
-        $jhgrTransient  = "jhgrT-";
+        $jhgrTransient       = "jhgrT-";
+        $jhgrTransientValues = '';
+        
         if($jhgrScreen != 'admin_page_goodrev-tests')
         {
-            $jhgrTransient .=($jhgrSCAtts["iswidget"]!='false') ? $jhgrSCAtts["iswidget"] : implode("",$jhgrSCAtts);
+            $jhgrTransientValues  = implode('',$jhgrSCAtts);
+            $jhgrTransient       .= wp_hash($jhgrTransientValues);
         } else {
             $jhgrTransient .= 'testpanel';
         }
-        $jhgrTransient  = (strlen($jhgrTransient) > 40) ? substr($jhgrTransient,0,40) : $jhgrTransient;
         return $jhgrTransient; 
     }
     
@@ -1532,13 +1506,13 @@ public function jhgrDeferReviews()
     echo '<script type="text/javascript">' .
          '$jhgrQuery = jQuery.noConflict();' .
          ' $jhgrQuery(document).ready(function() {' .
-         '    $jhgrQuery(\'#defergrreviews\').append(\'' . str_replace('\'','\\\'',$this->jhgrGRWidget) . '\');' . 
+         '    $jhgrQuery(\'#defergrreviews' . $this->jhgrElementID  . '\').append(\'' . str_replace('\'','\\\'',$this->jhgrGRWidget) . '\');' . 
          ' });' .
          '</script>';
 }
     
 public function jhgrParseShortcode($jhgrAtts)
-    { 
+{ 
         $jhgrOpts   = new jhgrWPOptions;
         $jhgrOutput = '';
         $jhgrTransientExpire = $jhgrOpts->jhgrGetCacheExpire();
@@ -1567,6 +1541,7 @@ public function jhgrParseShortcode($jhgrAtts)
 	         ), $jhgrAtts);
 	         
 	         $jhgrTransientID = $this->jhgrTransientID($jhgrSCAtts);
+             $this->jhgrElementID   = '-' . $jhgrTransientID;
 
              if ((false === ($jhgrOut = get_transient($jhgrTransientID)))||($jhgrTransientID=='jhgrT-testpanel'))
              {
@@ -1592,7 +1567,7 @@ public function jhgrParseShortcode($jhgrAtts)
              $this->jhgrGRWidget = $jhgrOutput;
              $this->jhgrGRWidget = str_replace(array("\n", "\t", "\r"), '', $this->jhgrGRWidget);
              add_action('wp_footer', array(&$this,'jhgrDeferReviews'),100);
-             return '<div id="defergrreviews"></div>';
+             return '<div id="defergrreviews' . $this->jhgrElementID . '"></div>';
          } else {
              return $jhgrOutput;
          }

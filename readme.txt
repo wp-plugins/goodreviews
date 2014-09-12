@@ -150,7 +150,7 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
-= 2.1.3 =
+= 2.1.4 =
 Modifies caching mechanism, segregates widget from shortcode, ensures that GoodReviews CSS is only loaded on shortcode/widget pages, and modifies CSS so that star ratings styles are applied only to GoodReviews container.
 
 = 2.1.2 =
@@ -206,11 +206,12 @@ This is the first version of the plugin
 
 == Changelog ==
 
-= 2.1.3 =
+= 2.1.4 =
 * Segregated widgets from shortcode so they can operate more independently.
 * Modified caching mechanism naming system.
 * Modified styles so that they are only loaded on shortcode/widget pages.
 * Modified CSS so that star ratings styles are applied only to GoodReviews container.
+* Fixed some text alignment issues in the default CSS files.
 
 = 2.1.2 =
 * Removed some unneeded CSS that was causing some issues in Firefox.

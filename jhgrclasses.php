@@ -819,7 +819,7 @@ class jhgrWPOptions
         // Load responsive stylesheet if required and if shortcode is present
         // below code does NOT work with do_shortcode and requires WP 3.6 or later
 
-        if(has_shortcode($post->post_content,'goodreviews' ) || is_home() || is_active_widget( false, false, 'goodreviews-buybook', true ) || is_active_widget( false, false, 'goodreviews-bookinfo', true ) || is_active_widget( false, false, 'goodreviews-reviews', true ))
+        if(has_shortcode($post->post_content,'goodreviews' ) || is_home() || is_front_page() || is_active_widget( false, false, 'goodreviews-buybook', true ) || is_active_widget( false, false, 'goodreviews-bookinfo', true ) || is_active_widget( false, false, 'goodreviews-reviews', true ))
         {
             if(wp_style_is('goodrev-styles','enqueue'))
             { 

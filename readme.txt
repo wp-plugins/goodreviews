@@ -10,7 +10,7 @@ Donate link: 	   http://www.timetides.com
 License:           GPLv3
 Requires at least: 3.8 
 Tested up to:      4.0
-Stable tag:        2.1.2
+Stable tag:        2.1.4
 
 Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
 

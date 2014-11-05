@@ -150,6 +150,9 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 2.2.0 =
+Replaces cURL and file_get_contents with wp_remote_get (the WordPress way) and fixes some CSS issues.
+
 = 2.1.4 =
 Modifies caching mechanism, segregates widget from shortcode, ensures that GoodReviews CSS is only loaded on shortcode/widget pages, and modifies CSS so that star ratings styles are applied only to GoodReviews container.
 
@@ -205,6 +208,12 @@ This is the first version of the plugin
 3. The shortcode in a post
 
 == Changelog ==
+
+= 2.2.0 =
+* Replaced cURL and file_get_contents with wp_remote_get
+* Fixed some CSS issues with the_iframe element
+* Updated Readme
+* Updated POT file
 
 = 2.1.4 =
 * Segregated widgets from shortcode so they can operate more independently.

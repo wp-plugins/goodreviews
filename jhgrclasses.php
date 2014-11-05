@@ -28,96 +28,10 @@
 class jhgrRequirements
 {
     public $jhgrTransient  = "jhgrT-";
-    public $jhgrCurlEnabled    = 'Client URL (cURL) is enabled on your server. GoodReviews can use it to retrieve reviews.';
-    public $jhgrCurlDisabled   = 'Client URL (cURL) is either <a href="http://us2.php.net/manual/en/curl.setup.php">not installed or not enabled</a> on your server. GoodReviews might not be able to retrieve reviews.';
-    public $jhgrFileGetEnabled = 'PHP fopen wrappers (file_get_contents) are enabled on your server. For security, <a href="http://www.php.net/manual/en/filesystem.configuration.php#ini.allow-url-fopen" target="_blank">disable fopen wrappers</a> and <a href="http://us2.php.net/manual/en/curl.setup.php">use cURL</a> instead.';
-    public $jhgrNoRetrieval    = 'Neither client URL (cURL) nor fopen wrappers (file_get_contents) are enabled on your server. GoodReviews will not be able to retrieve reviews.';
 
     public function jhgrLoadLocal()
     {
         load_plugin_textdomain('goodreviews',false,basename(dirname(__FILE__)).'/lang');
-    }
-
-    public function jhgrCurlCheck()
-    {
-        return (in_array('curl',get_loaded_extensions())) ? true : false;
-    }
-    
-    public function jhgrCurlExecCheck($jhgrDisabled)
-    {
-        $jhgrDisabled = explode(', ', ini_get('disable_functions'));
-        return !in_array('curl_exec', $jhgrDisabled);
-    }
-    
-    public function jhgrFileGetCheck()
-    {
-        return (ini_get('allow_url_fopen')) ? true : false;
-    }
-    
-    public function jhgrRestoreNotices()
-    {
-        $jhgrUser = wp_get_current_user();
-        if(isset($_GET['restore_jhgrNotices']) && '1' == $_GET['restore_jhgrNotices'])
-        {
-            delete_user_meta($jhgrUser->ID, 'goodreviews_ignore_FileGetEnabled','true');
-            delete_user_meta($jhgrUser->ID, 'goodreviews_ignore_CurlEnabled','true');
-            delete_user_meta($jhgrUser->ID, 'goodreviews_ignore_CurlDisabled','true');
-        }
-    }
-
-    public function jhgrHideNotices()
-    {
-        $jhgrUser = wp_get_current_user();
-        if(isset($_GET['ignore_FileGetEnabled']) && '0' == absint($_GET['ignore_FileGetEnabled']))
-        {
-            add_user_meta($jhgrUser->ID, 'goodreviews_ignore_FileGetEnabled','true',true);
-        }
-        if(isset($_GET['ignore_CurlEnabled']) && '0' == absint($_GET['ignore_CurlEnabled']))
-        {
-            add_user_meta($jhgrUser->ID, 'goodreviews_ignore_CurlEnabled','true',true);
-        }
-        if(isset($_GET['ignore_CurlDisabled']) && '0' == absint($_GET['ignore_CurlDisabled']))
-        {
-            add_user_meta($jhgrUser->ID, 'goodreviews_ignore_CurlDisabled','true',true);
-        }
-    }
-        
-    public function jhgrShowNotices()
-    {
-        $jhgrScreenID = get_current_screen()->id;
-        $jhgrUser     = wp_get_current_user();
-        $jhgrRestore  = (isset($_GET['restore_jhgrNotices'])) ? $_GET['restore_jhgrNotices'] : '0';
-        $jhgrDisabled = '';
-        
-        if ('1' == absint($jhgrRestore)) 
-        {
-            $this->jhgrRestoreNotices();
-        }
-        
-        if($jhgrScreenID == 'settings_page_goodrev-options') {
-            if((!($this->jhgrCurlExecCheck($jhgrDisabled)))&&(!($this->jhgrFileGetCheck())))
-            {
-                printf('<div class="error"><p>%s</p></div>', __($this->jhgrNoRetrieval,'goodreviews'),'GoodReviews');
-            }
-            if ( ! get_user_meta($jhgrUser->ID, 'goodreviews_ignore_FileGetEnabled') ) {
-                if($this->jhgrFileGetCheck())
-                {
-                    printf('<div class="error"><p>' . __($this->jhgrFileGetEnabled,'goodreviews') . ' | <a href="%1$s">' . __('Hide Notice','goodreviews') . '</a></p></div>', '?page=goodrev-options&ignore_FileGetEnabled=0');
-                }
-            }
-            if ( ! get_user_meta($jhgrUser->ID, 'goodreviews_ignore_CurlEnabled') ) {
-                if(($this->jhgrCurlExecCheck($jhgrDisabled))&&($this->jhgrCurlCheck()))
-                {
-                    printf('<div class="updated"><p>' . __($this->jhgrCurlEnabled,'goodreviews') . ' | <a href="%1$s">' . __('Hide Notice','goodreviews') . '</a></p></div>', '?page=goodrev-options&ignore_CurlEnabled=0');
-                }
-            }
-            if ( ! get_user_meta($jhgrUser->ID, 'goodreviews_ignore_CurlDisabled') ) {
-                if((!($this->jhgrCurlExecCheck($jhgrDisabled)))||((!($this->jhgrCurlCheck()))))
-                {
-                    printf('<div class="updated"><p>' . __($this->jhgrCurlDisabled,'goodreviews') . ' | <a href="%1$s">' . __('Hide Notice','goodreviews') . '</a></p></div>', '?page=goodrev-options&ignore_CurlDisabled=0');
-                }
-            }
-        }
     }
 }
 
@@ -125,12 +39,29 @@ class jhgrWPOptions
 {
     public $jhgrGoodreadsAPIKey = '';
     public $jhgrGoodreviewsCSS  = '';
-    public $jhgrRetrieveMethod  = '';
     public $jhgrTermsAgreement  = '1';
     public $jhgrResponsiveStyle = '0';
     public $jhgrCacheExpire     = 12;
     public $jhgrClearCache      = 0;
     public $jhgrDefer           = 0;
+    
+    private function szActivate()
+    {
+        // Primarily applies for upgrades to 2.2.0 and later
+        $szUser       = wp_get_current_user();
+        $szMeta_type  = 'user';
+        $szUser_id    = 0;
+        $szMeta_value = '';
+        $szDelete_all = true;
+
+        if(! get_user_meta($szUser->ID, 'goodreviews_220')) {
+            delete_option('goodreviews-getmethod');
+            delete_metadata( $szMeta_type, $szUser_id, 'goodreviews_ignore_FileGetEnabled', $szMeta_value, $szDelete_all );
+            delete_metadata( $szMeta_type, $szUser_id, 'goodreviews_ignore_CurlEnabled', $szMeta_value, $szDelete_all );
+            delete_metadata( $szMeta_type, $szUser_id, 'goodreviews_ignore_CurlDisabled', $szMeta_value, $szDelete_all );
+        }
+        add_user_meta($jhgrUser->ID, 'goodreviews_220','true',true);
+    }
 
     public function jhgrCleanCache()
     {
@@ -149,10 +80,6 @@ class jhgrWPOptions
                           __('The GoodReviews plugin retrieves Goodreads.com reader reviews for books you choose and displays them in pages or posts on your WordPress blog by way of a WordPress shortcode.','goodreviews') .
                           '</p> <p>' .
                           __('You must have a Goodreads API Developer Key in order to use this plugin. Links to Goodreads.com information about this program are available on the GoodReviews Settings page.','goodreviews') .
-                          '</p> <p><strong>' .
-                          __('WARNING','goodreviews') .
-                          '</strong>: ' .
-                          __('If your PHP implementation does not have client URL (cURL) installed and enabled, you should not attempt to use this plugin. You might be able to use the plugin without cURL if your PHP implementation has fopen wrappers enabled. However, fopen wrappers can be a security risk.','goodreviews') .
                           '</p>';
         $jhgrSettingsUse  = '<p>' .
                           __('The following GoodReviews Settings fields are ','goodreviews') .
@@ -168,8 +95,6 @@ class jhgrWPOptions
                           __('GoodReviews comes with a stock CSS file based on Goodreads.com styles. However, you can use your own CSS to style GoodReviews output. If you have created your own CSS file, put the URL to that file in this field. Otherwise, leave this field blank.','goodreviews') .
                           ':<li><strong>' . __('Use Responsive Style','goodreviews') . '</strong>: ' .
                           __('GoodReviews comes with a stock CSS file based on Goodreads.com styles. However, you can opt to use an alternate style designed for sites with responsive themes. Selecting this checkbox will cause GoodReviews to ignore any values you enter in the Custom CSS URL field.','goodreviews') .
-                          '</li><li><strong>' . __('Use file_get_contents','goodreviews') . '</strong>: ' .
-                          __('If cURL is enabled on your site, DO NOT select this checkbox. If your site does not support cURL, you can select this checkbox to use fopen wrappers instead. However, fopen wrappers are a security risk. Consider installing cURL.','goodreviews') .
                           '</li></ul></p>';
         $jhgrShortcodeUse = '<p>' .
                           __('Type the shortcode ','goodreviews') .
@@ -502,13 +427,6 @@ class jhgrWPOptions
         $jhgrField .= '<label for="goodreviews-responsive-style">' . sanitize_text_field($args[0]) . '</label>';
         echo $jhgrField;
     }
-
-    public function jhgrRestoreNoticesField($args)
-    {
-        $jhgrField  = '<a href="?page=goodrev-options&restore_jhgrNotices=1" name="goodreviews-restore-notices" id="goodreviews-restore-notices">' . __('Restore Hidden GoodReviews Notices','goodreviews') . '</a><br />';
-        $jhgrField .= '<label for="goodreviews-restore-notices"> ' . sanitize_text_field($args[0]) . '</label>';
-        echo $jhgrField;
-    }
     
     public function jhgrGRTestField($args)
     {
@@ -594,28 +512,6 @@ class jhgrWPOptions
             'goodreviews_retrieval_section',
             array(
                 __('You MUST agree to allow GoodReviews to display Goodreads.com links on your WordPress posts or pages in order to use this plugin. If you do not select this checkbox, GoodReviews will not display reviews.','goodreviews')
-            )
-        );
-        
-        add_settings_field(
-            'goodreviews-getmethod',
-            __('Use file_get_contents<br><span style="color:red">(Not Recommended)</span>','goodreviews'),
-            array(&$this, 'jhgrRetrieveMethodField'),
-            'goodrev-options',
-            'goodreviews_retrieval_section',
-            array(
-                __('Select this checkbox to use fopen wrappers if your host does not support cURL (not recommended).','goodreviews')
-            )
-        );
-        
-        add_settings_field(
-            'goodreviews-restore-notices',
-            __('Restore Notices','goodreviews'),
-            array(&$this, 'jhgrRestoreNoticesField'),
-            'goodrev-options',
-            'goodreviews_retrieval_section',
-            array(
-                __('Click this link to restore any important GoodReviews Settings notifications you might have hidden.','goodreviews')
             )
         );
         
@@ -1272,32 +1168,18 @@ class jhgrShortcode
         $jhgrURL .= (isset($jhgrSCAtts["grnumber"])) ? '&num_reviews=' . absint($jhgrSCAtts["grnumber"]) : '';
         $jhgrURL .= (! empty($jhgrCustomCSS)) ? '&stylesheet=' . esc_url($jhgrCustomCSS) : '';
         
-        if($jhgrOpts->jhgrGetRetrieveMethod()!=1)
-        {
-            $jhgrCurl = curl_init();
-            curl_setopt($jhgrCurl, CURLOPT_URL, $jhgrURL);
-            curl_setopt($jhgrCurl, CURLOPT_RETURNTRANSFER, true);
-        }
-        
         while(($jhgrRetries<5)&&(!preg_match("/200/",$jhgrCCode))) {
             usleep(500000*pow($jhgrRetries,2));
-            if($jhgrOpts->jhgrGetRetrieveMethod()==1)
+            $jhgrResponse = wp_remote_get($jhgrURL);
+            $jhgrCCode = wp_remote_retrieve_response_code($jhgrResponse);
+            if($jhgrCCode==200) 
             {
-                $jhgrXML = file_get_contents($jhgrURL);
-                $jhgrCCode = $http_response_header[0];
-                echo $jhgrCCode;
+               $jhgrXML = wp_remote_retrieve_body($jhgrResponse);
+            } else {
+               $jhgrXML = '';
             }
-            else 
-            {
-                $jhgrXML = curl_exec($jhgrCurl);
-                $jhgrCCode = curl_getinfo($jhgrCurl,CURLINFO_HTTP_CODE);
-            }
-            $jhgrRetries = $jhgrRetries + 1;
-        }
 
-        if($jhgrOpts->jhgrGetRetrieveMethod()!=1)
-        {
-            curl_close($jhgrCurl);
+            $jhgrRetries = $jhgrRetries + 1;
         }
         unset($jhgrOpts);
 
@@ -1462,7 +1344,7 @@ class jhgrShortcode
     {      
         $jhgrInlineStyles  = '<style type="text/css">';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["width"])) ? '#goodreviews-div, #goodreads-widget { width:' . absint($jhgrSCAtts["width"]) . 'px; } ' : '';       
-        $jhgrInlineStyles .= (isset($jhgrSCAtts["height"])) ? '#goodreviews-bookinfo, #goodreviews-data, #goodreviews-buybook  { height:' . absint($jhgrSCAtts["height"]) . 'px; } ' : '';
+        $jhgrInlineStyles .= (isset($jhgrSCAtts["height"])) ? '#the_iframe, #goodreviews-bookinfo, #goodreviews-data, #goodreviews-buybook  { height:' . absint($jhgrSCAtts["height"]) . 'px; } ' : '';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["grstars"])) ? '.star-rating .star { color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grstars"]) . '; } ' : '';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["grlinks"])) ? '#goodreviews-div a,#goodreads-widget .gr_branding,.goodreviews-label { color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grlinks"]) . '; } ' : '';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["grbackground"])) ? '#goodreviews-buybook,.goodreviews-booklist { background-color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grbackground"]) . '; } ' : '';
@@ -1475,12 +1357,13 @@ class jhgrShortcode
     {
         $jhgrInlineStyles  = '<style type="text/css">';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["width"])) ? '#goodreviews-div, #goodreads-widget { width:100%; } ' : '';       
-        $jhgrInlineStyles .= (isset($jhgrSCAtts["height"])) ? '#goodreviews-bookinfo, #goodreviews-data, #goodreviews-buybook  { height:' . absint($jhgrSCAtts["height"]) . 'px; } ' : '';
+        $jhgrInlineStyles .= (isset($jhgrSCAtts["height"])) ? '#the_iframe, #goodreviews-bookinfo, #goodreviews-data, #goodreviews-buybook  { height:' . absint($jhgrSCAtts["height"]) . 'px; } ' : '';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["grstars"])) ? '.star-rating .star { color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grstars"]) . '; } ' : '';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["grlinks"])) ? '#goodreviews-div a,#goodreads-widget .gr_branding,.goodreviews-label { color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grlinks"]) . '; } ' : '';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["grbackground"])) ? '#goodreviews-buybook,.goodreviews-booklist { background-color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grbackground"]) . '; } ' : '';
         $jhgrInlineStyles .= (isset($jhgrSCAtts["grtext"])) ? '.goodreviews-booklist { color:#' . $this->jhgrSanitizeHexColor($jhgrSCAtts["grtext"]) . '; } ' : '';
         $jhgrInlineStyles .= '</style>';
+        return $jhgrInlineStyles;
     }
     
     public function jhgrTransientID($jhgrSCAtts)

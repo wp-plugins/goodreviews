@@ -1,14 +1,14 @@
-# Copyright (C) 2014 GoodReviews
+# Copyright (C) 2015 GoodReviews
 # This file is distributed under the same license as the GoodReviews package.
 msgid ""
 msgstr ""
-"Project-Id-Version: GoodReviews 2.2.0\n"
+"Project-Id-Version: GoodReviews 2.2.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/goodreviews\n"
-"POT-Creation-Date: 2014-11-05 15:54:19+00:00\n"
+"POT-Creation-Date: 2015-01-16 01:49:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
@@ -385,7 +385,7 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
-#: jhgrclasses.php:243 jhgrclasses.php:604
+#: jhgrclasses.php:243 jhgrclasses.php:617
 msgid "Settings"
 msgstr ""
 
@@ -518,87 +518,87 @@ msgid ""
 "the \"Help\" tab on the upper right of the GoodReviews settings page."
 msgstr ""
 
-#: jhgrclasses.php:605
+#: jhgrclasses.php:618
 msgid "Test"
 msgstr ""
 
-#: jhgrclasses.php:646
+#: jhgrclasses.php:659
 msgid "GoodReviews Settings"
 msgstr ""
 
-#: jhgrclasses.php:653
+#: jhgrclasses.php:666
 msgid "GoodReviews Test Frame"
 msgstr ""
 
-#: jhgrclasses.php:660
+#: jhgrclasses.php:673
 msgid "GoodReviews Performance"
 msgstr ""
 
-#: jhgrclasses.php:667
+#: jhgrclasses.php:680
 msgid "GoodReviews Usage"
 msgstr ""
 
-#: jhgrclasses.php:749
+#: jhgrclasses.php:777
 msgid "Cache cleared"
 msgstr ""
 
-#: jhgrclasses.php:849 jhgrclasses.php:966 jhgrclasses.php:1097
+#: jhgrclasses.php:877 jhgrclasses.php:994 jhgrclasses.php:1125
 msgid "Book Identifier:"
 msgstr ""
 
-#: jhgrclasses.php:854 jhgrclasses.php:971 jhgrclasses.php:1102
+#: jhgrclasses.php:882 jhgrclasses.php:999 jhgrclasses.php:1130
 msgid " Identifer Value:"
 msgstr ""
 
-#: jhgrclasses.php:856 jhgrclasses.php:985 jhgrclasses.php:1104
+#: jhgrclasses.php:884 jhgrclasses.php:1013 jhgrclasses.php:1132
 msgid " Width (in pixels):"
 msgstr ""
 
-#: jhgrclasses.php:858 jhgrclasses.php:987 jhgrclasses.php:1106
+#: jhgrclasses.php:886 jhgrclasses.php:1015 jhgrclasses.php:1134
 msgid " Height (in pixels):"
 msgstr ""
 
-#: jhgrclasses.php:860 jhgrclasses.php:989 jhgrclasses.php:1108
+#: jhgrclasses.php:888 jhgrclasses.php:1017 jhgrclasses.php:1136
 msgid "Background Color:"
 msgstr ""
 
-#: jhgrclasses.php:862 jhgrclasses.php:991 jhgrclasses.php:1110
+#: jhgrclasses.php:890 jhgrclasses.php:1019 jhgrclasses.php:1138
 msgid "Link Color:"
 msgstr ""
 
-#: jhgrclasses.php:973
+#: jhgrclasses.php:1001
 msgid "Cover Image:"
 msgstr ""
 
-#: jhgrclasses.php:979
+#: jhgrclasses.php:1007
 msgid "Author Image:"
 msgstr ""
 
-#: jhgrclasses.php:993 jhgrclasses.php:1112
+#: jhgrclasses.php:1021 jhgrclasses.php:1140
 msgid "Text Color:"
 msgstr ""
 
-#: jhgrclasses.php:995 jhgrclasses.php:1114
+#: jhgrclasses.php:1023 jhgrclasses.php:1142
 msgid "Star Rating Color:"
 msgstr ""
 
 #. translators: 1: The rating, 2: The number of ratings
-#: jhgrclasses.php:1226
+#: jhgrclasses.php:1254
 msgid "%1$s rating based on %2$s rating (all editions)"
 msgid_plural "%1$s rating based on %2$s ratings (all editions)"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: The rating
-#: jhgrclasses.php:1230
+#: jhgrclasses.php:1258
 msgid "%s rating"
 msgstr ""
 
-#: jhgrclasses.php:1278
+#: jhgrclasses.php:1306
 msgid "Average Rating"
 msgstr ""
 
-#: jhgrclasses.php:1445
+#: jhgrclasses.php:1473
 msgid ""
 "You must allow GoodReviews to display Goodreads.com links on your site in "
 "order to use this plugin. Please review the GoodReviews Settings page."

@@ -599,6 +599,19 @@ class jhgrWPOptions
         printf($jhgrFormat,$jhgr1,$jhgr2,$jhgr3);
     }
     
+    public function jhgrDonateLink($links,$file)
+    {
+        // Code based on codex.wordpress.org/Plugin_API/Filter_Reference/plugin_row_meta
+        if(strpos($file, 'goodreviews.php') !== false)
+        {
+            $jhgrDonatelinks = array(
+                               '<a href="http://www.timetides.com/donate" target="_blank">Donate</a>'
+                               );
+            $links = array_merge($links, $jhgrDonatelinks);
+        }
+        return $links;
+    }
+    
     public function jhgrOptionsLink($jhgrLink) 
     {
         $jhgrSettingsLink  = '<a href="' . admin_url() . 'admin.php?page=goodrev-options">' . __('Settings','goodreviews') . '</a> | ';
@@ -709,13 +722,29 @@ class jhgrWPOptions
         add_action('load-' . $jhgrUsingPage, array(&$this, 'jhgrAddHelp'));       
     }
     
-    public function jhgrRequireStyles()
+    public function jhgrgetpagetype()
     {
         global $post;
+        $jhgrgoodpage = FALSE;
+        
+        if(is_home() || is_front_page() || is_active_widget( false, false, 'goodreviews-buybook', true ) || is_active_widget( false, false, 'goodreviews-bookinfo', true ) || is_active_widget( false, false, 'goodreviews-reviews', true )) {
+            $jhgrgoodpage = TRUE;
+        } elseif (is_single() || is_page()) {
+            if(has_shortcode($post->post_content,'goodreviews'))
+            {
+                $jhgrgoodpage = TRUE;
+            }
+        }
+        
+        return $jhgrgoodpage;
+    }
+    
+    public function jhgrRequireStyles()
+    {
         // Load responsive stylesheet if required and if shortcode is present
         // below code does NOT work with do_shortcode and requires WP 3.6 or later
 
-        if(has_shortcode($post->post_content,'goodreviews' ) || is_home() || is_front_page() || is_active_widget( false, false, 'goodreviews-buybook', true ) || is_active_widget( false, false, 'goodreviews-bookinfo', true ) || is_active_widget( false, false, 'goodreviews-reviews', true ))
+        if($this->jhgrgetpagetype())
         {
             if(wp_style_is('goodrev-styles','enqueue'))
             { 
@@ -737,7 +766,6 @@ class jhgrWPOptions
         
             // This requires WordPress 3.8 or later
             wp_enqueue_style( 'dashicons' );
-        
         }
         return true;
     }

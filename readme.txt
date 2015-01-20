@@ -6,11 +6,11 @@ Plugin URI:        http://www.timetides.com/goodreviews-plugin-wordpress
 Tags:              goodreads,readers,reviews,stars,isbn
 Author URI:        http://www.timetides.com
 Author:            James R. Hanback, Jr.
-Donate link: 	   http://www.timetides.com
+Donate link: 	   http://www.timetides.com/donate
 License:           GPLv3
 Requires at least: 3.8 
 Tested up to:      4.1
-Stable tag:        2.2.0
+Stable tag:        2.2.1
 
 Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
 
@@ -150,6 +150,9 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 2.2.1 =
+Fixes a WP_DEBUG notice that could be displayed on WordPress content types that are not pages or posts.
+
 = 2.2.0 =
 Replaces cURL and file_get_contents with wp_remote_get (the WordPress way) and fixes some CSS issues.
 
@@ -208,6 +211,11 @@ This is the first version of the plugin
 3. The shortcode in a post
 
 == Changelog ==
+
+= 2.2.1 =
+* Fixed a WP_DEBUG notice that could be displayed on WordPress content types that are not pages or posts
+* Added a Donate link on the plugin management page
+* Updated POT file
 
 = 2.2.0 =
 * Replaced cURL and file_get_contents with wp_remote_get

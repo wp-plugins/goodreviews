@@ -10,7 +10,7 @@ Donate link: 	   http://www.timetides.com/donate
 License:           GPLv3
 Requires at least: 3.8 
 Tested up to:      4.1
-Stable tag:        2.2.1
+Stable tag:        2.2.2
 
 Display Goodreads.com reviews for ISBNs or IDs you specify on any page or post.
 
@@ -150,6 +150,9 @@ Ensure that you enter the shortcode in TEXT/HTML mode, not VISUAL mode.
 
 == Upgrade Notice ==
 
+= 2.2.2 =
+Adds a button to the WordPress text editor to automatically insert the GoodReviews shortcode.
+
 = 2.2.1 =
 Fixes a WP_DEBUG notice that could be displayed on WordPress content types that are not pages or posts.
 
@@ -211,6 +214,11 @@ This is the first version of the plugin
 3. The shortcode in a post
 
 == Changelog ==
+
+= 2.2.2 =
+* Added a button to the WordPress text editor to automatically insert the GoodReviews shortcode
+* Updated ready
+* Updated POT file
 
 = 2.2.1 =
 * Fixed a WP_DEBUG notice that could be displayed on WordPress content types that are not pages or posts

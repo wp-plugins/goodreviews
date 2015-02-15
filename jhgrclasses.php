@@ -779,6 +779,18 @@ class jhgrWPOptions
         }
         settings_errors('goodreviews-notices');
     }
+    
+    public function jhgrQuicktag()
+    {
+        if(wp_script_is('quicktags'))
+        {
+        ?>
+            <script type="text/javascript">
+            QTags.addButton('eg_goodreviews','GRs','[goodreviews isbn="" width="" height="" buyinfo="off" bookinfo="off"]','','goodreviews','GoodReviews Shortcode');
+            </script>
+        <?php
+        }
+    }
 }
 
 class jhgrBuyBookWidget extends WP_Widget {

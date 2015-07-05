@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the GoodReviews package.
 msgid ""
 msgstr ""
-"Project-Id-Version: GoodReviews 2.2.2\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/goodreviews\n"
-"POT-Creation-Date: 2015-02-15 20:54:36+00:00\n"
+"Project-Id-Version: GoodReviews 2.2.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/goodreviews\n"
+"POT-Creation-Date: 2015-07-05 22:38:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -297,7 +297,7 @@ msgid ""
 "can be purchased."
 msgstr ""
 
-#: jhgrclasses.php:204
+#: jhgrclasses.php:204 jhgrclasses.php:1057
 msgid "Reviews From Goodreads"
 msgstr ""
 
@@ -542,63 +542,83 @@ msgstr ""
 msgid "Cache cleared"
 msgstr ""
 
-#: jhgrclasses.php:889 jhgrclasses.php:1006 jhgrclasses.php:1137
+#: jhgrclasses.php:808
+msgid "Buy This Book"
+msgstr ""
+
+#: jhgrclasses.php:810
+msgid "Goodreads.com Buy Book Links."
+msgstr ""
+
+#: jhgrclasses.php:891 jhgrclasses.php:1010 jhgrclasses.php:1143
 msgid "Book Identifier:"
 msgstr ""
 
-#: jhgrclasses.php:894 jhgrclasses.php:1011 jhgrclasses.php:1142
+#: jhgrclasses.php:896 jhgrclasses.php:1015 jhgrclasses.php:1148
 msgid " Identifer Value:"
 msgstr ""
 
-#: jhgrclasses.php:896 jhgrclasses.php:1025 jhgrclasses.php:1144
+#: jhgrclasses.php:898 jhgrclasses.php:1029 jhgrclasses.php:1150
 msgid " Width (in pixels):"
 msgstr ""
 
-#: jhgrclasses.php:898 jhgrclasses.php:1027 jhgrclasses.php:1146
+#: jhgrclasses.php:900 jhgrclasses.php:1031 jhgrclasses.php:1152
 msgid " Height (in pixels):"
 msgstr ""
 
-#: jhgrclasses.php:900 jhgrclasses.php:1029 jhgrclasses.php:1148
+#: jhgrclasses.php:902 jhgrclasses.php:1033 jhgrclasses.php:1154
 msgid "Background Color:"
 msgstr ""
 
-#: jhgrclasses.php:902 jhgrclasses.php:1031 jhgrclasses.php:1150
+#: jhgrclasses.php:904 jhgrclasses.php:1035 jhgrclasses.php:1156
 msgid "Link Color:"
 msgstr ""
 
-#: jhgrclasses.php:1013
+#: jhgrclasses.php:922
+msgid "About This Book"
+msgstr ""
+
+#: jhgrclasses.php:924
+msgid "Goodreads.com Book Information."
+msgstr ""
+
+#: jhgrclasses.php:1017
 msgid "Cover Image:"
 msgstr ""
 
-#: jhgrclasses.php:1019
+#: jhgrclasses.php:1023
 msgid "Author Image:"
 msgstr ""
 
-#: jhgrclasses.php:1033 jhgrclasses.php:1152
+#: jhgrclasses.php:1037 jhgrclasses.php:1158
 msgid "Text Color:"
 msgstr ""
 
-#: jhgrclasses.php:1035 jhgrclasses.php:1154
+#: jhgrclasses.php:1039 jhgrclasses.php:1160
 msgid "Star Rating Color:"
 msgstr ""
 
+#: jhgrclasses.php:1059
+msgid "Goodreads.com Book Reviews."
+msgstr ""
+
 #. translators: 1: The rating, 2: The number of ratings
-#: jhgrclasses.php:1266
+#: jhgrclasses.php:1272
 msgid "%1$s rating based on %2$s rating (all editions)"
 msgid_plural "%1$s rating based on %2$s ratings (all editions)"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: The rating
-#: jhgrclasses.php:1270
+#: jhgrclasses.php:1276
 msgid "%s rating"
 msgstr ""
 
-#: jhgrclasses.php:1318
+#: jhgrclasses.php:1324
 msgid "Average Rating"
 msgstr ""
 
-#: jhgrclasses.php:1485
+#: jhgrclasses.php:1491
 msgid ""
 "You must allow GoodReviews to display Goodreads.com links on your site in "
 "order to use this plugin. Please review the GoodReviews Settings page."

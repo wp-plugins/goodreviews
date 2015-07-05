@@ -614,8 +614,8 @@ class jhgrWPOptions
     
     public function jhgrOptionsLink($jhgrLink) 
     {
-        $jhgrSettingsLink  = '<a href="' . admin_url() . 'admin.php?page=goodrev-options">' . __('Settings','goodreviews') . '</a> | ';
-        $jhgrSettingsLink .= '<a href="' . admin_url() . 'admin.php?page=goodrev-tests">' . __('Test','goodreviews') . '</a>';
+        $jhgrSettingsLink  = '<a href="' . esc_url(admin_url()) . 'admin.php?page=goodrev-options">' . __('Settings','goodreviews') . '</a> | ';
+        $jhgrSettingsLink .= '<a href="' . esc_url(admin_url()) . 'admin.php?page=goodrev-tests">' . __('Test','goodreviews') . '</a>';
         array_unshift($jhgrLink,$jhgrSettingsLink);
         return $jhgrLink;
     }
@@ -642,13 +642,13 @@ class jhgrWPOptions
             $active_tab = isset( $_GET[ 'tab' ] ) ? sanitize_text_field($_GET[ 'tab' ]) : 'goodreviews_retrieval_section';
         }
         
-        echo '<h2 class="nav-tab-wrapper"><a href="' . admin_url() .'admin.php?page=goodrev-options&tab=goodreviews_retrieval_section" class="nav-tab ';
+        echo '<h2 class="nav-tab-wrapper"><a href="' . esc_url(admin_url()) .'admin.php?page=goodrev-options&tab=goodreviews_retrieval_section" class="nav-tab ';
         echo $active_tab == 'goodreviews_retrieval_section' ? 'nav-tab-active' : '';
-        echo '">GoodReviews</a><a href="' . admin_url() .'admin.php?page=goodrev-tests&tab=goodreviews_test_section" class="nav-tab ';
+        echo '">GoodReviews</a><a href="' . esc_url(admin_url()) .'admin.php?page=goodrev-tests&tab=goodreviews_test_section" class="nav-tab ';
         echo $active_tab == 'goodreviews_test_section' ? 'nav-tab-active' : '';
-        echo '">Tests</a><a href="' . admin_url() .'admin.php?page=goodrev-perform&tab=goodreviews_perform_section" class="nav-tab ';
+        echo '">Tests</a><a href="' . esc_url(admin_url()) .'admin.php?page=goodrev-perform&tab=goodreviews_perform_section" class="nav-tab ';
         echo $active_tab == 'goodreviews_perform_section' ? 'nav-tab-active' : '';
-        echo '">Performance</a><a href="' . admin_url() .'admin.php?page=goodrev-usages&tab=goodreviews_usage_section" class="nav-tab ';
+        echo '">Performance</a><a href="' . esc_url(admin_url()) .'admin.php?page=goodrev-usages&tab=goodreviews_usage_section" class="nav-tab ';
         echo $active_tab == 'goodreviews_usage_section' ? 'nav-tab-active' : '';
         echo '">Usage</a></h2>';
                 
@@ -794,19 +794,21 @@ class jhgrWPOptions
 }
 
 class jhgrBuyBookWidget extends WP_Widget {
-    var $textdomain;
+
+    
+    function __construct() 
+    {
+	    $this->textdomain = 'goodreviews';
  
-    function __construct() {
-        $this->textdomain = 'goodreviews';
- 
-        // This is where we add the style and script
-        add_action( 'load-widgets.php', array(&$this, 'jhgrLoadBuyBookWidget') );
- 
-        $this->WP_Widget( 
-            'goodreviews-buybook', 
-            'Buy This Book', 
-            array( 'classname' => 'goodreviews-buybook', 'description' => 'Goodreads.com Buy Book Links' )
-        );
+   		// This is where we add the style and script
+    	add_action( 'load-widgets.php', array(&$this, 'jhgrLoadBuyBookWidget') );
+    	
+	    parent::__construct(
+		    'goodreviews-buybook', 
+		    __('Buy This Book',$this->textdomain),
+		    array( 'classname' => 'goodreviews-buybook',
+		           'description' => __( 'Goodreads.com Buy Book Links.',$this->textdomain), )
+	    );
     }
  
     function jhgrLoadBuyBookWidget() {    
@@ -908,17 +910,19 @@ class jhgrBuyBookWidget extends WP_Widget {
 class jhgrBookInfoWidget extends WP_Widget {
     var $textdomain;
  
-    function __construct() {
-        $this->textdomain = 'goodreviews';
+     function __construct() 
+    {
+	    $this->textdomain = 'goodreviews';
  
-        // This is where we add the style and script
-        add_action( 'load-widgets.php', array(&$this, 'jhgrLoadBuyBookWidget') );
- 
-        $this->WP_Widget( 
-            'goodreviews-bookinfo', 
-            'About This Book', 
-            array( 'classname' => 'goodreviews-bookinfo', 'description' => 'Goodreads.com Book Information' )
-        );
+   		// This is where we add the style and script
+    	add_action( 'load-widgets.php', array(&$this, 'jhgrLoadBuyBookWidget') );
+    	
+	    parent::__construct(
+		    'goodreviews-bookinfo', 
+		    __('About This Book',$this->textdomain),
+		    array( 'classname' => 'goodreviews-bookinfo',
+		           'description' => __( 'Goodreads.com Book Information.',$this->textdomain), )
+	    );
     }
  
     function jhgrLoadBuyBookWidget() {    
@@ -1041,17 +1045,19 @@ class jhgrBookInfoWidget extends WP_Widget {
 class jhgrReviewsWidget extends WP_Widget {
     var $textdomain;
  
-    function __construct() {
-        $this->textdomain = 'goodreviews';
+     function __construct() 
+    {
+	    $this->textdomain = 'goodreviews';
  
-        // This is where we add the style and script
-        add_action( 'load-widgets.php', array(&$this, 'jhgrLoadBuyBookWidget') );
- 
-        $this->WP_Widget( 
-            'goodreviews-reviews', 
-            'Reviews From Goodreads', 
-            array( 'classname' => 'goodreviews-reviews', 'description' => 'Goodreads.com Book Reviews' )
-        );
+   		// This is where we add the style and script
+    	add_action( 'load-widgets.php', array(&$this, 'jhgrLoadBuyBookWidget') );
+    	
+	    parent::__construct(
+		    'goodreviews-reviews', 
+		    __('Reviews From Goodreads',$this->textdomain),
+		    array( 'classname' => 'goodreviews-reviews',
+		           'description' => __( 'Goodreads.com Book Reviews.',$this->textdomain), )
+	    );
     }
  
     function jhgrLoadBuyBookWidget() {    
@@ -1210,7 +1216,7 @@ class jhgrShortcode
         
         while(($jhgrRetries<5)&&(!preg_match("/200/",$jhgrCCode))) {
             usleep(500000*pow($jhgrRetries,2));
-            $jhgrResponse = wp_remote_get($jhgrURL);
+            $jhgrResponse = wp_remote_get(esc_url_raw($jhgrURL));
             $jhgrCCode = wp_remote_retrieve_response_code($jhgrResponse);
             if($jhgrCCode==200) 
             {
@@ -1283,9 +1289,9 @@ class jhgrShortcode
     {
         $jhgrAllAuthors = '';
         foreach ($jhgrXML->book->authors->author as $grauthor) {
-            $jhgrAuthors = (strtolower($jhgrSCAtts["author"])=='small') ? '<div id="grauthorimage"><a href="'. $grauthor->link . '"><img src="' . $grauthor->small_image_url .'" /></a></div>' : '';
-            $jhgrAuthors = (strtolower($jhgrSCAtts["author"])=='large') ? '<div id="grauthorimage"><a href="'. $grauthor->link . '"><img src="' . $grauthor->image_url . '" /></a></div>' : $jhgrAuthors;
-            $jhgrAuthors .= '<div id="grauthorname"><a href="'. $grauthor->link . '">'. $grauthor->name . '</a></div>';
+            $jhgrAuthors = (strtolower($jhgrSCAtts["author"])=='small') ? '<div id="grauthorimage"><a href="'. esc_url($grauthor->link) . '"><img src="' . esc_url($grauthor->small_image_url) .'" /></a></div>' : '';
+            $jhgrAuthors = (strtolower($jhgrSCAtts["author"])=='large') ? '<div id="grauthorimage"><a href="'. esc_url($grauthor->link) . '"><img src="' . esc_url($grauthor->image_url) . '" /></a></div>' : $jhgrAuthors;
+            $jhgrAuthors .= '<div id="grauthorname"><a href="'. esc_url($grauthor->link) . '">'. $grauthor->name . '</a></div>';
             $jhgrAllAuthors .= $jhgrAuthors;
         }
         
@@ -1298,7 +1304,7 @@ class jhgrShortcode
         if(strtolower($jhgrSCAtts["cover"])!='off')
         {
             $jhgrBookOutput .= '<div id="goodreviews-cover"';
-            $jhgrBookOutput .= (strtolower($jhgrSCAtts["cover"])=='large') ? ' class="large"><img src="' . $jhgrXML->book->image_url : '><img src="' . $jhgrXML->book->small_image_url;
+            $jhgrBookOutput .= (strtolower($jhgrSCAtts["cover"])=='large') ? ' class="large"><img src="' . esc_url($jhgrXML->book->image_url) : '><img src="' . esc_url($jhgrXML->book->small_image_url);
             $jhgrBookOutput .= '" /></div>';
         }
         return $jhgrBookOutput;
@@ -1320,7 +1326,7 @@ class jhgrShortcode
             $jhgrBookOutput .= $this->jhgrShowStars($jhgrXML);
             $jhgrBookOutput .= '<br /><br /><b>ISBN-10:</b> ' . $jhgrXML->book->isbn . '<br />' .
                                '<b>ISBN-13:</b> ' . $jhgrXML->book->isbn13 . '<br />' .
-                               '<b>Goodreads:</b> <a href="' . $jhgrXML->book->link . '">' . $jhgrXML->book->id . '</a><br /><br />' .
+                               '<b>Goodreads:</b> <a href="' . esc_url($jhgrXML->book->link) . '">' . $jhgrXML->book->id . '</a><br /><br />' .
                                '<b>Author(s):</b> ';
             $jhgrBookOutput .= $this->jhgrShowAuthors($jhgrSCAtts,$jhgrXML);
             $jhgrBookOutput .= '<b>Publisher:</b> ' . $jhgrXML->book->publisher . '<br>' .
@@ -1348,7 +1354,7 @@ class jhgrShortcode
             $jhgrBuyOutput .= '<ul class="goodreviews-buylist">';
 
             foreach($jhgrXML->book->book_links->book_link as $buyme) {
-                $jhgrBuyOutput .= '<li><a href="' . $buyme->link . '?book_id=' . $jhgrXML->book->id . '" class="grbuy">' . $buyme->name . '</a></li>';
+                $jhgrBuyOutput .= '<li><a href="' . esc_url($buyme->link) . '?book_id=' . $jhgrXML->book->id . '" class="grbuy">' . $buyme->name . '</a></li>';
             }
       
             $jhgrBuyOutput .= '</ul>';
